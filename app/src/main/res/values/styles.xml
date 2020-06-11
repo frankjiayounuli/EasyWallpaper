@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!--等高RelativeLayout item容器样式-->
+    <style name="itemLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">46dp</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <!--APP内所有左边图片样式-->
+    <style name="leftImageStyle">
+        <item name="android:layout_width">70px</item>
+        <item name="android:layout_height">70px</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">10dp</item>
+    </style>
+
+    <!--APP内所有右边小箭头样式-->
+    <style name="rightImageStyle">
+        <item name="android:layout_width">60px</item>
+        <item name="android:layout_height">60px</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginEnd">10dp</item>
+    </style>
+
+</resources>

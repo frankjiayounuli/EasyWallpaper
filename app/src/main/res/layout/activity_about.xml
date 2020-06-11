@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_title" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@mipmap/app_icon" />
+
+    <TextView
+        android:id="@+id/appVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="1.0"
+        android:textColor="@color/colorText"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        style="@style/itemLayoutStyle"
+        android:layout_marginTop="1dp">
+
+        <ImageView
+            android:id="@+id/v"
+            style="@style/leftImageStyle"
+            android:src="@mipmap/about" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/v"
+            android:text="免责声明"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+        <ImageView
+            style="@style/rightImageStyle"
+            android:src="@mipmap/right" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/itemLayoutStyle"
+        android:layout_marginTop="1dp">
+
+        <ImageView
+            android:id="@+id/vv"
+            style="@style/leftImageStyle"
+            android:src="@mipmap/about" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/vv"
+            android:text="隐私政策"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+        <ImageView
+            style="@style/rightImageStyle"
+            android:src="@mipmap/right" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_title" />
+
+    <RelativeLayout
+        android:id="@+id/settingLayout"
+        style="@style/itemLayoutStyle"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/v"
+            style="@style/leftImageStyle"
+            android:src="@mipmap/clean" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/v"
+            android:text="清除缓存"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/cacheSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:text="0.00M"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/aboutLayout"
+        style="@style/itemLayoutStyle"
+        android:layout_marginTop="1dp">
+
+        <ImageView
+            android:id="@+id/vv"
+            style="@style/leftImageStyle"
+            android:src="@mipmap/about" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/vv"
+            android:text="关于我们"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+        <ImageView
+            style="@style/rightImageStyle"
+            android:src="@mipmap/right" />
+    </RelativeLayout>
+
+    <!--下面可以加广告-->
+</LinearLayout>

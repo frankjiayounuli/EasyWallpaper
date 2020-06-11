@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_wallpaper"
+        android:enabled="true"
+        android:icon="@mipmap/wallpaper"
+        android:title="壁纸"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nav_search"
+        android:enabled="true"
+        android:icon="@mipmap/search"
+        android:title="发现"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:enabled="true"
+        android:icon="@mipmap/settings"
+        android:title="设置"
+        app:showAsAction="ifRoom" />
+</menu>
