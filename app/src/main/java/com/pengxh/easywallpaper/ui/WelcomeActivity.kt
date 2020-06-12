@@ -29,7 +29,7 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //*表示可变参数，比如Java中的 String... args
             if (EasyPermissions.hasPermissions(this, *USER_PERMISSIONS)) {
-                startMainActivity()
+                startSplashActivity()
             } else {
                 PermissionDialog.Builder().setContext(this).setPermission(USER_PERMISSIONS)
                     .setOnDialogClickListener(object : PermissionDialog.onDialogClickListener {
@@ -48,13 +48,12 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
                     }).build().show()
             }
         } else {
-            startMainActivity()
+            startSplashActivity()
         }
     }
 
-    private fun startMainActivity() {
-//        startActivity(Intent(this, TestActivity::class.java))
-        startActivity(Intent(this, MainActivity::class.java))
+    private fun startSplashActivity() {
+        startActivity(Intent(this, SplashActivity::class.java))
         finish()
     }
 
@@ -63,7 +62,7 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        startMainActivity()
+        startSplashActivity()
     }
 
     override fun onRequestPermissionsResult(

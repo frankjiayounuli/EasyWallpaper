@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.SplashActivity" />
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.AboutActivity" />
     </application>
