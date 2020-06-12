@@ -18,4 +18,8 @@ class SearchFragment : BaseFragment() {
     override fun initData() {
 
     }
+
+    override fun initEvent() {
+
+    }
 }

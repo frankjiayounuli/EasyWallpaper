@@ -26,6 +26,7 @@ abstract class BaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initData()
+        initEvent()
     }
 
     /**
@@ -39,4 +40,9 @@ abstract class BaseFragment : Fragment() {
      * 数据初始化操作
      */
     protected abstract fun initData()
+
+    /**
+     * 业务逻辑操作
+     */
+    protected abstract fun initEvent()
 }

@@ -35,4 +35,8 @@ class SettingsFragment : BaseFragment() {
             startActivity(Intent(activity, AboutActivity::class.java))
         }
     }
+
+    override fun initEvent() {
+
+    }
 }
