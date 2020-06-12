@@ -1,5 +1,6 @@
 package com.pengxh.easywallpaper.ui.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.View
@@ -13,6 +14,7 @@ import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.BannerImageAdapter
 import com.pengxh.easywallpaper.adapter.HorizontalAdapter
 import com.pengxh.easywallpaper.bean.BannerBean
+import com.pengxh.easywallpaper.ui.BigPictureActivity
 import com.pengxh.easywallpaper.utils.RecyclerItemDecoration
 import com.pengxh.easywallpaper.utils.StatusBarColorUtil
 import com.youth.banner.indicator.CircleIndicator
@@ -60,7 +62,10 @@ class WallPaperFragment : BaseFragment() {
             bannerImageAdapter!!.setOnItemClickListener(object :
                 BannerImageAdapter.OnItemClickListener {
                 override fun onItemClickListener(position: Int) {
-                    Log.d(Tag, ": " + bannerBeanList[position])
+                    //查看大图
+                    val intent = Intent(context, BigPictureActivity::class.java)
+                    intent.putExtra("imageURL", bannerBeanList[position].bannerImage)
+                    startActivity(intent)
                 }
             })
         }
