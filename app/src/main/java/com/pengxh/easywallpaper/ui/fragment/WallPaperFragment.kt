@@ -4,12 +4,15 @@ import android.graphics.Color
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
+import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.BannerImageAdapter
 import com.pengxh.easywallpaper.adapter.HorizontalAdapter
-import com.pengxh.easywallpaper.utils.Constant
+import com.pengxh.easywallpaper.bean.BannerBean
 import com.pengxh.easywallpaper.utils.RecyclerItemDecoration
 import com.pengxh.easywallpaper.utils.StatusBarColorUtil
 import com.youth.banner.indicator.CircleIndicator
@@ -25,7 +28,7 @@ import kotlinx.android.synthetic.main.include_title.*
 class WallPaperFragment : BaseFragment() {
 
     companion object {
-        private val Tag = "WallPaperFragment"
+        private const val Tag = "WallPaperFragment"
     }
 
     override fun initLayoutView(): Int {
@@ -42,18 +45,25 @@ class WallPaperFragment : BaseFragment() {
     }
 
     override fun initEvent() {
-        //轮播图
-        val bannerImageAdapter = context?.let { BannerImageAdapter(it, Constant.bannerImages) }
-        wallpaperBanner.addBannerLifecycleObserver(this)
-            .setAdapter(bannerImageAdapter)
-            .setIndicator(CircleIndicator(context))
-            .start()
-        bannerImageAdapter!!.setOnItemClickListener(object :
-            BannerImageAdapter.OnItemClickListener {
-            override fun onItemClickListener(position: Int) {
-                Log.d(Tag, ": " + Constant.bannerImages[position])
-            }
-        })
+        //获取爬虫抓取的Banner数据
+        val banner = SaveKeyValues.getValue("banner", "") as String
+        if (banner != "") {
+            val type = object : TypeToken<ArrayList<BannerBean>>() {}.type
+
+            val bannerBeanList: ArrayList<BannerBean> = Gson().fromJson(banner, type)
+            //轮播图
+            val bannerImageAdapter = context?.let { BannerImageAdapter(it, bannerBeanList) }
+            wallpaperBanner.addBannerLifecycleObserver(this)
+                .setAdapter(bannerImageAdapter)
+                .setIndicator(CircleIndicator(context))
+                .start()
+            bannerImageAdapter!!.setOnItemClickListener(object :
+                BannerImageAdapter.OnItemClickListener {
+                override fun onItemClickListener(position: Int) {
+                    Log.d(Tag, ": " + bannerBeanList[position])
+                }
+            })
+        }
 
         //四个选项按钮
         val horizontalAdapter = context?.let { HorizontalAdapter(it) }

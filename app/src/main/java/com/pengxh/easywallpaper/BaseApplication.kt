@@ -1,6 +1,7 @@
 package com.pengxh.easywallpaper
 
 import android.app.Application
+import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 
 /**
@@ -13,6 +14,7 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        SaveKeyValues.initSharedPreferences(this)
         EasyToast.init(this)
     }
 }

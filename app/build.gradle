@@ -56,8 +56,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     //Kotlin协程
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
-    //阿里巴巴Json解析库
-    implementation 'com.alibaba:fastjson:1.2.68'
+    //官方Json解析库
+    implementation 'com.google.code.gson:gson:2.8.5'
     //轮播图
     implementation 'com.youth.banner:banner:2.0.11'
 }

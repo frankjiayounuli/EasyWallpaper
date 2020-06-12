@@ -25,6 +25,10 @@ object Constant {
     )
     val items = arrayOf("分类", "横屏", "动态壁纸", "专题")
 
+    //根地址
+    const val BaseURL = "http://www.win4000.com"
+    //横屏壁纸地址
+    const val BannerTargetURL = "$BaseURL/wallpaper.html"
     //手机壁纸根地址
-    const val URL = "http://www.win4000.com/mobile.html";
+    const val URL = "$BaseURL/mobile.html"
 }

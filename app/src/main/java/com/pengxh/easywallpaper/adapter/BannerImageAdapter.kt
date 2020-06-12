@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.pengxh.easywallpaper.R
+import com.pengxh.easywallpaper.bean.BannerBean
 import com.youth.banner.adapter.BannerAdapter
 
 
@@ -16,8 +17,8 @@ import com.youth.banner.adapter.BannerAdapter
  * @description: TODO
  * @date: 2020/6/12 9:45
  */
-class BannerImageAdapter(ctx: Context, data: List<String>?) :
-    BannerAdapter<String?, BannerImageAdapter.BannerViewHolder>(data) {
+class BannerImageAdapter(ctx: Context, data: List<BannerBean>?) :
+    BannerAdapter<BannerBean, BannerImageAdapter.BannerViewHolder>(data) {
 
     private var context = ctx
     private var itemClickListener: OnItemClickListener? = null
@@ -38,12 +39,13 @@ class BannerImageAdapter(ctx: Context, data: List<String>?) :
 
     override fun onBindView(
         holder: BannerViewHolder,
-        data: String?,
+        data: BannerBean,
         position: Int,
         size: Int
     ) {
         //图片是http的，9.0以上需要android:usesCleartextTraffic="true"
-        Glide.with(context).load(data).apply(RequestOptions().placeholder(R.drawable.ic_empty))
+        Glide.with(context).load(data.bannerImage)
+            .apply(RequestOptions().placeholder(R.drawable.ic_empty))
             .into(holder.imageView)
         holder.imageView.setOnClickListener {
             itemClickListener!!.onItemClickListener(position)
