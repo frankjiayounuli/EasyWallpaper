@@ -46,13 +46,13 @@ class SplashActivity : BaseNormalActivity() {
     }
 
     override fun initEvent() {
-        countDownTimer = object : CountDownTimer(5000, 1000) {
+        countDownTimer = object : CountDownTimer(4000, 1000) {
             override fun onFinish() {
                 startMainActivity()
             }
 
             override fun onTick(millisUntilFinished: Long) {
-                splashTimerView.text = "跳过\r\r" + (1 + millisUntilFinished / 1000) + "s"
+                splashTimerView.text = "跳过\r\r" + millisUntilFinished / 1000
             }
         }
         //启动倒计时

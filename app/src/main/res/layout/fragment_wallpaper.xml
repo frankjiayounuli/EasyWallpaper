@@ -7,75 +7,73 @@
 
     <include layout="@layout/include_title" />
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/wallpaperLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/wallpaperLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <!--轮播图-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:paddingHorizontal="10dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
+                <!--轮播图-->
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardCornerRadius="10dp">
+                    android:layout_height="200dp"
+                    android:paddingHorizontal="10dp">
 
-                    <com.youth.banner.Banner
-                        android:id="@+id/wallpaperBanner"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
+                        android:layout_height="match_parent"
+                        app:cardCornerRadius="10dp">
 
-            <!--横向RecyclerView-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/horizontalRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:scrollbars="none" />
+                        <com.youth.banner.Banner
+                            android:id="@+id/wallpaperBanner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:drawableStart="@drawable/left_line"
-                android:drawableEnd="@drawable/right_line"
-                android:gravity="center"
-                android:text="最新壁纸"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+                <!--横向RecyclerView-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/horizontalRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:scrollbars="none" />
 
-            <!--刷新-->
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:drawableStart="@drawable/left_line"
+                    android:drawableEnd="@drawable/right_line"
+                    android:gravity="center"
+                    android:text="最新壁纸"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
 
                 <!--纵向RecyclerView-->
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/verticalRecyclerView"
+                    android:id="@+id/wallpaperRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="none" />
+            </LinearLayout>
 
-            </androidx.core.widget.NestedScrollView>
-        </LinearLayout>
-
-        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
