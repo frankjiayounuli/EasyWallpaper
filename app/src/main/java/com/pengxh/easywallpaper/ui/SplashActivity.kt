@@ -52,7 +52,7 @@ class SplashActivity : BaseNormalActivity() {
             }
 
             override fun onTick(millisUntilFinished: Long) {
-                splashTimerView.text = "跳过\r\r" + millisUntilFinished / 1000
+                splashTimerView.text = "点击跳过\r\r" + millisUntilFinished / 1000
             }
         }
         //启动倒计时

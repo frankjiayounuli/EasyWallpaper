@@ -22,9 +22,10 @@ import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.bean.BannerBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
 import com.pengxh.easywallpaper.ui.BigPictureActivity
+import com.pengxh.easywallpaper.ui.WallpaperActivity
 import com.pengxh.easywallpaper.utils.*
 import com.youth.banner.indicator.CircleIndicator
-import kotlinx.android.synthetic.main.fragment_wallpaper.*
+import kotlinx.android.synthetic.main.fragment_wallpaper_home.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.jsoup.nodes.Document
 
@@ -34,7 +35,7 @@ import org.jsoup.nodes.Document
  * @description: TODO
  * @date: 2020/6/11 15:58
  */
-class WallPaperFragment : BaseFragment() {
+class WallpaperHomeFragment : BaseFragment() {
 
     companion object {
         private const val Tag = "WallPaperFragment"
@@ -45,7 +46,7 @@ class WallPaperFragment : BaseFragment() {
     }
 
     override fun initLayoutView(): Int {
-        return R.layout.fragment_wallpaper
+        return R.layout.fragment_wallpaper_home
     }
 
     override fun initData() {
@@ -150,7 +151,14 @@ class WallPaperFragment : BaseFragment() {
                         WallpaperAdapter.OnItemClickListener {
                         override fun onItemClickListener(position: Int) {
                             //跳转相应的壁纸分类
-                            Log.d(Tag, ": ${listBeans[position].wallpaperURL}")
+                            val wallpaperURL = listBeans[position].wallpaperURL
+                            if (wallpaperURL == "") {
+                                EasyToast.showToast("加载失败，请稍后重试", EasyToast.WARING)
+                            } else {
+                                val intent = Intent(context, WallpaperActivity::class.java)
+                                intent.putExtra("wallpaperURL", wallpaperURL)
+                                startActivity(intent)
+                            }
                         }
                     })
                 }

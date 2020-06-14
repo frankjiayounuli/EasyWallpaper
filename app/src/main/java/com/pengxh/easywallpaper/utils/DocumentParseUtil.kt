@@ -73,5 +73,12 @@ class DocumentParseUtil {
             }
             return wallpaperList
         }
+
+        /**
+         * 解析首页最新壁纸分类下连接的壁纸集合
+         * */
+        fun parseWallpaperData(document: Document) {
+
+        }
     }
 }

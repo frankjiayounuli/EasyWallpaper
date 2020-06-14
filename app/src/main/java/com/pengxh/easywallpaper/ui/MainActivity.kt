@@ -8,7 +8,7 @@ import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.ViewPagerAdapter
 import com.pengxh.easywallpaper.ui.fragment.SearchFragment
 import com.pengxh.easywallpaper.ui.fragment.SettingsFragment
-import com.pengxh.easywallpaper.ui.fragment.WallPaperFragment
+import com.pengxh.easywallpaper.ui.fragment.WallpaperHomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : DoubleClickExitActivity() {
@@ -26,7 +26,7 @@ class MainActivity : DoubleClickExitActivity() {
 
     override fun initData() {
         fragmentList = ArrayList()
-        fragmentList.add(WallPaperFragment())
+        fragmentList.add(WallpaperHomeFragment())
         fragmentList.add(SearchFragment())
         fragmentList.add(SettingsFragment())
     }
