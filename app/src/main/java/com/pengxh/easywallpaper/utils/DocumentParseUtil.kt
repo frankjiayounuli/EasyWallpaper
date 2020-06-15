@@ -1,6 +1,5 @@
 package com.pengxh.easywallpaper.utils
 
-import android.util.Log
 import com.google.gson.Gson
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.easywallpaper.bean.BannerBean
@@ -21,6 +20,7 @@ class DocumentParseUtil {
          * 解析Banner数据
          * */
         fun parseBannerData(document: Document) {
+            val bannerList: ArrayList<BannerBean> = ArrayList()
             //取网站轮播图div
             val slideBox = document.getElementsByClass("slidebox").first()
             //取第三个div内容
@@ -28,15 +28,14 @@ class DocumentParseUtil {
             //筛选div
             val targetElements = element.select("a[href]")
 
-            val bannerList: ArrayList<BannerBean> = ArrayList()
-            for (e in targetElements) {
+            targetElements.forEach {
                 /**
                  * http://www.win4000.com/zt/chahua.html
                  *
                  * /zt/chahua.html
                  * */
-                val url = Constant.BaseURL + e.select("a[href]").first().attr("href")
-                val image = e.select("img[src]").first().attr("src")
+                val url = Constant.BaseURL + it.select("a[href]").first().attr("href")
+                val image = it.select("img[src]").first().attr("src")
 
                 val bannerBean = BannerBean()
                 bannerBean.bannerURL = url
@@ -52,17 +51,16 @@ class DocumentParseUtil {
          * 解析ul标签下的图片集合
          */
         fun parseWallpaperUpdateData(document: Document): ArrayList<WallpaperBean> {
+            val wallpaperList: ArrayList<WallpaperBean> = ArrayList()
             //取第三个ul内容
             val ulElement = document.select("ul[class]")[2]
             //筛选ul
             val targetElements = ulElement.select("a[href]")
-            Log.d(Tag, ": $targetElements")
-            val wallpaperList: ArrayList<WallpaperBean> = ArrayList()
-            for (e in targetElements) {
-                val title = e.text()
-                val image = e.select("img[data-original]").first().attr("data-original")
+            targetElements.forEach {
+                val title = it.text()
+                val image = it.select("img[data-original]").first().attr("data-original")
                 //最新壁纸分类地址
-                val url = e.select("a[href]").first().attr("href")
+                val url = it.select("a[href]").first().attr("href")
 
                 val wallpaperBean = WallpaperBean()
                 wallpaperBean.wallpaperTitle = title
@@ -77,8 +75,17 @@ class DocumentParseUtil {
         /**
          * 解析首页最新壁纸分类下连接的壁纸集合
          * */
-        fun parseWallpaperData(document: Document) {
-
+        fun parseWallpaperData(document: Document): ArrayList<String> {
+            //取第2个ul内容
+            val ulElement = document.select("ul[id]")[1]
+            //筛选ul
+            val targetElements = ulElement.select("a[href]")
+            val list = ArrayList<String>()
+            targetElements.forEach {
+                //得到每一张大图的html地址
+                list.add(it.select("a[href]").first().attr("href"))
+            }
+            return list
         }
     }
 }
