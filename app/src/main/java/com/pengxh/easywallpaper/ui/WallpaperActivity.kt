@@ -23,6 +23,7 @@ import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import java.util.*
 
+
 /**
  * @description: TODO
  * @author: Pengxh
@@ -39,7 +40,6 @@ class WallpaperActivity : BaseNormalActivity() {
     private var wallpaperData: ArrayList<String> = ArrayList()
     private var mCardScaleHelper: CardScaleHelper = CardScaleHelper()
     private var mBlurRunnable: Runnable? = null
-    private var lastPosition = -1
 
     override fun initLayoutView(): Int {
         return R.layout.activity_wallpaper

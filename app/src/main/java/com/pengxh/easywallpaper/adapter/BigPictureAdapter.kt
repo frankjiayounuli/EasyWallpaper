@@ -1,7 +1,7 @@
 package com.pengxh.easywallpaper.adapter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,9 @@ import com.aihook.alertview.library.OnItemClickListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.R
+import com.pengxh.easywallpaper.utils.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -64,9 +66,13 @@ class BigPictureAdapter(ctx: Context, list: ArrayList<String>) :
                                         .into(
                                             Target.SIZE_ORIGINAL,
                                             Target.SIZE_ORIGINAL
-                                        ).get()
+                                        ).get() as BitmapDrawable
                                 }
-                                saveWallpaper(drawable)
+                                if (FileUtil.saveWallpaper(context, drawable)) {
+                                    EasyToast.showToast("保存成功", EasyToast.SUCCESS)
+                                } else {
+                                    EasyToast.showToast("保存失败", EasyToast.ERROR)
+                                }
                             }
                         }
                     }).setCancelable(false).show()
@@ -80,44 +86,5 @@ class BigPictureAdapter(ctx: Context, list: ArrayList<String>) :
     inner class ItemViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var photoView: ImageView = itemView.findViewById(R.id.photoView)
-    }
-
-    private fun saveWallpaper(drawable: Drawable) {
-        // 首先保存图片
-//        val appDir =
-//            File(Environment.getExternalStorageDirectory(), "EasyWallpaper")
-//        if (!appDir.exists()) {
-//            appDir.mkdir()
-//        }
-//        val fileName = System.currentTimeMillis().toString() + ".png"
-//        val file = File(appDir, fileName)
-//        try {
-//            val fos = FileOutputStream(file)
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-//            fos.flush()
-//            fos.close()
-//            EasyToast.showToast("保存成功", EasyToast.SUCCESS)
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            EasyToast.showToast("保存失败", EasyToast.ERROR)
-//        }
-//        // 把文件插入到系统图库
-//        try {
-//            MediaStore.Images.Media.insertImage(
-//                context.contentResolver,
-//                file.absolutePath,
-//                fileName,
-//                null
-//            )
-//        } catch (e: FileNotFoundException) {
-//            e.printStackTrace()
-//        }
-//        // 通知图库更新
-//        context.sendBroadcast(
-//            Intent(
-//                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-//                Uri.parse("file://" + "/sdcard/namecard/")
-//            )
-//        )
     }
 }
