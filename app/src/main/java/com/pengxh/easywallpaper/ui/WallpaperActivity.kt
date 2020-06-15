@@ -3,11 +3,16 @@ package com.pengxh.easywallpaper.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.CountDownTimer
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.BitmapCallBackListener
+import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.utils.ImageUtil
 import com.pengxh.app.multilib.widget.gallery3d.BlurBitmapUtils
 import com.pengxh.app.multilib.widget.gallery3d.CardScaleHelper
@@ -16,6 +21,7 @@ import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.BigPictureAdapter
 import com.pengxh.easywallpaper.utils.DocumentParseUtil
 import kotlinx.android.synthetic.main.activity_wallpaper.*
+import kotlinx.android.synthetic.main.popup_window.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -107,6 +113,36 @@ class WallpaperActivity : BaseNormalActivity() {
     }
 
     override fun initEvent() {
+        //延时1s，等界面渲染完成后显示PopupWindow
+        object : CountDownTimer(1000, 1000) {
+            override fun onFinish() {
+                showPopupWindow()
+            }
 
+            override fun onTick(millisUntilFinished: Long) {
+
+            }
+        }.start()
+        //手动显示popup
+        tipsView.setOnClickListener {
+            showPopupWindow()
+        }
+    }
+
+    private fun showPopupWindow() {
+        val popupView = LayoutInflater.from(this).inflate(R.layout.popup_window, null)
+        val mPopWindow = PopupWindow(popupView)
+        mPopWindow.width = DensityUtil.dp2px(this, 180f)
+        mPopWindow.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        popupView.ensureBtn.setOnClickListener {
+            mPopWindow.dismiss()
+        }
+        mPopWindow.isOutsideTouchable = true
+        //计算popup的位置
+        mPopWindow.showAsDropDown(
+            tipsView,
+            -DensityUtil.dp2px(this, 155f),
+            0
+        )
     }
 }
