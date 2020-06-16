@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.widget.EasyToast
@@ -31,7 +32,6 @@ class DiscoverFragment : BaseFragment() {
     }
 
     private var defaultPage = 1
-    private var isRefresh = false
     private var isLoadMore = false
     private var discoverList = ArrayList<DiscoverBean>()
     private lateinit var discoverAdapter: DiscoverAdapter
@@ -64,22 +64,7 @@ class DiscoverFragment : BaseFragment() {
 
     override fun initEvent() {
         //下拉刷新
-        discoverLayout.setOnRefreshListener {
-            Log.d(Tag, "onRefresh: 下拉刷新")
-            isRefresh = true
-            defaultPage = 1
-            HttpHelper.getDiscoverData(defaultPage, object : HttpListener {
-                override fun onSuccess(result: Document) {
-                    //刷新需要清除之前的list，再把新的list刷新给adapter
-                    discoverList = DocumentParseUtil.parseDiscoverData(result)
-                    handler.sendEmptyMessage(2000)
-                }
-
-                override fun onFailure(e: Exception) {
-                    handler.sendEmptyMessage(2001)
-                }
-            })
-        }
+        discoverLayout.setEnableRefresh(false)
         //上拉加载
         discoverLayout.setOnLoadMoreListener {
             Log.d(Tag, "onLoadMore: 上拉加载")
@@ -108,15 +93,18 @@ class DiscoverFragment : BaseFragment() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 2000 -> {
-                    if (isLoadMore || isRefresh) {
+                    if (isLoadMore) {
                         discoverAdapter.notifyDataSetChanged()
                     } else {
                         Log.d(Tag, "首次加载数据")
                         discoverAdapter = DiscoverAdapter(context!!, discoverList)
                         discoverRecyclerView.layoutManager = LinearLayoutManager(context)
-                        //TODO 添加分割线
-
-                        //TODO 修改横向导航实现效果
+                        discoverRecyclerView.addItemDecoration(
+                            DividerItemDecoration(
+                                context,
+                                DividerItemDecoration.VERTICAL
+                            )
+                        )
                         discoverRecyclerView.adapter = discoverAdapter
                     }
                     discoverAdapter.setOnItemClickListener(object : OnItemClickListener {
@@ -132,8 +120,6 @@ class DiscoverFragment : BaseFragment() {
                     EasyToast.showToast("已经到底了，别拉了~", EasyToast.DEFAULT)
                 }
             }
-            //不管成功与否，都结束加载
-            discoverLayout.finishRefresh()
             discoverLayout.finishLoadMore()
         }
     }

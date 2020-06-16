@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -17,7 +16,6 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.BannerImageAdapter
-import com.pengxh.easywallpaper.adapter.HorizontalAdapter
 import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.bean.BannerBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
@@ -26,6 +24,7 @@ import com.pengxh.easywallpaper.ui.WallpaperActivity
 import com.pengxh.easywallpaper.utils.*
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.include_category.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.jsoup.nodes.Document
 
@@ -57,9 +56,7 @@ class HomePageFragment : BaseFragment() {
         mTitleLeftView.visibility = View.GONE
         mTitleView.text = "壁纸推荐"
         mTitleRightView.visibility = View.GONE
-    }
 
-    override fun initEvent() {
         //获取爬虫抓取的Banner数据
         val banner = SaveKeyValues.getValue("banner", "") as String
         if (banner != "") {
@@ -80,19 +77,11 @@ class HomePageFragment : BaseFragment() {
                 }
             })
         }
+    }
 
+    override fun initEvent() {
         //四个选项按钮
-        val horizontalAdapter = context?.let { HorizontalAdapter(it) }
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = LinearLayoutManager.HORIZONTAL // 横向滚动
-        horizontalRecyclerView.layoutManager = layoutManager
-        horizontalRecyclerView.addItemDecoration(RecyclerItemDecoration(4))
-        horizontalRecyclerView.adapter = horizontalAdapter
-        horizontalAdapter!!.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClickListener(position: Int) {
-                Log.d(Tag, ": $position")
-            }
-        })
+        initButtonEvent()
 
         //最新手机壁纸
         HttpHelper.getWallpaperUpdate(defaultPage, object : HttpListener {
@@ -180,5 +169,24 @@ class HomePageFragment : BaseFragment() {
         val intent = Intent(context, BigPictureActivity::class.java)
         intent.putExtra("imageURL", url)
         startActivity(intent)
+    }
+
+    private fun initButtonEvent() {
+        //壁纸分类
+        categoryLayout.setOnClickListener {
+            EasyToast.showToast("壁纸分类", EasyToast.DEFAULT)
+        }
+        //横屏壁纸
+        screenLayout.setOnClickListener {
+            EasyToast.showToast("横屏壁纸", EasyToast.DEFAULT)
+        }
+        //动态壁纸
+        dWallpaperLayout.setOnClickListener {
+            EasyToast.showToast("动态壁纸", EasyToast.DEFAULT)
+        }
+        //壁纸专题
+        specialLayout.setOnClickListener {
+            EasyToast.showToast("壁纸专题", EasyToast.DEFAULT)
+        }
     }
 }

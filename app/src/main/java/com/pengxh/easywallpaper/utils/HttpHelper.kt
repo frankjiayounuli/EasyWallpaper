@@ -1,5 +1,6 @@
 package com.pengxh.easywallpaper.utils
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -51,8 +52,7 @@ class HttpHelper {
             } else {
                 GlobalScope.launch(Dispatchers.Main) {
                     val document = withContext(Dispatchers.IO) {
-                        var url = ""
-                        url = if (pageNumber == 1) {
+                        val url: String = if (pageNumber == 1) {
                             Constant.DiscoverURL
                         } else {
                             Constant.DiscoverURL.replace(
@@ -61,6 +61,7 @@ class HttpHelper {
                                 true
                             )
                         }
+                        Log.d(Tag, "探索发现地址: $url")
                         Jsoup.connect(url).timeout(10 * 1000).get()
                     }
                     if (document == null) {

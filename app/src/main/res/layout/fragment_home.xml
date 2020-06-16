@@ -21,6 +21,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:layout_marginTop="10dp"
                 android:paddingHorizontal="10dp">
 
                 <androidx.cardview.widget.CardView
@@ -35,13 +36,8 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!--横向RecyclerView-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/horizontalRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:scrollbars="none" />
+            <!--RecyclerView换为include，四个按钮-->
+            <include layout="@layout/include_category" />
 
             <TextView
                 android:layout_width="match_parent"
