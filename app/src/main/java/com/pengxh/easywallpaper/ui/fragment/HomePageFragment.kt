@@ -25,6 +25,7 @@ import com.pengxh.easywallpaper.utils.*
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_category.*
+import kotlinx.android.synthetic.main.include_home_top.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.jsoup.nodes.Document
 
@@ -131,10 +132,11 @@ class HomePageFragment : BaseFragment() {
                     } else {
                         //首次加载数据
                         wallpaperAdapter = WallpaperAdapter(context!!, listBeans)
-                        wallpaperRecyclerView.layoutManager = StaggeredGridLayoutManager(
+                        val staggeredGridLayoutManager = StaggeredGridLayoutManager(
                             2,
                             StaggeredGridLayoutManager.VERTICAL
                         )
+                        wallpaperRecyclerView.layoutManager = staggeredGridLayoutManager
                         wallpaperRecyclerView.adapter = wallpaperAdapter
                     }
                     wallpaperAdapter.setOnItemClickListener(object :
