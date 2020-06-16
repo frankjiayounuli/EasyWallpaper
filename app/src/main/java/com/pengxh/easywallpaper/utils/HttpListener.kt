@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document
  * @email: 290677893@qq.com
  * @date: 2020/6/14 16:31
  */
-interface IHttpListener {
+interface HttpListener {
     fun onSuccess(result: Document)
 
     fun onFailure(e: Exception)

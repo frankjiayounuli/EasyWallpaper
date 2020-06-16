@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.utils.Constant
+import com.pengxh.easywallpaper.utils.OnItemClickListener
 
 /**
  * @author: Pengxh
@@ -51,9 +52,5 @@ class HorizontalAdapter(mContext: Context) :
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.itemClickListener = listener
-    }
-
-    interface OnItemClickListener {
-        fun onItemClickListener(position: Int)
     }
 }

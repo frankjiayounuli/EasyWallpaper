@@ -6,9 +6,9 @@ import androidx.viewpager.widget.ViewPager
 import com.pengxh.app.multilib.base.DoubleClickExitActivity
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.ViewPagerAdapter
-import com.pengxh.easywallpaper.ui.fragment.SearchFragment
+import com.pengxh.easywallpaper.ui.fragment.DiscoverFragment
+import com.pengxh.easywallpaper.ui.fragment.HomePageFragment
 import com.pengxh.easywallpaper.ui.fragment.SettingsFragment
-import com.pengxh.easywallpaper.ui.fragment.WallpaperHomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : DoubleClickExitActivity() {
@@ -26,16 +26,16 @@ class MainActivity : DoubleClickExitActivity() {
 
     override fun initData() {
         fragmentList = ArrayList()
-        fragmentList.add(WallpaperHomeFragment())
-        fragmentList.add(SearchFragment())
+        fragmentList.add(HomePageFragment())
+        fragmentList.add(DiscoverFragment())
         fragmentList.add(SettingsFragment())
     }
 
     override fun initEvent() {
         bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_wallpaper -> mainViewPager.currentItem = 0
-                R.id.nav_search -> mainViewPager.currentItem = 1
+                R.id.nav_home -> mainViewPager.currentItem = 0
+                R.id.nav_discover -> mainViewPager.currentItem = 1
                 R.id.nav_settings -> mainViewPager.currentItem = 2
             }
             false

@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/nav_wallpaper"
+        android:id="@+id/nav_home"
         android:enabled="true"
         android:icon="@mipmap/wallpaper"
-        android:title="壁纸"
+        android:title="推荐"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/nav_search"
+        android:id="@+id/nav_discover"
         android:enabled="true"
-        android:icon="@mipmap/search"
+        android:icon="@mipmap/discover"
         android:title="发现"
         app:showAsAction="ifRoom" />
 

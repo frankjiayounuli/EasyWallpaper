@@ -3,6 +3,7 @@ package com.pengxh.easywallpaper.utils
 import com.google.gson.Gson
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.easywallpaper.bean.BannerBean
+import com.pengxh.easywallpaper.bean.DiscoverBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
 import org.jsoup.nodes.Document
 
@@ -86,6 +87,55 @@ class DocumentParseUtil {
                 list.add(it.select("a[href]").first().attr("href"))
             }
             return list
+        }
+
+        /**
+         * 解析【发现】数据
+         */
+        fun parseDiscoverData(document: Document): ArrayList<DiscoverBean> {
+            val discoverList: ArrayList<DiscoverBean> = ArrayList()
+            //取第四个ul内容
+            val ulElement = document.select("ul[class]")[3]
+            //筛选ul
+            val liElements = ulElement.select("li")
+            liElements.forEach { li ->
+                val discoverBean = DiscoverBean()
+
+                /**
+                 * 解析第一个div
+                 * */
+                val titleDiv = li.select("div[class]")[0]
+                //标题
+                val title = titleDiv.select("img[src]").first().attr("title")
+                //简介
+                val synopsis = titleDiv.select("p").text()
+                //大图
+                val bitImg = titleDiv.select("img[data-original]").first().attr("data-original")
+                //链接
+                val link = titleDiv.select("a[class]").first().attr("href")
+
+                /**
+                 * 解析第二个div
+                 * */
+                val imageDiv = li.select("div[class]")[1]
+                val imageElements = imageDiv.select("a[href]")
+                val smallImageList: ArrayList<DiscoverBean.SmallImageBean> = ArrayList()
+                imageElements.forEach { img ->
+                    val smallImageBean = DiscoverBean.SmallImageBean()
+                    smallImageBean.smallImage =
+                        img.select("img[data-original]").first().attr("data-original")
+                    smallImageList.add(smallImageBean)
+                }
+
+                discoverBean.discoverTitle = title
+                discoverBean.discoverSynopsis = synopsis
+                discoverBean.discoverURL = link
+                discoverBean.bigImage = bitImg
+                discoverBean.smallImages = smallImageList
+
+                discoverList.add(discoverBean)
+            }
+            return discoverList
         }
     }
 }

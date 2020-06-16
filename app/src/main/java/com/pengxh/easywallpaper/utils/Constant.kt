@@ -27,8 +27,19 @@ object Constant {
 
     //根地址
     const val BaseURL = "http://www.win4000.com"
+
     //横屏壁纸地址
     const val BannerTargetURL = "$BaseURL/wallpaper.html"
-    //最新手机壁纸地址，做多5页
+
+    //最新手机壁纸地址，最多5页
     var WallpaperUpdateURL = "$BaseURL/mobile_0_0_0_index.html"
+
+    //发现
+    var DiscoverURL = "$BaseURL/hj/index.html"
+
+    //横屏壁纸
+    const val h = "http://www.win4000.com/wallpaper.html"
+
+    //手机壁纸专题
+    const val s = "http://www.win4000.com/zt/mobile.html"
 }

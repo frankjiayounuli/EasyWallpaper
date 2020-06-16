@@ -25,7 +25,7 @@ import com.pengxh.easywallpaper.ui.BigPictureActivity
 import com.pengxh.easywallpaper.ui.WallpaperActivity
 import com.pengxh.easywallpaper.utils.*
 import com.youth.banner.indicator.CircleIndicator
-import kotlinx.android.synthetic.main.fragment_wallpaper_home.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.jsoup.nodes.Document
 
@@ -35,18 +35,19 @@ import org.jsoup.nodes.Document
  * @description: TODO
  * @date: 2020/6/11 15:58
  */
-class WallpaperHomeFragment : BaseFragment() {
+class HomePageFragment : BaseFragment() {
 
     companion object {
         private const val Tag = "WallPaperFragment"
-        private var defaultPage = 1
-        private var listBeans: ArrayList<WallpaperBean> = ArrayList()
-        private var isLoadMore = false
-        private lateinit var wallpaperAdapter: WallpaperAdapter
     }
 
+    private var defaultPage = 1
+    private var listBeans: ArrayList<WallpaperBean> = ArrayList()
+    private var isLoadMore = false
+    private lateinit var wallpaperAdapter: WallpaperAdapter
+
     override fun initLayoutView(): Int {
-        return R.layout.fragment_wallpaper_home
+        return R.layout.fragment_home
     }
 
     override fun initData() {
@@ -54,7 +55,7 @@ class WallpaperHomeFragment : BaseFragment() {
         ImmersionBar.with(this).statusBarDarkFont(true, 0.2f).init()
 
         mTitleLeftView.visibility = View.GONE
-        mTitleView.text = "高清壁纸"
+        mTitleView.text = "壁纸推荐"
         mTitleRightView.visibility = View.GONE
     }
 
@@ -72,7 +73,7 @@ class WallpaperHomeFragment : BaseFragment() {
                 .setIndicator(CircleIndicator(context))
                 .start()
             bannerImageAdapter!!.setOnItemClickListener(object :
-                BannerImageAdapter.OnItemClickListener {
+                OnItemClickListener {
                 override fun onItemClickListener(position: Int) {
                     //查看大图
                     showBigPicture(bannerBeanList[position].bannerImage)
@@ -87,14 +88,14 @@ class WallpaperHomeFragment : BaseFragment() {
         horizontalRecyclerView.layoutManager = layoutManager
         horizontalRecyclerView.addItemDecoration(RecyclerItemDecoration(4))
         horizontalRecyclerView.adapter = horizontalAdapter
-        horizontalAdapter!!.setOnItemClickListener(object : HorizontalAdapter.OnItemClickListener {
+        horizontalAdapter!!.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClickListener(position: Int) {
                 Log.d(Tag, ": $position")
             }
         })
 
         //最新手机壁纸
-        HttpHelper.getWallpaperUpdate(defaultPage, object : IHttpListener {
+        HttpHelper.getWallpaperUpdate(defaultPage, object : HttpListener {
             override fun onSuccess(result: Document) {
                 //默认加载第一页数据
                 listBeans = DocumentParseUtil.parseWallpaperUpdateData(result)
@@ -113,7 +114,7 @@ class WallpaperHomeFragment : BaseFragment() {
             Log.d(Tag, "onLoadMore: 上拉加载")
             isLoadMore = true
             defaultPage++
-            HttpHelper.getWallpaperUpdate(defaultPage, object : IHttpListener {
+            HttpHelper.getWallpaperUpdate(defaultPage, object : HttpListener {
                 override fun onSuccess(result: Document) {
                     //加载更多
                     listBeans.addAll(DocumentParseUtil.parseWallpaperUpdateData(result))
@@ -148,7 +149,7 @@ class WallpaperHomeFragment : BaseFragment() {
                         wallpaperRecyclerView.adapter = wallpaperAdapter
                     }
                     wallpaperAdapter.setOnItemClickListener(object :
-                        WallpaperAdapter.OnItemClickListener {
+                        OnItemClickListener {
                         override fun onItemClickListener(position: Int) {
                             //跳转相应的壁纸分类
                             val wallpaperURL = listBeans[position].wallpaperURL

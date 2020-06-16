@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.bean.BannerBean
+import com.pengxh.easywallpaper.utils.OnItemClickListener
 import com.youth.banner.adapter.BannerAdapter
 
 
@@ -57,9 +58,5 @@ class BannerImageAdapter(ctx: Context, data: List<BannerBean>?) :
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.itemClickListener = listener
-    }
-
-    interface OnItemClickListener {
-        fun onItemClickListener(position: Int)
     }
 }

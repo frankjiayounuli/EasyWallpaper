@@ -19,7 +19,7 @@ class HttpHelper {
         /**
          * 获取最新壁纸
          * */
-        fun getWallpaperUpdate(pageNumber: Int, listener: IHttpListener) {
+        fun getWallpaperUpdate(pageNumber: Int, listener: HttpListener) {
             if (pageNumber >= 6) {
                 listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
             } else {
@@ -32,6 +32,36 @@ class HttpHelper {
                                 true
                             )
                         ).timeout(10 * 1000).get()
+                    }
+                    if (document == null) {
+                        listener.onFailure(NullPointerException())
+                    } else {
+                        listener.onSuccess(document)
+                    }
+                }
+            }
+        }
+
+        /**
+         * 获取探索发现数据
+         * */
+        fun getDiscoverData(pageNumber: Int, listener: HttpListener) {
+            if (pageNumber >= 6) {
+                listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+            } else {
+                GlobalScope.launch(Dispatchers.Main) {
+                    val document = withContext(Dispatchers.IO) {
+                        var url = ""
+                        url = if (pageNumber == 1) {
+                            Constant.DiscoverURL
+                        } else {
+                            Constant.DiscoverURL.replace(
+                                "index",
+                                "index$pageNumber",
+                                true
+                            )
+                        }
+                        Jsoup.connect(url).timeout(10 * 1000).get()
                     }
                     if (document == null) {
                         listener.onFailure(NullPointerException())

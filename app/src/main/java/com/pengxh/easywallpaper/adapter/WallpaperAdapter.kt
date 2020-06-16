@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.bean.WallpaperBean
+import com.pengxh.easywallpaper.utils.OnItemClickListener
 
 /**
  * @description: TODO
@@ -53,9 +54,5 @@ class WallpaperAdapter(mContext: Context, list: ArrayList<WallpaperBean>) :
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.itemClickListener = listener
-    }
-
-    interface OnItemClickListener {
-        fun onItemClickListener(position: Int)
     }
 }
