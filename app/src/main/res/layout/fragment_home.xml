@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,52 +7,23 @@
     <include layout="@layout/include_title" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!--轮播图-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp">
+            <include layout="@layout/include_home_top" />
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardCornerRadius="10dp">
-
-                    <com.youth.banner.Banner
-                        android:id="@+id/wallpaperBanner"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <!--RecyclerView换为include，四个按钮-->
-            <include layout="@layout/include_category" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:drawableStart="@drawable/left_line"
-                android:drawableEnd="@drawable/right_line"
-                android:gravity="center"
-                android:text="最新壁纸"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-
+            <!--刷新控件-->
             <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/wallpaperLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <com.scwang.smartrefresh.layout.header.ClassicsHeader
                     android:layout_width="match_parent"
