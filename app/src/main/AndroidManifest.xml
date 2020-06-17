@@ -32,6 +32,7 @@
         <activity android:name=".ui.SplashActivity" />
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.WallpaperActivity" />
+        <activity android:name=".ui.DiscoverDetailActivity" />
         <activity android:name=".ui.BigPictureActivity" />
         <activity android:name=".ui.AboutActivity" />
     </application>

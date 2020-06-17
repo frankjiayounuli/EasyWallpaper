@@ -63,5 +63,29 @@
             android:src="@mipmap/right" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/issueLayout"
+        style="@style/itemLayoutStyle"
+        android:layout_marginTop="1dp">
+
+        <ImageView
+            android:id="@+id/vvv"
+            style="@style/leftImageStyle"
+            android:src="@mipmap/issue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/vvv"
+            android:text="问题反馈"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+        <ImageView
+            style="@style/rightImageStyle"
+            android:src="@mipmap/right" />
+    </RelativeLayout>
     <!--下面可以加广告-->
 </LinearLayout>

@@ -57,27 +57,6 @@ class HomePageFragment : BaseFragment() {
         mTitleLeftView.visibility = View.GONE
         mTitleView.text = "壁纸推荐"
         mTitleRightView.visibility = View.GONE
-
-        //获取爬虫抓取的Banner数据
-        val banner = SaveKeyValues.getValue("banner", "") as String
-        if (banner != "") {
-            val type = object : TypeToken<ArrayList<BannerBean>>() {}.type
-
-            val bannerBeanList: ArrayList<BannerBean> = Gson().fromJson(banner, type)
-            //轮播图
-            val bannerImageAdapter = context?.let { BannerImageAdapter(it, bannerBeanList) }
-            wallpaperBanner.addBannerLifecycleObserver(this)
-                .setAdapter(bannerImageAdapter)
-                .setIndicator(CircleIndicator(context))
-                .start()
-            bannerImageAdapter!!.setOnItemClickListener(object :
-                OnItemClickListener {
-                override fun onItemClickListener(position: Int) {
-                    //查看大图
-                    showBigPicture(bannerBeanList[position].bannerImage)
-                }
-            })
-        }
     }
 
     override fun initEvent() {

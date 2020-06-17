@@ -1,6 +1,7 @@
 package com.pengxh.easywallpaper.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Handler
 import android.os.Message
@@ -14,6 +15,7 @@ import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.DiscoverAdapter
 import com.pengxh.easywallpaper.bean.DiscoverBean
+import com.pengxh.easywallpaper.ui.DiscoverDetailActivity
 import com.pengxh.easywallpaper.utils.*
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -109,7 +111,10 @@ class DiscoverFragment : BaseFragment() {
                     }
                     discoverAdapter.setOnItemClickListener(object : OnItemClickListener {
                         override fun onItemClickListener(position: Int) {
-                            Log.d(Tag, discoverList[position].discoverTitle)
+                            val intent = Intent(context, DiscoverDetailActivity::class.java)
+                            intent.putExtra("discoverTitle", discoverList[position].discoverTitle)
+                            intent.putExtra("discoverURL", discoverList[position].discoverURL)
+                            startActivity(intent)
                         }
                     })
                 }

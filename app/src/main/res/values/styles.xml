@@ -17,8 +17,8 @@
 
     <!--APP内所有左边图片样式-->
     <style name="leftImageStyle">
-        <item name="android:layout_width">70px</item>
-        <item name="android:layout_height">70px</item>
+        <item name="android:layout_width">80px</item>
+        <item name="android:layout_height">80px</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_marginStart">10dp</item>
     </style>
