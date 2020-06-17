@@ -7,7 +7,9 @@ package com.pengxh.easywallpaper.bean
  * @date: 2020/6/13 0:43
  */
 class BannerBean {
-    lateinit var bannerURL: String
+    lateinit var bannerTitle: String//轮播图标题
 
-    lateinit var bannerImage: String
+    lateinit var bannerImage: String//轮播图地址
+
+    lateinit var bannerLink: String//轮播图集地址
 }

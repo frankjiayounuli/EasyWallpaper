@@ -6,8 +6,19 @@ import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.easywallpaper.R
+import com.pengxh.easywallpaper.adapter.BannerImageAdapter
+import com.pengxh.easywallpaper.bean.BannerBean
+import com.pengxh.easywallpaper.utils.DocumentParseUtil
+import com.pengxh.easywallpaper.utils.OnItemClickListener
 import com.pengxh.easywallpaper.utils.StatusBarColorUtil
+import com.youth.banner.indicator.CircleIndicator
+import kotlinx.android.synthetic.main.activity_discover_detail.*
 import kotlinx.android.synthetic.main.include_title.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.jsoup.Jsoup
 
 /**
  * @author: Pengxh
@@ -39,40 +50,29 @@ class DiscoverDetailActivity : BaseNormalActivity() {
     override fun initEvent() {
         val discoverURL = intent.getStringExtra("discoverURL")
         Log.d(Tag, "发现页地址: $discoverURL")
-        //获取爬虫抓取的Banner数据
-//        GlobalScope.launch(Dispatchers.Main) {
-//            val documentData = withContext(Dispatchers.IO) {
-//                Jsoup.connect(discoverURL).timeout(10 * 1000).get()
-//            }
-//            DocumentParseUtil.parseBannerData(documentData)
-//        }
 
-//        val banner = SaveKeyValues.getValue("banner", "") as String
-//        if (banner != "") {
-//            val type = object : TypeToken<ArrayList<BannerBean>>() {}.type
-//
-//            val bannerBeanList: ArrayList<BannerBean> = Gson().fromJson(banner, type)
-//            //轮播图
-//            val bannerImageAdapter = BannerImageAdapter(context, bannerBeanList)
-//            discoverBanner.addBannerLifecycleObserver(this)
-//                .setAdapter(bannerImageAdapter)
-//                .setIndicator(CircleIndicator(context))
-//                .start()
-//            bannerImageAdapter.setOnItemClickListener(object :
-//                OnItemClickListener {
-//                override fun onItemClickListener(position: Int) {
-//                    //查看大图
-//                    showBigPicture(bannerBeanList[position].bannerImage)
-//                }
-//            })
-//        }
+        GlobalScope.launch(Dispatchers.Main) {
+            val discoverDocument = withContext(Dispatchers.IO) {
+                Jsoup.connect(discoverURL).timeout(10 * 1000).get()
+            }
+            //解析Banner数据
+            initBanner(DocumentParseUtil.parseBannerData(discoverDocument))
+        }
+    }
 
-
-//        GlobalScope.launch(Dispatchers.Main) {
-//            val discoverDocument = withContext(Dispatchers.IO) {
-//                Jsoup.connect(discoverURL).timeout(10 * 1000).get()
-//            }
-//
-//        }
+    private fun initBanner(bannerList: ArrayList<BannerBean>) {
+        //轮播图
+        val bannerImageAdapter = BannerImageAdapter(context, bannerList)
+        discoverBanner.addBannerLifecycleObserver(this)
+            .setAdapter(bannerImageAdapter)
+            .setIndicator(CircleIndicator(context))
+            .start()
+        bannerImageAdapter.setOnItemClickListener(object :
+            OnItemClickListener {
+            override fun onItemClickListener(position: Int) {
+                //查看大图
+//                showBigPicture(bannerBeanList[position].bannerImage)
+            }
+        })
     }
 }

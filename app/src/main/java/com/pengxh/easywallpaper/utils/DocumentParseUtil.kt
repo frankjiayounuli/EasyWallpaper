@@ -1,7 +1,5 @@
 package com.pengxh.easywallpaper.utils
 
-import com.google.gson.Gson
-import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.easywallpaper.bean.BannerBean
 import com.pengxh.easywallpaper.bean.DiscoverBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
@@ -20,32 +18,25 @@ class DocumentParseUtil {
         /**
          * 解析Banner数据
          * */
-        fun parseBannerData(document: Document) {
+        fun parseBannerData(document: Document): ArrayList<BannerBean> {
             val bannerList: ArrayList<BannerBean> = ArrayList()
             //取网站轮播图div
-            val slideBox = document.getElementsByClass("slidebox").first()
-            //取第三个div内容
-            val element = slideBox.getElementsByTag("div")[2]
+            val bannerBox = document.getElementsByClass("ck-slide-wrapper")
             //筛选div
-            val targetElements = element.select("a[href]")
-
+            val targetElements = bannerBox.select("a[href]")
             targetElements.forEach {
-                /**
-                 * http://www.win4000.com/zt/chahua.html
-                 *
-                 * /zt/chahua.html
-                 * */
-                val url = Constant.BaseURL + it.select("a[href]").first().attr("href")
+                val title = it.select("img[src]").first().attr("alt")
                 val image = it.select("img[src]").first().attr("src")
+                val link = it.select("a[href]").first().attr("href")
 
                 val bannerBean = BannerBean()
-                bannerBean.bannerURL = url
+                bannerBean.bannerTitle = title
                 bannerBean.bannerImage = image
+                bannerBean.bannerLink = link
 
                 bannerList.add(bannerBean)
             }
-            //将bannerMap数据存到sp
-            SaveKeyValues.putValue("banner", Gson().toJson(bannerList))
+            return bannerList
         }
 
         /**
