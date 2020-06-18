@@ -54,8 +54,6 @@ class DiscoverDetailActivity : BaseNormalActivity() {
 
     override fun initEvent() {
         val discoverURL = intent.getStringExtra("discoverURL")
-        Log.d(Tag, "发现页地址: $discoverURL")
-
         GlobalScope.launch(Dispatchers.Main) {
             val discoverDocument = withContext(Dispatchers.IO) {
                 Jsoup.connect(discoverURL).timeout(10 * 1000).get()
@@ -90,9 +88,7 @@ class DiscoverDetailActivity : BaseNormalActivity() {
                     if (wallpaperURL == "") {
                         EasyToast.showToast("加载失败，请稍后重试", EasyToast.WARING)
                     } else {
-                        val intent = Intent(context, WallpaperActivity::class.java)
-                        intent.putExtra("wallpaperURL", wallpaperURL)
-                        startActivity(intent)
+                        startWallpaperActivity(wallpaperURL)
                     }
                 }
             })
@@ -108,10 +104,15 @@ class DiscoverDetailActivity : BaseNormalActivity() {
             .start()
         bannerImageAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClickListener(position: Int) {
-                val bannerLink = bannerList[position].bannerLink
-                Log.d(Tag, "轮播图链接: $bannerLink")
-
+                startWallpaperActivity(bannerList[position].bannerLink)
             }
         })
+    }
+
+    private fun startWallpaperActivity(link: String) {
+        Log.d(Tag, "大图集合链接: $link")
+        val intent = Intent(context, WallpaperActivity::class.java)
+        intent.putExtra("wallpaperURL", link)
+        startActivity(intent)
     }
 }

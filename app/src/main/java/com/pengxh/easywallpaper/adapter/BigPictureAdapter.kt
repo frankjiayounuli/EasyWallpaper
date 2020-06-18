@@ -46,8 +46,12 @@ class BigPictureAdapter(ctx: Context, list: ArrayList<String>) :
             val childDocument = withContext(Dispatchers.IO) {
                 Jsoup.connect(bigImageLink).timeout(10 * 1000).get()
             }
-            val bigImageUrl =
-                childDocument.getElementById("pic-meinv").select("img[class]").first().attr("url")
+            var bigImageUrl =
+                childDocument.getElementsByClass("pic-large").attr("url")
+            //备用地址
+            if (bigImageUrl == null || bigImageUrl == "") {
+                bigImageUrl = childDocument.getElementsByClass("pic-large").attr("src")
+            }
 
             Glide.with(context).load(bigImageUrl).into(holder.photoView)
             holder.photoView.setOnLongClickListener {

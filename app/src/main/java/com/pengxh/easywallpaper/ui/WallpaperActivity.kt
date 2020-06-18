@@ -1,8 +1,6 @@
 package com.pengxh.easywallpaper.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.gyf.immersionbar.ImmersionBar
@@ -16,7 +14,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
-import java.util.*
 
 
 /**
@@ -32,23 +29,20 @@ class WallpaperActivity : BaseNormalActivity() {
     }
 
     private val context: Context = this@WallpaperActivity
-    private var wallpaperData: ArrayList<String> = ArrayList()
 
     override fun initLayoutView(): Int {
         return R.layout.activity_wallpaper
     }
 
-    @SuppressLint("SetTextI18n")
     override fun initData() {
         ImmersionBar.with(this).init()
 
         val wallpaperURL = intent.getStringExtra("wallpaperURL")!!
-        Log.d(Tag, "大图链接地址: $wallpaperURL")
         GlobalScope.launch(Dispatchers.Main) {
             val document = withContext(Dispatchers.IO) {
                 Jsoup.connect(wallpaperURL).timeout(10 * 1000).get()
             }
-            wallpaperData = DocumentParseUtil.parseWallpaperData(document)
+            val wallpaperData = DocumentParseUtil.parseWallpaperData(document)
             val bigPictureAdapter = BigPictureAdapter(context, wallpaperData)
             val linearLayoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
