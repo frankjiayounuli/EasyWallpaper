@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupWindow
@@ -46,6 +47,7 @@ class WallpaperActivity : BaseNormalActivity() {
     private var wallpaperData: ArrayList<String> = ArrayList()
     private var mCardScaleHelper: CardScaleHelper = CardScaleHelper()
     private var mBlurRunnable: Runnable? = null
+    private lateinit var mPopWindow: PopupWindow
 
     override fun initLayoutView(): Int {
         return R.layout.activity_wallpaper
@@ -55,6 +57,7 @@ class WallpaperActivity : BaseNormalActivity() {
         ImmersionBar.with(this).init()
 
         val wallpaperURL = intent.getStringExtra("wallpaperURL")!!
+        Log.d(Tag, "大图链接地址: $wallpaperURL")
         GlobalScope.launch(Dispatchers.Main) {
             val document = withContext(Dispatchers.IO) {
                 Jsoup.connect(wallpaperURL).timeout(10 * 1000).get()
@@ -92,7 +95,8 @@ class WallpaperActivity : BaseNormalActivity() {
             val childDocument = withContext(Dispatchers.IO) {
                 Jsoup.connect(imageHtml).timeout(10 * 1000).get()
             }
-            val bigImageURL = childDocument.select("img[class]").first().attr("src")
+            val bigImageURL = childDocument.select("img[class]").first()
+                .attr("url")
             ImageUtil.obtainBitmap(bigImageURL, object : BitmapCallBackListener {
                 override fun onSuccess(bitmap: Bitmap?) {
                     pictureBlurView.removeCallbacks(mBlurRunnable)
@@ -131,7 +135,7 @@ class WallpaperActivity : BaseNormalActivity() {
 
     private fun showPopupWindow() {
         val popupView = LayoutInflater.from(this).inflate(R.layout.popup_window, null)
-        val mPopWindow = PopupWindow(popupView)
+        mPopWindow = PopupWindow(popupView)
         mPopWindow.width = DensityUtil.dp2px(this, 180f)
         mPopWindow.height = ViewGroup.LayoutParams.WRAP_CONTENT
         popupView.ensureBtn.setOnClickListener {
@@ -144,5 +148,10 @@ class WallpaperActivity : BaseNormalActivity() {
             -DensityUtil.dp2px(this, 155f),
             0
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPopWindow.dismiss()
     }
 }

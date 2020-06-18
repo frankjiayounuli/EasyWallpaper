@@ -41,13 +41,15 @@ class BigPictureAdapter(ctx: Context, list: ArrayList<String>) :
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val bigImageLink = beanList[position]
         GlobalScope.launch(Dispatchers.Main) {
             val childDocument = withContext(Dispatchers.IO) {
-                Jsoup.connect(beanList[position]).timeout(10 * 1000).get()
+                Jsoup.connect(bigImageLink).timeout(10 * 1000).get()
             }
-            val bigImageUrl = childDocument.select("img[class]").first().attr("src")
-            Glide.with(context).load(bigImageUrl).into(holder.photoView)
+            val bigImageUrl =
+                childDocument.getElementById("pic-meinv").select("img[class]").first().attr("url")
 
+            Glide.with(context).load(bigImageUrl).into(holder.photoView)
             holder.photoView.setOnLongClickListener {
                 AlertView(
                     "提示",

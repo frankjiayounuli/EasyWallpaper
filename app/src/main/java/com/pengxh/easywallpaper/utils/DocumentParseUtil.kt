@@ -1,5 +1,6 @@
 package com.pengxh.easywallpaper.utils
 
+import android.util.Log
 import com.pengxh.easywallpaper.bean.BannerBean
 import com.pengxh.easywallpaper.bean.DiscoverBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
@@ -68,11 +69,11 @@ class DocumentParseUtil {
          * 解析首页最新壁纸分类下连接的壁纸集合
          * */
         fun parseWallpaperData(document: Document): ArrayList<String> {
+            val list = ArrayList<String>()
             //取第2个ul内容
             val ulElement = document.select("ul[id]")[1]
             //筛选ul
             val targetElements = ulElement.select("a[href]")
-            val list = ArrayList<String>()
             targetElements.forEach {
                 //得到每一张大图的html地址
                 list.add(it.select("a[href]").first().attr("href"))
@@ -127,6 +128,42 @@ class DocumentParseUtil {
                 discoverList.add(discoverBean)
             }
             return discoverList
+        }
+
+        /**
+         * 解析探索发现
+         * */
+        fun parseDiscoverDetailData(document: Document): ArrayList<WallpaperBean> {
+            val wallpaperList: ArrayList<WallpaperBean> = ArrayList()
+            //先选出目标内容的最外层div
+            val mainDiv = document.getElementsByClass("list_cont list_cont2 w1180")
+            mainDiv.forEach { main ->
+                val ulElement = main.select("li")
+                ulElement.forEach {
+                    val title = it.text()
+                    val image = it.select("img[data-original]").first().attr("data-original")
+                    val link = it.select("a[href]").first().attr("href")
+
+                    /**
+                     * 去掉xxxx大全，重复数据太多
+                     * http://www.win4000.com/mt/Pinky.html
+                     *
+                     * 保留如下类型数据
+                     * http://www.win4000.com/meinv199524.html
+                     * */
+                    if (!link.contains("http://www.win4000.com/mt/")) {
+                        val wallpaperBean = WallpaperBean()
+                        wallpaperBean.wallpaperTitle = title
+                        wallpaperBean.wallpaperImage = image
+                        wallpaperBean.wallpaperURL = link
+
+                        wallpaperList.add(wallpaperBean)
+                    } else {
+                        Log.d(Tag, "重复数据，不处理: $link")
+                    }
+                }
+            }
+            return wallpaperList
         }
     }
 }

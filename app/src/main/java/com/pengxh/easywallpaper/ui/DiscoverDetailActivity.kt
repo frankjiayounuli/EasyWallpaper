@@ -1,13 +1,18 @@
 package com.pengxh.easywallpaper.ui
 
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.View
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.BannerImageAdapter
+import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.bean.BannerBean
+import com.pengxh.easywallpaper.bean.WallpaperBean
 import com.pengxh.easywallpaper.utils.DocumentParseUtil
 import com.pengxh.easywallpaper.utils.OnItemClickListener
 import com.pengxh.easywallpaper.utils.StatusBarColorUtil
@@ -57,6 +62,40 @@ class DiscoverDetailActivity : BaseNormalActivity() {
             }
             //解析Banner数据
             initBanner(DocumentParseUtil.parseBannerData(discoverDocument))
+
+            //解析探索发现数据
+            initDiscover(DocumentParseUtil.parseDiscoverDetailData(discoverDocument))
+        }
+    }
+
+    private fun initDiscover(discoverDetailList: ArrayList<WallpaperBean>) {
+        if (discoverDetailList.size == 0) {
+            Log.d(Tag, "探索发现没有数据")
+            emptyLayout.visibility = View.VISIBLE
+            dataLayout.visibility = View.GONE
+        } else {
+            emptyLayout.visibility = View.GONE
+            dataLayout.visibility = View.VISIBLE
+            val wallpaperAdapter = WallpaperAdapter(context, discoverDetailList)
+            val staggeredGridLayoutManager = StaggeredGridLayoutManager(
+                2,
+                StaggeredGridLayoutManager.VERTICAL
+            )
+            detailRecyclerView.layoutManager = staggeredGridLayoutManager
+            detailRecyclerView.adapter = wallpaperAdapter
+            wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClickListener(position: Int) {
+                    //跳转相应的壁纸分类
+                    val wallpaperURL = discoverDetailList[position].wallpaperURL
+                    if (wallpaperURL == "") {
+                        EasyToast.showToast("加载失败，请稍后重试", EasyToast.WARING)
+                    } else {
+                        val intent = Intent(context, WallpaperActivity::class.java)
+                        intent.putExtra("wallpaperURL", wallpaperURL)
+                        startActivity(intent)
+                    }
+                }
+            })
         }
     }
 
@@ -67,11 +106,11 @@ class DiscoverDetailActivity : BaseNormalActivity() {
             .setAdapter(bannerImageAdapter)
             .setIndicator(CircleIndicator(context))
             .start()
-        bannerImageAdapter.setOnItemClickListener(object :
-            OnItemClickListener {
+        bannerImageAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClickListener(position: Int) {
-                //查看大图
-//                showBigPicture(bannerBeanList[position].bannerImage)
+                val bannerLink = bannerList[position].bannerLink
+                Log.d(Tag, "轮播图链接: $bannerLink")
+
             }
         })
     }
