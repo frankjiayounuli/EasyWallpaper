@@ -7,8 +7,8 @@
     android:orientation="vertical"
     tools:context=".ui.WallpaperActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pictureGalleryView"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/bigPictureViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

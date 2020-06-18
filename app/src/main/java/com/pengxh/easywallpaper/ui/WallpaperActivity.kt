@@ -1,12 +1,13 @@
 package com.pengxh.easywallpaper.ui
 
-import android.content.Context
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.easywallpaper.R
-import com.pengxh.easywallpaper.adapter.BigPictureAdapter
+import com.pengxh.easywallpaper.ui.fragment.BigPictureFragment
 import com.pengxh.easywallpaper.utils.DocumentParseUtil
 import kotlinx.android.synthetic.main.activity_wallpaper.*
 import kotlinx.coroutines.Dispatchers
@@ -24,12 +25,6 @@ import org.jsoup.Jsoup
  */
 class WallpaperActivity : BaseNormalActivity() {
 
-    companion object {
-        private const val Tag: String = "WallpaperActivity"
-    }
-
-    private val context: Context = this@WallpaperActivity
-
     override fun initLayoutView(): Int {
         return R.layout.activity_wallpaper
     }
@@ -43,11 +38,19 @@ class WallpaperActivity : BaseNormalActivity() {
                 Jsoup.connect(wallpaperURL).timeout(10 * 1000).get()
             }
             val wallpaperData = DocumentParseUtil.parseWallpaperData(document)
-            val bigPictureAdapter = BigPictureAdapter(context, wallpaperData)
-            val linearLayoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            pictureGalleryView.layoutManager = linearLayoutManager
-            pictureGalleryView.adapter = bigPictureAdapter
+
+            /**
+             * 绑定大图画廊
+             * 1、RecycleView方式实现，滑动阻尼较大，不太合适
+             *
+             * 2、ViewPage+Fragment实现
+             * */
+            val fragmentList = ArrayList<Fragment>()
+            wallpaperData.forEach {
+                fragmentList.add(BigPictureFragment(it))
+            }
+            val bigPictureAdapter = PicturePagerAdapter(supportFragmentManager, fragmentList)
+            bigPictureViewPager.adapter = bigPictureAdapter
         }
     }
 
@@ -55,5 +58,19 @@ class WallpaperActivity : BaseNormalActivity() {
         val snackbar = Snackbar.make(coordinatorLayout, "长按图片可以保存高清壁纸哦~", Snackbar.LENGTH_LONG)
         snackbar.setAction("知道了") { snackbar.dismiss() }
         snackbar.show()
+    }
+
+    private class PicturePagerAdapter internal constructor(
+        fm: FragmentManager?,
+        private val pageList: List<Fragment>
+    ) :
+        FragmentPagerAdapter(fm!!) {
+        override fun getItem(position: Int): Fragment {
+            return pageList[position]
+        }
+
+        override fun getCount(): Int {
+            return pageList.size
+        }
     }
 }
