@@ -15,17 +15,13 @@ import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
-import com.pengxh.easywallpaper.adapter.BannerImageAdapter
 import com.pengxh.easywallpaper.adapter.WallpaperAdapter
-import com.pengxh.easywallpaper.bean.BannerBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
 import com.pengxh.easywallpaper.ui.BigPictureActivity
 import com.pengxh.easywallpaper.ui.WallpaperActivity
 import com.pengxh.easywallpaper.utils.*
-import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_category.*
-import kotlinx.android.synthetic.main.include_home_top.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.jsoup.nodes.Document
 
@@ -38,7 +34,7 @@ import org.jsoup.nodes.Document
 class HomePageFragment : BaseFragment() {
 
     companion object {
-        private const val Tag = "WallPaperFragment"
+        private const val Tag = "HomePageFragment"
     }
 
     private var defaultPage = 1
@@ -64,17 +60,14 @@ class HomePageFragment : BaseFragment() {
         initButtonEvent()
 
         //最新手机壁纸
-        HttpHelper.getWallpaperUpdate(defaultPage, object : HttpListener {
-            override fun onSuccess(result: Document) {
-                //默认加载第一页数据
-                listBeans = DocumentParseUtil.parseWallpaperUpdateData(result)
-                handler.sendEmptyMessage(1000)
-            }
-
-            override fun onFailure(e: Exception) {
-                handler.sendEmptyMessage(1001)
-            }
-        })
+        val wallpaperData = SaveKeyValues.getValue("wallpaperData", "") as String
+        if (wallpaperData != "") {
+            val type = object : TypeToken<ArrayList<WallpaperBean>>() {}.type
+            listBeans = Gson().fromJson(wallpaperData, type)
+            handler.sendEmptyMessage(1000)
+        } else {
+            handler.sendEmptyMessage(1001)
+        }
 
         //下拉刷新
         wallpaperLayout.setEnableRefresh(false)

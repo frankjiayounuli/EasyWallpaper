@@ -3,10 +3,17 @@ package com.pengxh.easywallpaper.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.CountDownTimer
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
+import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.easywallpaper.R
+import com.pengxh.easywallpaper.utils.DocumentParseUtil
+import com.pengxh.easywallpaper.utils.HttpHelper
+import com.pengxh.easywallpaper.utils.HttpListener
 import kotlinx.android.synthetic.main.activity_splash.*
+import org.jsoup.nodes.Document
 
 /**
  * @description: TODO 此页面可以加载基本数据
@@ -29,6 +36,21 @@ class SplashActivity : BaseNormalActivity() {
 
     override fun initData() {
         ImmersionBar.with(this).init()
+        HttpHelper.getWallpaperUpdate(1, object : HttpListener {
+            override fun onSuccess(result: Document) {
+                //默认加载第一页数据
+                val wallpaperUpdateData = DocumentParseUtil.parseWallpaperUpdateData(result)
+                //将最新壁纸数据存sp
+                SaveKeyValues.putValue("wallpaperData", Gson().toJson(wallpaperUpdateData))
+                //取最新壁纸数据的第一个作为闪屏
+                Glide.with(this@SplashActivity).load(wallpaperUpdateData[0].wallpaperImage)
+                    .into(splashImageView)
+            }
+
+            override fun onFailure(e: Exception) {
+
+            }
+        })
     }
 
     override fun initEvent() {
