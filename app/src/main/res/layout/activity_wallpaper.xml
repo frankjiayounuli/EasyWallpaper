@@ -1,39 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.WallpaperActivity">
 
-    <ImageView
-        android:id="@+id/pictureBlurView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#3F000000"
-        android:scaleType="centerCrop" />
-
-    <com.pengxh.app.multilib.widget.gallery3d.SpeedRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pictureGalleryView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginVertical="30dp" />
+        android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/childNumberView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp" />
-
-    <ImageView
-        android:id="@+id/tipsView"
-        android:layout_width="80px"
-        android:layout_height="80px"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:background="@mipmap/tips" />
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

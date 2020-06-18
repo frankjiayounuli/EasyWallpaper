@@ -51,15 +51,8 @@ class BigPictureAdapter(ctx: Context, list: ArrayList<String>) :
 
             Glide.with(context).load(bigImageUrl).into(holder.photoView)
             holder.photoView.setOnLongClickListener {
-                AlertView(
-                    "提示",
-                    "是否保存此张壁纸",
-                    "取消",
-                    arrayOf("确定"),
-                    null,
-                    context,
-                    AlertView.Style.Alert,
-                    OnItemClickListener { o, position ->
+                AlertView("提示", "是否保存此张壁纸", "取消", arrayOf("确定"), null,
+                    context, AlertView.Style.Alert, OnItemClickListener { o, position ->
                         if (position == 0) {
                             GlobalScope.launch(Dispatchers.Main) {
                                 val drawable = withContext(Dispatchers.IO) {
