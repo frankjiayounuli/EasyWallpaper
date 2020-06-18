@@ -17,7 +17,6 @@ import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.bean.WallpaperBean
-import com.pengxh.easywallpaper.ui.BigPictureActivity
 import com.pengxh.easywallpaper.ui.WallpaperActivity
 import com.pengxh.easywallpaper.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -111,8 +110,7 @@ class HomePageFragment : BaseFragment() {
                         wallpaperRecyclerView.layoutManager = staggeredGridLayoutManager
                         wallpaperRecyclerView.adapter = wallpaperAdapter
                     }
-                    wallpaperAdapter.setOnItemClickListener(object :
-                        OnItemClickListener {
+                    wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {
                         override fun onItemClickListener(position: Int) {
                             //跳转相应的壁纸分类
                             val wallpaperURL = listBeans[position].wallpaperURL
@@ -136,13 +134,6 @@ class HomePageFragment : BaseFragment() {
             //不管成功与否，都结束加载
             wallpaperLayout.finishLoadMore()
         }
-    }
-
-    private fun showBigPicture(url: String) {
-        //查看大图
-        val intent = Intent(context, BigPictureActivity::class.java)
-        intent.putExtra("imageURL", url)
-        startActivity(intent)
     }
 
     private fun initButtonEvent() {

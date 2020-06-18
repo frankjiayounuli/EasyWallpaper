@@ -1,5 +1,6 @@
 package com.pengxh.easywallpaper.ui
 
+import android.content.Context
 import android.content.pm.ActivityInfo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -16,7 +17,7 @@ import kotlinx.coroutines.withContext
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
+ * @description: TODO 查看大图
  * @date: 2020/3/6 13:46
  */
 class BigPictureActivity : BaseNormalActivity() {
@@ -24,6 +25,8 @@ class BigPictureActivity : BaseNormalActivity() {
     companion object {
         private const val Tag = "BigPictureActivity"
     }
+
+    private val context: Context = this@BigPictureActivity
 
     override fun initLayoutView(): Int {
         return R.layout.activity_big_picture
@@ -35,7 +38,7 @@ class BigPictureActivity : BaseNormalActivity() {
         if (imageURL != null || imageURL != "") {
             GlobalScope.launch(Dispatchers.Main) {
                 val drawable = withContext(Dispatchers.IO) {
-                    Glide.with(this@BigPictureActivity).load(imageURL)
+                    Glide.with(context).load(imageURL)
                         .apply(RequestOptions().centerCrop()).into(
                             Target.SIZE_ORIGINAL,
                             Target.SIZE_ORIGINAL

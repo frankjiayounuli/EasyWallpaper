@@ -20,12 +20,17 @@ import org.jsoup.Jsoup
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
+ * @description: TODO 画廊大图
  * @date: 2020/6/18 17:32
  */
 class BigPictureFragment(link: String) : BaseFragment() {
 
+    companion object {
+        private const val Tag: String = "BigPictureFragment"
+    }
+
     private var bigImageLink = link
+    private lateinit var bigImageUrl: String
 
     override fun initLayoutView(): Int {
         return R.layout.fragment_big_picture
@@ -36,41 +41,39 @@ class BigPictureFragment(link: String) : BaseFragment() {
             val childDocument = withContext(Dispatchers.IO) {
                 Jsoup.connect(bigImageLink).timeout(10 * 1000).get()
             }
-            var bigImageUrl =
-                childDocument.getElementsByClass("pic-large").attr("url")
+            val e = childDocument.getElementsByClass("pic-large").first()
+            bigImageUrl = e.attr("url")
             //备用地址
-            if (bigImageUrl == null || bigImageUrl == "") {
-                bigImageUrl = childDocument.getElementsByClass("pic-large").attr("src")
+            if (bigImageUrl == "") {
+                bigImageUrl = e.attr("src")
             }
-
             Glide.with(context!!).load(bigImageUrl).into(photoView)
-            photoView.setOnLongClickListener {
-                AlertView("提示", "是否保存此张壁纸", "取消", arrayOf("确定"), null,
-                    context, AlertView.Style.Alert, OnItemClickListener { o, position ->
-                        if (position == 0) {
-                            GlobalScope.launch(Dispatchers.Main) {
-                                val drawable = withContext(Dispatchers.IO) {
-                                    Glide.with(context!!).load(bigImageUrl)
-                                        .apply(RequestOptions().centerCrop())
-                                        .into(
-                                            Target.SIZE_ORIGINAL,
-                                            Target.SIZE_ORIGINAL
-                                        ).get() as BitmapDrawable
-                                }
-                                if (FileUtil.saveWallpaper(context!!, drawable)) {
-                                    EasyToast.showToast("保存成功", EasyToast.SUCCESS)
-                                } else {
-                                    EasyToast.showToast("保存失败", EasyToast.ERROR)
-                                }
-                            }
-                        }
-                    }).setCancelable(false).show()
-                false
-            }
         }
     }
 
     override fun initEvent() {
-
+        photoView.setOnLongClickListener {
+            AlertView("提示", "是否保存此张壁纸", "取消", arrayOf("确定"), null,
+                context, AlertView.Style.Alert, OnItemClickListener { o, position ->
+                    if (position == 0) {
+                        GlobalScope.launch(Dispatchers.Main) {
+                            val drawable = withContext(Dispatchers.IO) {
+                                Glide.with(context!!).load(bigImageUrl)
+                                    .apply(RequestOptions().centerCrop())
+                                    .into(
+                                        Target.SIZE_ORIGINAL,
+                                        Target.SIZE_ORIGINAL
+                                    ).get() as BitmapDrawable
+                            }
+                            if (FileUtil.saveWallpaper(context!!, drawable)) {
+                                EasyToast.showToast("保存成功", EasyToast.SUCCESS)
+                            } else {
+                                EasyToast.showToast("保存失败", EasyToast.ERROR)
+                            }
+                        }
+                    }
+                }).setCancelable(false).show()
+            false
+        }
     }
 }
