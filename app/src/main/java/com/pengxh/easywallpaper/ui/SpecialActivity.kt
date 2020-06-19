@@ -12,7 +12,7 @@ import com.pengxh.easywallpaper.R
 class SpecialActivity : BaseNormalActivity() {
 
     companion object{
-        private const val Tag = "CategoryActivity"
+        private const val Tag = "SpecialActivity"
     }
 
     override fun initLayoutView(): Int {

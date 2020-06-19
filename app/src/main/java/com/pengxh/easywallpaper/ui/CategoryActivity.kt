@@ -1,6 +1,5 @@
 package com.pengxh.easywallpaper.ui
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
@@ -28,7 +27,7 @@ class CategoryActivity : BaseNormalActivity() {
         private const val Tag = "CategoryActivity"
     }
 
-    private var context: Context = this@CategoryActivity
+    private var context = this@CategoryActivity
 
     override fun initLayoutView(): Int {
         return R.layout.activity_category
@@ -88,8 +87,7 @@ class CategoryActivity : BaseNormalActivity() {
         val wallpaperData = HTMLParseUtil.parseWallpaperUpdateData(document)
         val wallpaperAdapter = WallpaperAdapter(context, wallpaperData)
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(
-            2,
-            StaggeredGridLayoutManager.VERTICAL
+            2, StaggeredGridLayoutManager.VERTICAL
         )
         childRecyclerView.layoutManager = staggeredGridLayoutManager
         childRecyclerView.adapter = wallpaperAdapter
@@ -101,8 +99,7 @@ class CategoryActivity : BaseNormalActivity() {
                 if (wallpaperURL == "") {
                     EasyToast.showToast("加载失败，请稍后重试", EasyToast.WARING)
                 } else {
-                    val intent =
-                        Intent(context, WallpaperActivity::class.java)
+                    val intent = Intent(context, WallpaperActivity::class.java)
                     intent.putExtra("wallpaperURL", wallpaperURL)
                     startActivity(intent)
                 }

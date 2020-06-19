@@ -1,7 +1,12 @@
 package com.pengxh.easywallpaper.ui
 
+import android.graphics.Color
+import android.view.View
+import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.easywallpaper.R
+import com.pengxh.easywallpaper.utils.StatusBarColorUtil
+import kotlinx.android.synthetic.main.include_title.*
 
 /**
  * @author: Pengxh
@@ -11,8 +16,8 @@ import com.pengxh.easywallpaper.R
  */
 class StarActivity : BaseNormalActivity() {
 
-    companion object{
-        private const val Tag = "CategoryActivity"
+    companion object {
+        private const val Tag = "StarActivity"
     }
 
     override fun initLayoutView(): Int {
@@ -20,7 +25,12 @@ class StarActivity : BaseNormalActivity() {
     }
 
     override fun initData() {
+        StatusBarColorUtil.setColor(this, Color.WHITE)
+        ImmersionBar.with(this).statusBarDarkFont(true, 0.2f).init()
 
+        mTitleLeftView.visibility = View.GONE
+        mTitleView.text = "明星写真"
+        mTitleRightView.visibility = View.GONE
     }
 
     override fun initEvent() {

@@ -20,7 +20,7 @@ object Constant {
     const val CategoryURL = "$BaseURL/mobile_0_0_0_1.html"
 
     //明星写真
-    const val s = "$BaseURL/mt/star.html"
+    const val StarURL = "$BaseURL/mt/star.html"
 
     //壁纸专题
     const val z = "$BaseURL/zt/mobile.html"
