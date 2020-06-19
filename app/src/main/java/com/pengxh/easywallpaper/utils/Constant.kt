@@ -8,7 +8,7 @@ package com.pengxh.easywallpaper.utils
  */
 object Constant {
     //根地址
-    const val BaseURL = "http://www.win4000.com"
+    private const val BaseURL = "http://www.win4000.com"
 
     //最新手机壁纸地址，最多5页
     var WallpaperUpdateURL = "$BaseURL/mobile_0_0_0_index.html"
@@ -16,9 +16,12 @@ object Constant {
     //发现
     var DiscoverURL = "$BaseURL/hj/index.html"
 
-    //横屏壁纸
-    const val h = "http://www.win4000.com/wallpaper.html"
+    //壁纸分类，采用二级联动菜单
+    const val h = "$BaseURL/mobile_0_0_0_1.html"
 
-    //手机壁纸专题
-    const val s = "http://www.win4000.com/zt/mobile.html"
+    //明星写真
+    const val s = "http://www.win4000.com/mt/star.html"
+
+    //壁纸专题
+    const val z = "$BaseURL/zt/mobile.html"
 }

@@ -8,6 +8,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--FloatingActionButton样式-->
+    <style name="FloatingStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fab_colorNormal">@color/white</item>
+        <item name="fab_colorPressed">#CCCCCC</item>
+        <item name="fab_size">mini</item>
+    </style>
+
     <!--等高RelativeLayout item容器样式-->
     <style name="itemLayoutStyle">
         <item name="android:layout_width">match_parent</item>
@@ -31,5 +40,4 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_marginEnd">10dp</item>
     </style>
-
 </resources>

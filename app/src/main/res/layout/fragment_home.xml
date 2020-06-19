@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/include_title" />
 
-
-    <LinearLayout
+    <!--刷新控件-->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/include_home_top" />
-
-        <!--刷新控件-->
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/wallpaperLayout"
             android:layout_width="match_parent"
@@ -35,5 +32,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-    </LinearLayout>
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/floatMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            app:menu_colorNormal="@color/colorMain"
+            app:menu_colorPressed="@color/colorAccent"
+            app:menu_fab_size="mini">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/categoryButton"
+                style="@style/FloatingStyle"
+                android:src="@drawable/ic_category"
+                app:fab_label="壁纸分类" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/starButton"
+                style="@style/FloatingStyle"
+                android:src="@drawable/ic_star"
+                app:fab_label="明星写真" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/specialButton"
+                style="@style/FloatingStyle"
+                android:src="@drawable/ic_special"
+                app:fab_label="壁纸专题" />
+        </com.github.clans.fab.FloatingActionMenu>
+    </FrameLayout>
 </LinearLayout>

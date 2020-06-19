@@ -17,10 +17,12 @@ import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.bean.WallpaperBean
+import com.pengxh.easywallpaper.ui.CategoryActivity
+import com.pengxh.easywallpaper.ui.SpecialActivity
+import com.pengxh.easywallpaper.ui.StarActivity
 import com.pengxh.easywallpaper.ui.WallpaperActivity
 import com.pengxh.easywallpaper.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.include_category.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.jsoup.nodes.Document
 
@@ -137,21 +139,14 @@ class HomePageFragment : BaseFragment() {
     }
 
     private fun initButtonEvent() {
-        //壁纸分类
-        categoryLayout.setOnClickListener {
-            EasyToast.showToast("壁纸分类", EasyToast.DEFAULT)
+        categoryButton.setOnClickListener {
+            startActivity(Intent(context, CategoryActivity::class.java))
         }
-        //横屏壁纸
-        screenLayout.setOnClickListener {
-            EasyToast.showToast("横屏壁纸", EasyToast.DEFAULT)
+        starButton.setOnClickListener {
+            startActivity(Intent(context, StarActivity::class.java))
         }
-        //动态壁纸
-        dWallpaperLayout.setOnClickListener {
-            EasyToast.showToast("动态壁纸", EasyToast.DEFAULT)
-        }
-        //壁纸专题
-        specialLayout.setOnClickListener {
-            EasyToast.showToast("壁纸专题", EasyToast.DEFAULT)
+        specialButton.setOnClickListener {
+            startActivity(Intent(context, SpecialActivity::class.java))
         }
     }
 }

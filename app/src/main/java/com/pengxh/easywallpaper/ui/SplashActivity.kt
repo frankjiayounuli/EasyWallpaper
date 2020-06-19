@@ -54,7 +54,7 @@ class SplashActivity : BaseNormalActivity() {
     }
 
     override fun initEvent() {
-        countDownTimer = object : CountDownTimer(4000, 1000) {
+        countDownTimer = object : CountDownTimer(2000, 1000) {
             override fun onFinish() {
                 startMainActivity()
             }
