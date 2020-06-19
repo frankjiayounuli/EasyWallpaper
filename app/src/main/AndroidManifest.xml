@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.WelcomeActivity">
+        <activity android:name=".ui.CategoryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +33,7 @@
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.WallpaperActivity" />
         <activity android:name=".ui.DiscoverDetailActivity" />
-        <activity android:name=".ui.CategoryActivity" />
+<!--        <activity android:name=".ui.CategoryActivity" />-->
         <activity android:name=".ui.StarActivity" />
         <activity android:name=".ui.SpecialActivity" />
         <activity android:name=".ui.BigPictureActivity" />

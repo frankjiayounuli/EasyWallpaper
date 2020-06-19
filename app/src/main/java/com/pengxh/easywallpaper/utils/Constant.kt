@@ -17,10 +17,10 @@ object Constant {
     var DiscoverURL = "$BaseURL/hj/index.html"
 
     //壁纸分类，采用二级联动菜单
-    const val h = "$BaseURL/mobile_0_0_0_1.html"
+    const val CategoryURL = "$BaseURL/mobile_0_0_0_1.html"
 
     //明星写真
-    const val s = "http://www.win4000.com/mt/star.html"
+    const val s = "$BaseURL/mt/star.html"
 
     //壁纸专题
     const val z = "$BaseURL/zt/mobile.html"

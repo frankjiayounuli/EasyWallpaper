@@ -43,8 +43,22 @@ class SplashActivity : BaseNormalActivity() {
                 //将最新壁纸数据存sp
                 SaveKeyValues.putValue("wallpaperData", Gson().toJson(wallpaperUpdateData))
                 //取最新壁纸数据的第一个作为闪屏
-                Glide.with(this@SplashActivity).load(wallpaperUpdateData[0].wallpaperImage)
-                    .into(splashImageView)
+                val wallpaperURL = wallpaperUpdateData[0].wallpaperURL
+                HttpHelper.getDocumentData(wallpaperURL, object : HttpListener {
+                    override fun onSuccess(result: Document) {
+                        val e = result.getElementsByClass("pic-large").first()
+                        var bigImageUrl = e.attr("url")
+                        //备用地址
+                        if (bigImageUrl == "") {
+                            bigImageUrl = e.attr("src")
+                        }
+                        Glide.with(this@SplashActivity).load(bigImageUrl).into(splashImageView)
+                    }
+
+                    override fun onFailure(e: Exception) {
+
+                    }
+                })
             }
 
             override fun onFailure(e: Exception) {

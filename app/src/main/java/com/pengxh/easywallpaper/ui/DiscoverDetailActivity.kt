@@ -13,17 +13,11 @@ import com.pengxh.easywallpaper.adapter.BannerImageAdapter
 import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.bean.BannerBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
-import com.pengxh.easywallpaper.utils.HTMLParseUtil
-import com.pengxh.easywallpaper.utils.OnItemClickListener
-import com.pengxh.easywallpaper.utils.StatusBarColorUtil
+import com.pengxh.easywallpaper.utils.*
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.activity_discover_detail.*
 import kotlinx.android.synthetic.main.include_title.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 /**
  * @author: Pengxh
@@ -54,16 +48,19 @@ class DiscoverDetailActivity : BaseNormalActivity() {
 
     override fun initEvent() {
         val discoverURL = intent.getStringExtra("discoverURL")
-        GlobalScope.launch(Dispatchers.Main) {
-            val discoverDocument = withContext(Dispatchers.IO) {
-                Jsoup.connect(discoverURL).timeout(10 * 1000).get()
-            }
-            //解析Banner数据
-            initBanner(HTMLParseUtil.parseBannerData(discoverDocument))
+        HttpHelper.getDocumentData(discoverURL!!, object : HttpListener {
+            override fun onSuccess(result: Document) {
+                //解析Banner数据
+                initBanner(HTMLParseUtil.parseBannerData(result))
 
-            //解析探索发现数据
-            initDiscover(HTMLParseUtil.parseDiscoverDetailData(discoverDocument))
-        }
+                //解析探索发现数据
+                initDiscover(HTMLParseUtil.parseDiscoverDetailData(result))
+            }
+
+            override fun onFailure(e: Exception) {
+
+            }
+        })
     }
 
     private fun initDiscover(discoverDetailList: ArrayList<WallpaperBean>) {

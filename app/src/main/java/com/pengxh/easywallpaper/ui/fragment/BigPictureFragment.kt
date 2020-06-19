@@ -10,12 +10,14 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.utils.FileUtil
+import com.pengxh.easywallpaper.utils.HttpHelper
+import com.pengxh.easywallpaper.utils.HttpListener
 import kotlinx.android.synthetic.main.fragment_big_picture.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 /**
  * @author: Pengxh
@@ -37,18 +39,21 @@ class BigPictureFragment(link: String) : BaseFragment() {
     }
 
     override fun initData() {
-        GlobalScope.launch(Dispatchers.Main) {
-            val childDocument = withContext(Dispatchers.IO) {
-                Jsoup.connect(bigImageLink).timeout(10 * 1000).get()
+        HttpHelper.getDocumentData(bigImageLink, object : HttpListener {
+            override fun onSuccess(result: Document) {
+                val e = result.getElementsByClass("pic-large").first()
+                bigImageUrl = e.attr("url")
+                //备用地址
+                if (bigImageUrl == "") {
+                    bigImageUrl = e.attr("src")
+                }
+                Glide.with(context!!).load(bigImageUrl).into(photoView)
             }
-            val e = childDocument.getElementsByClass("pic-large").first()
-            bigImageUrl = e.attr("url")
-            //备用地址
-            if (bigImageUrl == "") {
-                bigImageUrl = e.attr("src")
+
+            override fun onFailure(e: Exception) {
+
             }
-            Glide.with(context!!).load(bigImageUrl).into(photoView)
-        }
+        })
     }
 
     override fun initEvent() {

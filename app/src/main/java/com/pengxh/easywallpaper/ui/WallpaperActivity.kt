@@ -9,12 +9,10 @@ import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.ui.fragment.BigPictureFragment
 import com.pengxh.easywallpaper.utils.HTMLParseUtil
+import com.pengxh.easywallpaper.utils.HttpHelper
+import com.pengxh.easywallpaper.utils.HttpListener
 import kotlinx.android.synthetic.main.activity_wallpaper.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 
 /**
@@ -33,25 +31,28 @@ class WallpaperActivity : BaseNormalActivity() {
         ImmersionBar.with(this).init()
 
         val wallpaperURL = intent.getStringExtra("wallpaperURL")!!
-        GlobalScope.launch(Dispatchers.Main) {
-            val document = withContext(Dispatchers.IO) {
-                Jsoup.connect(wallpaperURL).timeout(10 * 1000).get()
-            }
-            val wallpaperData = HTMLParseUtil.parseWallpaperData(document)
+        HttpHelper.getDocumentData(wallpaperURL, object : HttpListener {
+            override fun onSuccess(result: Document) {
+                val wallpaperData = HTMLParseUtil.parseWallpaperData(result)
 
-            /**
-             * 绑定大图画廊
-             * 1、RecycleView方式实现，滑动阻尼较大，不太合适
-             *
-             * 2、ViewPage+Fragment实现
-             * */
-            val fragmentList = ArrayList<Fragment>()
-            wallpaperData.forEach {
-                fragmentList.add(BigPictureFragment(it))
+                /**
+                 * 绑定大图画廊
+                 * 1、RecycleView方式实现，滑动阻尼较大，不太合适
+                 *
+                 * 2、ViewPage+Fragment实现
+                 * */
+                val fragmentList = ArrayList<Fragment>()
+                wallpaperData.forEach {
+                    fragmentList.add(BigPictureFragment(it))
+                }
+                val bigPictureAdapter = PicturePagerAdapter(supportFragmentManager, fragmentList)
+                bigPictureViewPager.adapter = bigPictureAdapter
             }
-            val bigPictureAdapter = PicturePagerAdapter(supportFragmentManager, fragmentList)
-            bigPictureViewPager.adapter = bigPictureAdapter
-        }
+
+            override fun onFailure(e: Exception) {
+
+            }
+        })
     }
 
     override fun initEvent() {

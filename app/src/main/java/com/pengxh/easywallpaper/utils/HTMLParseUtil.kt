@@ -1,6 +1,7 @@
 package com.pengxh.easywallpaper.utils
 
 import com.pengxh.easywallpaper.bean.BannerBean
+import com.pengxh.easywallpaper.bean.CategoryBean
 import com.pengxh.easywallpaper.bean.DiscoverBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
 import org.jsoup.nodes.Document
@@ -166,6 +167,28 @@ class HTMLParseUtil {
                 }
             }
             return wallpaperList
+        }
+
+        /**
+         * 解析分壁纸类数据
+         * */
+        fun parseCategoryData(document: Document): ArrayList<CategoryBean> {
+            val categoryList: ArrayList<CategoryBean> = ArrayList()
+            val elements = document
+                .getElementsByClass("product_query").first()
+                .getElementsByClass("cont1").first()
+                .select("a[href]")
+            //去掉第一个
+            for (i in elements.indices) {
+                if (i == 0) continue
+                val element = elements[i]
+
+                val categoryBean = CategoryBean()
+                categoryBean.categoryName = element.text()
+                categoryBean.categoryLink = element.select("a[href]").first().attr("href")
+                categoryList.add(categoryBean)
+            }
+            return categoryList
         }
     }
 }
