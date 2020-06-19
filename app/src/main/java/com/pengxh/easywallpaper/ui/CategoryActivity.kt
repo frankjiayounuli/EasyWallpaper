@@ -1,12 +1,16 @@
 package com.pengxh.easywallpaper.ui
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.View
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.ParentAdapter
+import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.utils.*
 import kotlinx.android.synthetic.main.activity_category.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -46,13 +50,13 @@ class CategoryActivity : BaseNormalActivity() {
 
                 parentListView.adapter = ParentAdapter(context, categoryData)
                 parentListView.setItemChecked(0, true)
+
                 parentListView.setOnItemClickListener { parent, view, position, id ->
                     //点击的时候绑定第二个布局数据
                     HttpHelper.getDocumentData(
-                        categoryData[position].categoryLink,
-                        object : HttpListener {
+                        categoryData[position].categoryLink, object : HttpListener {
                             override fun onSuccess(result: Document) {
-
+                                bindChildData(result)
                             }
 
                             override fun onFailure(e: Exception) {
@@ -64,6 +68,32 @@ class CategoryActivity : BaseNormalActivity() {
 
             override fun onFailure(e: Exception) {
 
+            }
+        })
+    }
+
+    private fun bindChildData(document: Document) {
+        val wallpaperData = HTMLParseUtil.parseWallpaperUpdateData(document)
+        val wallpaperAdapter = WallpaperAdapter(context, wallpaperData)
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(
+            2,
+            StaggeredGridLayoutManager.VERTICAL
+        )
+        childRecyclerView.layoutManager = staggeredGridLayoutManager
+        childRecyclerView.adapter = wallpaperAdapter
+
+        wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClickListener(position: Int) {
+                //跳转相应的壁纸分类
+                val wallpaperURL = wallpaperData[position].wallpaperURL
+                if (wallpaperURL == "") {
+                    EasyToast.showToast("加载失败，请稍后重试", EasyToast.WARING)
+                } else {
+                    val intent =
+                        Intent(context, WallpaperActivity::class.java)
+                    intent.putExtra("wallpaperURL", wallpaperURL)
+                    startActivity(intent)
+                }
             }
         })
     }
