@@ -15,7 +15,7 @@ import com.pengxh.easywallpaper.bean.CategoryBean
  * @description: TODO
  * @date: 2020/6/19 15:55
  */
-class ParentAdapter(ctx: Context, list: ArrayList<CategoryBean>) : BaseAdapter() {
+class CategoryAdapter(ctx: Context, list: ArrayList<CategoryBean>) : BaseAdapter() {
 
     private var context = ctx
     private val beanList = list

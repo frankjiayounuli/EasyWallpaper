@@ -9,7 +9,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.R
-import com.pengxh.easywallpaper.adapter.ParentAdapter
+import com.pengxh.easywallpaper.adapter.CategoryAdapter
 import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.utils.*
 import kotlinx.android.synthetic.main.activity_category.*
@@ -48,9 +48,21 @@ class CategoryActivity : BaseNormalActivity() {
             override fun onSuccess(result: Document) {
                 val categoryData = HTMLParseUtil.parseCategoryData(result)
 
-                parentListView.adapter = ParentAdapter(context, categoryData)
+                parentListView.adapter = CategoryAdapter(context, categoryData)
                 parentListView.setItemChecked(0, true)
 
+                //默认加载第一条数据显示
+                HttpHelper.getDocumentData(categoryData[0].categoryLink, object : HttpListener {
+                    override fun onSuccess(result: Document) {
+                        bindChildData(result)
+                    }
+
+                    override fun onFailure(e: Exception) {
+
+                    }
+                })
+
+                //点击实现二级联动
                 parentListView.setOnItemClickListener { parent, view, position, id ->
                     //点击的时候绑定第二个布局数据
                     HttpHelper.getDocumentData(

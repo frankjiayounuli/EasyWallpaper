@@ -1,6 +1,7 @@
 package com.pengxh.easywallpaper.ui.fragment
 
 import android.graphics.drawable.BitmapDrawable
+import android.util.Log
 import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
 import com.bumptech.glide.Glide
@@ -47,7 +48,11 @@ class BigPictureFragment(link: String) : BaseFragment() {
                 if (bigImageUrl == "") {
                     bigImageUrl = e.attr("src")
                 }
-                Glide.with(context!!).load(bigImageUrl).into(photoView)
+                try {
+                    Glide.with(context!!).load(bigImageUrl).into(photoView)
+                } catch (e: NullPointerException) {
+                    Log.e(Tag, ": $e")
+                }
             }
 
             override fun onFailure(e: Exception) {
