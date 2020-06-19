@@ -8,7 +8,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.ui.fragment.BigPictureFragment
-import com.pengxh.easywallpaper.utils.DocumentParseUtil
+import com.pengxh.easywallpaper.utils.HTMLParseUtil
 import kotlinx.android.synthetic.main.activity_wallpaper.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -37,7 +37,7 @@ class WallpaperActivity : BaseNormalActivity() {
             val document = withContext(Dispatchers.IO) {
                 Jsoup.connect(wallpaperURL).timeout(10 * 1000).get()
             }
-            val wallpaperData = DocumentParseUtil.parseWallpaperData(document)
+            val wallpaperData = HTMLParseUtil.parseWallpaperData(document)
 
             /**
              * 绑定大图画廊

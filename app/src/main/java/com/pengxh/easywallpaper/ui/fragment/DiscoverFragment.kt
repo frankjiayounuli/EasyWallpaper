@@ -54,7 +54,7 @@ class DiscoverFragment : BaseFragment() {
         HttpHelper.getDiscoverData(defaultPage, object : HttpListener {
             override fun onSuccess(result: Document) {
                 //默认加载第一页数据
-                discoverList = DocumentParseUtil.parseDiscoverData(result)
+                discoverList = HTMLParseUtil.parseDiscoverData(result)
                 handler.sendEmptyMessage(2000)
             }
 
@@ -75,7 +75,7 @@ class DiscoverFragment : BaseFragment() {
             HttpHelper.getDiscoverData(defaultPage, object : HttpListener {
                 override fun onSuccess(result: Document) {
                     //加载更多
-                    discoverList.addAll(DocumentParseUtil.parseDiscoverData(result))
+                    discoverList.addAll(HTMLParseUtil.parseDiscoverData(result))
                     handler.sendEmptyMessage(2000)
                 }
 

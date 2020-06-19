@@ -78,7 +78,7 @@ class HomePageFragment : BaseFragment() {
             HttpHelper.getWallpaperUpdate(defaultPage, object : HttpListener {
                 override fun onSuccess(result: Document) {
                     //加载更多
-                    listBeans.addAll(DocumentParseUtil.parseWallpaperUpdateData(result))
+                    listBeans.addAll(HTMLParseUtil.parseWallpaperUpdateData(result))
                     handler.sendEmptyMessage(1000)
                 }
 

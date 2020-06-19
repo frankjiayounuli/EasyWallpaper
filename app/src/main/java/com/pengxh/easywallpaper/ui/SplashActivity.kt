@@ -9,7 +9,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.easywallpaper.R
-import com.pengxh.easywallpaper.utils.DocumentParseUtil
+import com.pengxh.easywallpaper.utils.HTMLParseUtil
 import com.pengxh.easywallpaper.utils.HttpHelper
 import com.pengxh.easywallpaper.utils.HttpListener
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -39,7 +39,7 @@ class SplashActivity : BaseNormalActivity() {
         HttpHelper.getWallpaperUpdate(1, object : HttpListener {
             override fun onSuccess(result: Document) {
                 //默认加载第一页数据
-                val wallpaperUpdateData = DocumentParseUtil.parseWallpaperUpdateData(result)
+                val wallpaperUpdateData = HTMLParseUtil.parseWallpaperUpdateData(result)
                 //将最新壁纸数据存sp
                 SaveKeyValues.putValue("wallpaperData", Gson().toJson(wallpaperUpdateData))
                 //取最新壁纸数据的第一个作为闪屏

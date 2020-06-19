@@ -13,7 +13,7 @@ import com.pengxh.easywallpaper.adapter.BannerImageAdapter
 import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.bean.BannerBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
-import com.pengxh.easywallpaper.utils.DocumentParseUtil
+import com.pengxh.easywallpaper.utils.HTMLParseUtil
 import com.pengxh.easywallpaper.utils.OnItemClickListener
 import com.pengxh.easywallpaper.utils.StatusBarColorUtil
 import com.youth.banner.indicator.CircleIndicator
@@ -59,10 +59,10 @@ class DiscoverDetailActivity : BaseNormalActivity() {
                 Jsoup.connect(discoverURL).timeout(10 * 1000).get()
             }
             //解析Banner数据
-            initBanner(DocumentParseUtil.parseBannerData(discoverDocument))
+            initBanner(HTMLParseUtil.parseBannerData(discoverDocument))
 
             //解析探索发现数据
-            initDiscover(DocumentParseUtil.parseDiscoverDetailData(discoverDocument))
+            initDiscover(HTMLParseUtil.parseDiscoverDetailData(discoverDocument))
         }
     }
 

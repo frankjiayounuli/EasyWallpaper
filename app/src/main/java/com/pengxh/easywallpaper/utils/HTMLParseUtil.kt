@@ -1,18 +1,17 @@
 package com.pengxh.easywallpaper.utils
 
-import android.util.Log
 import com.pengxh.easywallpaper.bean.BannerBean
 import com.pengxh.easywallpaper.bean.DiscoverBean
 import com.pengxh.easywallpaper.bean.WallpaperBean
 import org.jsoup.nodes.Document
 
 /**
- * @description: TODO document数据解析
+ * @description: TODO html数据解析
  * @author: Pengxh
  * @email: 290677893@qq.com
  * @date: 2020/6/12 23:42
  */
-class DocumentParseUtil {
+class HTMLParseUtil {
     companion object {
         private const val Tag: String = "DocumentParseUtil"
 
@@ -145,21 +144,24 @@ class DocumentParseUtil {
                     val link = it.select("a[href]").first().attr("href")
 
                     /**
-                     * 去掉xxxx大全，重复数据太多
+                     * 去掉mt，重复数据太多
                      * http://www.win4000.com/mt/Pinky.html
+                     *
+                     * 去掉meinvtag，重复数据太多
+                     * http://www.win4000.com/meinvtag43591.html
                      *
                      * 保留如下类型数据
                      * http://www.win4000.com/meinv199524.html
                      * */
-                    if (!link.contains("http://www.win4000.com/mt/")) {
-                        val wallpaperBean = WallpaperBean()
-                        wallpaperBean.wallpaperTitle = title
-                        wallpaperBean.wallpaperImage = image
-                        wallpaperBean.wallpaperURL = link
+                    if (!link.contains("/mt/")) {
+                        if (!link.contains("/meinvtag")) {
+                            val wallpaperBean = WallpaperBean()
+                            wallpaperBean.wallpaperTitle = title
+                            wallpaperBean.wallpaperImage = image
+                            wallpaperBean.wallpaperURL = link
 
-                        wallpaperList.add(wallpaperBean)
-                    } else {
-                        Log.d(Tag, "重复数据，不处理: $link")
+                            wallpaperList.add(wallpaperBean)
+                        }
                     }
                 }
             }
