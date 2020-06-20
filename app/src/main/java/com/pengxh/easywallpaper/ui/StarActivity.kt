@@ -2,12 +2,12 @@ package com.pengxh.easywallpaper.ui
 
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
+import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.CategoryAdapter
 import com.pengxh.easywallpaper.adapter.CircleImageAdapter
@@ -88,8 +88,8 @@ class StarActivity : BaseNormalActivity() {
         childRecyclerView.adapter = circleImageAdapter
         circleImageAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClickListener(position: Int) {
-                val url = circleImageData[position].wallpaperURL
-                Log.d(Tag, url)
+                val wallpaperBean = circleImageData[position]
+                startStarPersonalActivity(wallpaperBean.wallpaperURL, wallpaperBean.wallpaperTitle)
             }
         })
     }
@@ -107,9 +107,11 @@ class StarActivity : BaseNormalActivity() {
 
                 wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {
                     override fun onItemClickListener(position: Int) {
-                        //跳转相应的壁纸分类
-                        val url = wallpaperData[position].wallpaperURL
-                        Log.d(Tag, url)
+                        val wallpaperBean = wallpaperData[position]
+                        startStarPersonalActivity(
+                            wallpaperBean.wallpaperURL,
+                            wallpaperBean.wallpaperTitle
+                        )
                     }
                 })
             }
@@ -118,5 +120,16 @@ class StarActivity : BaseNormalActivity() {
 
             }
         })
+    }
+
+    private fun startStarPersonalActivity(link: String, title: String) {
+        if (link == "") {
+            EasyToast.showToast("加载失败，请稍后重试", EasyToast.WARING)
+        } else {
+            val intent = Intent(context, StarPersonalActivity::class.java)
+            intent.putExtra("pageTitle", title)
+            intent.putExtra("starPersonalLink", link)
+            startActivity(intent)
+        }
     }
 }

@@ -36,6 +36,7 @@
         <activity android:name=".ui.CategoryActivity" />
         <activity android:name=".ui.StarActivity" />
         <activity android:name=".ui.SearchActivity" />
+        <activity android:name=".ui.StarPersonalActivity" />
         <activity android:name=".ui.SpecialActivity" />
         <activity android:name=".ui.BigPictureActivity" />
         <activity android:name=".ui.AboutActivity" />

@@ -1,7 +1,7 @@
 package com.pengxh.easywallpaper.ui
 
+import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gyf.immersionbar.ImmersionBar
@@ -64,8 +64,16 @@ class SearchActivity : BaseNormalActivity() {
                     wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {
                         override fun onItemClickListener(position: Int) {
                             //跳转相应的壁纸分类
-                            val url = searchData[position].wallpaperURL
-                            Log.d(Tag, url)
+                            val wallpaperBean = searchData[position]
+                            val link = wallpaperBean.wallpaperURL
+                            if (link == "") {
+                                EasyToast.showToast("加载失败，请稍后重试", EasyToast.WARING)
+                            } else {
+                                val intent = Intent(context, StarPersonalActivity::class.java)
+                                intent.putExtra("pageTitle", wallpaperBean.wallpaperTitle)
+                                intent.putExtra("starPersonalLink", link)
+                                startActivity(intent)
+                            }
                         }
                     })
                 }
