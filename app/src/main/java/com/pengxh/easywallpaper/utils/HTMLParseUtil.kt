@@ -239,5 +239,27 @@ class HTMLParseUtil {
             }
             return circleImageList
         }
+
+        /**
+         * 解析搜索结果
+         * */
+        fun parseSearchData(document: Document): ArrayList<WallpaperBean> {
+            val searchList: ArrayList<WallpaperBean> = ArrayList()
+            val elements = document.getElementsByClass("tab_box").first()
+                .select("li")
+            elements.forEach {
+                val title = it.text()
+                val image = it.select("img[data-original]").first().attr("data-original")
+                val link = it.select("a[href]").first().attr("href")
+
+                val wallpaperBean = WallpaperBean()
+                wallpaperBean.wallpaperTitle = title
+                wallpaperBean.wallpaperImage = image
+                wallpaperBean.wallpaperURL = link
+
+                searchList.add(wallpaperBean)
+            }
+            return searchList
+        }
     }
 }

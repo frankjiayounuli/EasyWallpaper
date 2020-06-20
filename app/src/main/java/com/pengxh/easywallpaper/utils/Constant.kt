@@ -22,6 +22,7 @@ object Constant {
     //明星写真
     const val StarURL = "$BaseURL/mt/star.html"
 
+    //搜索API
     var SearchAction = "http://www.win4000.com/mt/star_0_0_1.html?name=keyword"
 
     //壁纸专题

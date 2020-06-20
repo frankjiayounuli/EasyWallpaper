@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
 
 /**
@@ -75,14 +76,18 @@ class HttpHelper {
 
         fun getDocumentData(link: String, listener: HttpListener) {
             GlobalScope.launch(Dispatchers.Main) {
-                val document = withContext(Dispatchers.IO) {
-                    Log.d(Tag, "地址: $link")
-                    Jsoup.connect(link).timeout(10 * 1000).get()
-                }
-                if (document == null) {
-                    listener.onFailure(NullPointerException())
-                } else {
-                    listener.onSuccess(document)
+                try {
+                    val document = withContext(Dispatchers.IO) {
+                        Log.d(Tag, "地址: $link")
+                        Jsoup.connect(link).timeout(10 * 1000).get()
+                    }
+                    if (document == null) {
+                        listener.onFailure(NullPointerException())
+                    } else {
+                        listener.onSuccess(document)
+                    }
+                } catch (e: HttpStatusException) {
+                    listener.onFailure(e)
                 }
             }
         }
