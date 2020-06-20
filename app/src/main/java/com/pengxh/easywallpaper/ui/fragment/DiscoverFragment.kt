@@ -38,9 +38,7 @@ class DiscoverFragment : BaseFragment() {
     private var discoverList = ArrayList<DiscoverBean>()
     private lateinit var discoverAdapter: DiscoverAdapter
 
-    override fun initLayoutView(): Int {
-        return R.layout.fragment_discover
-    }
+    override fun initLayoutView(): Int = R.layout.fragment_discover
 
 
     override fun initData() {

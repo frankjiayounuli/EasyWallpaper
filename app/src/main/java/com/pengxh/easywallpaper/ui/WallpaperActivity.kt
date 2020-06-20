@@ -23,9 +23,7 @@ import org.jsoup.nodes.Document
  */
 class WallpaperActivity : BaseNormalActivity() {
 
-    override fun initLayoutView(): Int {
-        return R.layout.activity_wallpaper
-    }
+    override fun initLayoutView(): Int = R.layout.activity_wallpaper
 
     override fun initData() {
         ImmersionBar.with(this).init()

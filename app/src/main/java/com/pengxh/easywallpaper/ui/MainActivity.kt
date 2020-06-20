@@ -20,9 +20,7 @@ class MainActivity : DoubleClickExitActivity() {
     private var menuItem: MenuItem? = null
     private lateinit var fragmentList: ArrayList<Fragment>
 
-    override fun initLayoutView(): Int {
-        return R.layout.activity_main
-    }
+    override fun initLayoutView(): Int = R.layout.activity_main
 
     override fun initData() {
         fragmentList = ArrayList()

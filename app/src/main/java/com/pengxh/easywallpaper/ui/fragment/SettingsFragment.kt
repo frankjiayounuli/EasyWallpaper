@@ -19,9 +19,7 @@ import kotlinx.android.synthetic.main.include_title.*
  */
 class SettingsFragment : BaseFragment() {
 
-    override fun initLayoutView(): Int {
-        return R.layout.fragment_settings
-    }
+    override fun initLayoutView(): Int = R.layout.fragment_settings
 
     override fun initData() {
         StatusBarColorUtil.setColor(activity, Color.WHITE)

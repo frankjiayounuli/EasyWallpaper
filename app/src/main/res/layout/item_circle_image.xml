@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemLayout"
+    android:padding="10dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.pengxh.app.multilib.widget.CircleImageView
+        android:id="@+id/starCircleImage"
+        android:layout_width="320px"
+        android:layout_height="320px"
+        android:src="@drawable/test"
+        app:border_color="@color/colorMain"
+        app:border_width="1dp" />
+
+    <TextView
+        android:id="@+id/starName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/starCircleImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="迪丽热巴"
+        android:textColor="@color/colorText"
+        android:textSize="18sp" />
+</RelativeLayout>

@@ -33,9 +33,7 @@ class DiscoverDetailActivity : BaseNormalActivity() {
 
     private val context = this@DiscoverDetailActivity
 
-    override fun initLayoutView(): Int {
-        return R.layout.activity_discover_detail
-    }
+    override fun initLayoutView(): Int = R.layout.activity_discover_detail
 
     override fun initData() {
         StatusBarColorUtil.setColor(context, Color.WHITE)

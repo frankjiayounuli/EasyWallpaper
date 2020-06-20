@@ -170,7 +170,7 @@ class HTMLParseUtil {
         }
 
         /**
-         * 解析分壁纸类数据
+         * 解析壁纸分类数据
          * */
         fun parseCategoryData(document: Document): ArrayList<CategoryBean> {
             val categoryList: ArrayList<CategoryBean> = ArrayList()
@@ -189,6 +189,55 @@ class HTMLParseUtil {
                 categoryList.add(categoryBean)
             }
             return categoryList
+        }
+
+        /**
+         * 解析明星分类数据
+         * */
+        fun parseStarData(document: Document): ArrayList<CategoryBean> {
+            val categoryList: ArrayList<CategoryBean> = ArrayList()
+            val elements = document
+                .getElementsByClass("cb_cont").first()
+                .select("a[href]")
+            //替换第一个
+            for (i in elements.indices) {
+                if (i == 0) {
+                    //抓取顶部圆头像
+                    val categoryBean = CategoryBean()
+                    categoryBean.categoryName = "推荐"
+                    categoryBean.categoryLink = "http://www.win4000.com/mt/star.html"
+                    categoryList.add(0, categoryBean)
+                } else {
+                    val element = elements[i]
+                    val categoryBean = CategoryBean()
+                    categoryBean.categoryName = element.text()
+                    categoryBean.categoryLink = element.select("a[href]").first().attr("href")
+                    categoryList.add(i, categoryBean)
+                }
+            }
+            return categoryList
+        }
+
+        /**
+         * 解析顶部圆形头像数据
+         * */
+        fun parseCircleImageData(document: Document): ArrayList<WallpaperBean> {
+            val circleImageList: ArrayList<WallpaperBean> = ArrayList()
+            val elements = document.getElementsByClass("nr_zt w1180").first()
+                .select("li")
+            elements.forEach {
+                val title = it.text()
+                val image = it.select("img[src]").first().attr("src")
+                val link = Constant.BaseURL + it.select("a[href]").first().attr("href")
+
+                val wallpaperBean = WallpaperBean()
+                wallpaperBean.wallpaperTitle = title
+                wallpaperBean.wallpaperImage = image
+                wallpaperBean.wallpaperURL = link
+
+                circleImageList.add(wallpaperBean)
+            }
+            return circleImageList
         }
     }
 }

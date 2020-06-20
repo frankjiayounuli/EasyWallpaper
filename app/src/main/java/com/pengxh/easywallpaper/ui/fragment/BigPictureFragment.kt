@@ -35,9 +35,7 @@ class BigPictureFragment(link: String) : BaseFragment() {
     private var bigImageLink = link
     private lateinit var bigImageUrl: String
 
-    override fun initLayoutView(): Int {
-        return R.layout.fragment_big_picture
-    }
+    override fun initLayoutView(): Int = R.layout.fragment_big_picture
 
     override fun initData() {
         HttpHelper.getDocumentData(bigImageLink, object : HttpListener {

@@ -43,9 +43,7 @@ class HomePageFragment : BaseFragment() {
     private var isLoadMore = false
     private lateinit var wallpaperAdapter: WallpaperAdapter
 
-    override fun initLayoutView(): Int {
-        return R.layout.fragment_home
-    }
+    override fun initLayoutView(): Int = R.layout.fragment_home
 
     override fun initData() {
         StatusBarColorUtil.setColor(activity, Color.WHITE)

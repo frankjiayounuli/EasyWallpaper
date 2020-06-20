@@ -29,9 +29,7 @@ class CategoryActivity : BaseNormalActivity() {
 
     private var context = this@CategoryActivity
 
-    override fun initLayoutView(): Int {
-        return R.layout.activity_category
-    }
+    override fun initLayoutView(): Int = R.layout.activity_category
 
     override fun initData() {
         StatusBarColorUtil.setColor(this, Color.WHITE)
@@ -46,10 +44,7 @@ class CategoryActivity : BaseNormalActivity() {
         HttpHelper.getDocumentData(Constant.CategoryURL, object : HttpListener {
             override fun onSuccess(result: Document) {
                 val categoryData = HTMLParseUtil.parseCategoryData(result)
-
                 parentListView.adapter = CategoryAdapter(context, categoryData)
-                parentListView.setItemChecked(0, true)
-
                 //默认加载第一条数据显示
                 HttpHelper.getDocumentData(categoryData[0].categoryLink, object : HttpListener {
                     override fun onSuccess(result: Document) {
@@ -91,7 +86,6 @@ class CategoryActivity : BaseNormalActivity() {
         )
         childRecyclerView.layoutManager = staggeredGridLayoutManager
         childRecyclerView.adapter = wallpaperAdapter
-
         wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClickListener(position: Int) {
                 //跳转相应的壁纸分类

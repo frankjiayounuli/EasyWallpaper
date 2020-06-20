@@ -8,7 +8,7 @@ package com.pengxh.easywallpaper.utils
  */
 object Constant {
     //根地址
-    private const val BaseURL = "http://www.win4000.com"
+    const val BaseURL = "http://www.win4000.com"
 
     //最新手机壁纸地址，最多5页
     var WallpaperUpdateURL = "$BaseURL/mobile_0_0_0_index.html"
@@ -21,6 +21,8 @@ object Constant {
 
     //明星写真
     const val StarURL = "$BaseURL/mt/star.html"
+
+    var SearchAction = "http://www.win4000.com/mt/star_0_0_1.html?name=keyword"
 
     //壁纸专题
     const val z = "$BaseURL/zt/mobile.html"

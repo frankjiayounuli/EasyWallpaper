@@ -30,9 +30,7 @@ class SplashActivity : BaseNormalActivity() {
 
     private lateinit var countDownTimer: CountDownTimer
 
-    override fun initLayoutView(): Int {
-        return R.layout.activity_splash
-    }
+    override fun initLayoutView(): Int = R.layout.activity_splash
 
     override fun initData() {
         ImmersionBar.with(this).init()

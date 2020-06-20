@@ -4,18 +4,14 @@ import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.easywallpaper.R
 
 /**
+ * @description: TODO
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @description: TODO
- * @date: 2020/6/19 11:55
+ * @date: 2020/6/20 23:31
  */
-class SpecialActivity : BaseNormalActivity() {
+class SearchActivity : BaseNormalActivity() {
 
-    companion object {
-        private const val Tag = "SpecialActivity"
-    }
-
-    override fun initLayoutView(): Int = R.layout.activity_special
+    override fun initLayoutView(): Int = R.layout.activity_search
 
     override fun initData() {
 

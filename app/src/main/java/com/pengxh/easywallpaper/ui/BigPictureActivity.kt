@@ -28,9 +28,7 @@ class BigPictureActivity : BaseNormalActivity() {
 
     private val context: Context = this@BigPictureActivity
 
-    override fun initLayoutView(): Int {
-        return R.layout.activity_big_picture
-    }
+    override fun initLayoutView(): Int = R.layout.activity_big_picture
 
     override fun initData() {
         ImmersionBar.with(this).init()

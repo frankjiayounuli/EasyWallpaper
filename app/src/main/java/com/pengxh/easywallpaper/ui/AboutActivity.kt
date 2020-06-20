@@ -16,9 +16,7 @@ import kotlinx.android.synthetic.main.include_title.*
  */
 class AboutActivity : BaseNormalActivity() {
 
-    override fun initLayoutView(): Int {
-        return R.layout.activity_about
-    }
+    override fun initLayoutView(): Int = R.layout.activity_about
 
     override fun initData() {
         StatusBarColorUtil.setColor(this, Color.WHITE)
