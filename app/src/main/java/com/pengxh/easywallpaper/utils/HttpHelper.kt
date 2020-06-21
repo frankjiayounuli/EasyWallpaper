@@ -60,13 +60,13 @@ class HttpHelper {
                 try {
                     GlobalScope.launch(Dispatchers.Main) {
                         val document = withContext(Dispatchers.IO) {
-                            Jsoup.connect(
-                                firstLink.replace(
-                                    "1.html",
-                                    "$pageNumber.html",
-                                    true
-                                )
-                            ).timeout(10 * 1000).get()
+                            val newLink = firstLink.replace(
+                                "1.html",
+                                "$pageNumber.html",
+                                true
+                            )
+                            Log.d(Tag, "加载更多地址: $newLink")
+                            Jsoup.connect(newLink).timeout(10 * 1000).get()
                         }
                         if (document == null) {
                             listener.onFailure(NullPointerException())

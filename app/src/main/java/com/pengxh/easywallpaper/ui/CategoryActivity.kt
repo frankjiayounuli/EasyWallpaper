@@ -160,13 +160,13 @@ class CategoryActivity : BaseNormalActivity() {
 
     private fun bindChildData(document: Document) {
         wallpaperData = HTMLParseUtil.parseWallpaperUpdateData(document)
-        val wallpaperAdapter = WallpaperAdapter(context, wallpaperData)
+        val adapter = WallpaperAdapter(context, wallpaperData)
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(
             2, StaggeredGridLayoutManager.VERTICAL
         )
         childRecyclerView.layoutManager = staggeredGridLayoutManager
-        childRecyclerView.adapter = wallpaperAdapter
-        wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {
+        childRecyclerView.adapter = adapter
+        adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClickListener(position: Int) {
                 //跳转相应的壁纸分类
                 val wallpaperURL = wallpaperData[position].wallpaperURL

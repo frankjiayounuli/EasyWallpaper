@@ -3,6 +3,7 @@ package com.pengxh.easywallpaper
 import android.app.Application
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
+import com.pengxh.easywallpaper.utils.SQLiteUtil
 
 /**
  * @author: Pengxh
@@ -16,5 +17,6 @@ class BaseApplication : Application() {
         super.onCreate()
         SaveKeyValues.initSharedPreferences(this)
         EasyToast.init(this)
+        SQLiteUtil.initDataBase(this)
     }
 }
