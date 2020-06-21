@@ -46,6 +46,7 @@ class DiscoverDetailActivity : BaseNormalActivity() {
 
     override fun initEvent() {
         val discoverURL = intent.getStringExtra("discoverURL")
+        Log.d(Tag, "探索发现详情页地址: $discoverURL")
         HttpHelper.getDocumentData(discoverURL!!, object : HttpListener {
             override fun onSuccess(result: Document) {
                 //解析Banner数据
@@ -63,7 +64,6 @@ class DiscoverDetailActivity : BaseNormalActivity() {
 
     private fun initDiscover(discoverDetailList: ArrayList<WallpaperBean>) {
         if (discoverDetailList.size == 0) {
-            Log.d(Tag, "探索发现没有数据")
             emptyLayout.visibility = View.VISIBLE
             dataLayout.visibility = View.GONE
         } else {
@@ -80,6 +80,7 @@ class DiscoverDetailActivity : BaseNormalActivity() {
                 override fun onItemClickListener(position: Int) {
                     //跳转相应的壁纸分类
                     val wallpaperURL = discoverDetailList[position].wallpaperURL
+                    Log.d(Tag, "探索发现大图地址: $wallpaperURL")
                     if (wallpaperURL == "") {
                         EasyToast.showToast("加载失败，请稍后重试", EasyToast.WARING)
                     } else {

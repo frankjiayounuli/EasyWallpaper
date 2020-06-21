@@ -70,12 +70,9 @@ class HTMLParseUtil {
          * */
         fun parseWallpaperData(document: Document): ArrayList<String> {
             val list = ArrayList<String>()
-            //取第2个ul内容
-            val ulElement = document.select("ul[id]")[1]
-            //筛选ul
-            val targetElements = ulElement.select("a[href]")
-            targetElements.forEach {
-                //得到每一张大图的html地址
+            val elements = document.select("ul[class]")[2]
+                .select("li")
+            elements.forEach {
                 list.add(it.select("a[href]").first().attr("href"))
             }
             return list
