@@ -14,7 +14,7 @@ import org.jsoup.nodes.Document
  */
 class HTMLParseUtil {
     companion object {
-        private const val Tag: String = "DocumentParseUtil"
+        private const val Tag: String = "HTMLParseUtil"
 
         /**
          * 解析Banner数据
@@ -260,6 +260,28 @@ class HTMLParseUtil {
                 searchList.add(wallpaperBean)
             }
             return searchList
+        }
+
+        /**
+         * 解析明星写真页面壁纸数据
+         * */
+        fun parseStarPersonalData(document: Document): ArrayList<WallpaperBean> {
+            val starList: ArrayList<WallpaperBean> = ArrayList()
+            val elements = document.select("ul[class]")[2]
+                .select("li")
+            elements.forEach {
+                val title = it.text()
+                val image = it.select("img[src]").first().attr("src")
+                val link = it.select("a[href]").first().attr("href")
+
+                val wallpaperBean = WallpaperBean()
+                wallpaperBean.wallpaperTitle = title
+                wallpaperBean.wallpaperImage = image
+                wallpaperBean.wallpaperURL = link
+
+                starList.add(wallpaperBean)
+            }
+            return starList
         }
     }
 }
