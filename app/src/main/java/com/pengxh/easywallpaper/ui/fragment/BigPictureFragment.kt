@@ -1,7 +1,9 @@
 package com.pengxh.easywallpaper.ui.fragment
 
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
 import com.bumptech.glide.Glide
@@ -20,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.nodes.Document
 
+
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
@@ -30,6 +33,7 @@ class BigPictureFragment(link: String) : BaseFragment() {
 
     companion object {
         private const val Tag: String = "BigPictureFragment"
+        private val actionArray = arrayOf("保存到手机", "设置为壁纸")
     }
 
     private var bigImageLink = link
@@ -59,25 +63,41 @@ class BigPictureFragment(link: String) : BaseFragment() {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun initEvent() {
         photoView.setOnLongClickListener {
-            AlertView("提示", "是否保存此张壁纸", "取消", arrayOf("确定"), null,
-                context, AlertView.Style.Alert, OnItemClickListener { o, position ->
-                    if (position == 0) {
-                        GlobalScope.launch(Dispatchers.Main) {
-                            val drawable = withContext(Dispatchers.IO) {
-                                Glide.with(context!!).load(bigImageUrl)
-                                    .apply(RequestOptions().centerCrop())
-                                    .into(
-                                        Target.SIZE_ORIGINAL,
-                                        Target.SIZE_ORIGINAL
-                                    ).get() as BitmapDrawable
+            AlertView(
+                "请选择",
+                null,
+                "取消",
+                null,
+                actionArray,
+                context,
+                AlertView.Style.ActionSheet,
+                OnItemClickListener { o, position ->
+                    when (position) {
+                        -1 -> {
+                            Log.d(Tag, "onItemClick: 取消按钮，无需理会")
+                        }
+                        0 -> {
+                            GlobalScope.launch(Dispatchers.Main) {
+                                val drawable = withContext(Dispatchers.IO) {
+                                    Glide.with(context!!).load(bigImageUrl)
+                                        .apply(RequestOptions().centerCrop())
+                                        .into(
+                                            Target.SIZE_ORIGINAL,
+                                            Target.SIZE_ORIGINAL
+                                        ).get() as BitmapDrawable
+                                }
+                                if (FileUtil.saveWallpaper(context!!, drawable)) {
+                                    EasyToast.showToast("保存成功", EasyToast.SUCCESS)
+                                } else {
+                                    EasyToast.showToast("保存失败", EasyToast.ERROR)
+                                }
                             }
-                            if (FileUtil.saveWallpaper(context!!, drawable)) {
-                                EasyToast.showToast("保存成功", EasyToast.SUCCESS)
-                            } else {
-                                EasyToast.showToast("保存失败", EasyToast.ERROR)
-                            }
+                        }
+                        1 -> {
+                            EasyToast.showToast("设置壁纸暂未开发", EasyToast.DEFAULT)
                         }
                     }
                 }).setCancelable(false).show()

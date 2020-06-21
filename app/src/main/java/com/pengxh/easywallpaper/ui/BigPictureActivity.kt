@@ -20,6 +20,7 @@ import kotlinx.coroutines.withContext
  * @description: TODO 查看大图
  * @date: 2020/3/6 13:46
  */
+@Deprecated("暂时不用")
 class BigPictureActivity : BaseNormalActivity() {
 
     companion object {

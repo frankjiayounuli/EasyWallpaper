@@ -18,7 +18,6 @@ import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.bean.WallpaperBean
 import com.pengxh.easywallpaper.ui.CategoryActivity
-import com.pengxh.easywallpaper.ui.SpecialActivity
 import com.pengxh.easywallpaper.ui.StarActivity
 import com.pengxh.easywallpaper.ui.WallpaperActivity
 import com.pengxh.easywallpaper.utils.*
@@ -141,9 +140,6 @@ class HomePageFragment : BaseFragment() {
         }
         starButton.setOnClickListener {
             startActivity(Intent(context, StarActivity::class.java))
-        }
-        specialButton.setOnClickListener {
-            startActivity(Intent(context, SpecialActivity::class.java))
         }
     }
 }
