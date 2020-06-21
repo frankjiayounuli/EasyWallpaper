@@ -68,6 +68,7 @@ class HomePageFragment : BaseFragment() {
             handler.sendEmptyMessage(1001)
         }
 
+        wallpaperLayout.setEnableRefresh(false)
         //上拉加载
         wallpaperLayout.setOnLoadMoreListener {
             Log.d(Tag, "onLoadMore: 上拉加载")

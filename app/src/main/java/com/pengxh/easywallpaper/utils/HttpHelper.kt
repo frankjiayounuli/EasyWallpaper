@@ -45,6 +45,42 @@ class HttpHelper {
         }
 
         /**
+         * 加载更多壁纸数据
+         * */
+        fun loadMoreWallpaper(pageNumber: Int, firstLink: String, listener: HttpListener) {
+            if (pageNumber >= 6) {
+                listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+            } else {
+                Log.d(Tag, "loadMoreWallpaper: $firstLink")
+                /**
+                 * http://www.win4000.com/mobile_2338_0_0_1.html
+                 *
+                 * 每次加载更多只会更改最后面的1-5
+                 * */
+                try {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        val document = withContext(Dispatchers.IO) {
+                            Jsoup.connect(
+                                firstLink.replace(
+                                    "1.html",
+                                    "$pageNumber.html",
+                                    true
+                                )
+                            ).timeout(10 * 1000).get()
+                        }
+                        if (document == null) {
+                            listener.onFailure(NullPointerException())
+                        } else {
+                            listener.onSuccess(document)
+                        }
+                    }
+                } catch (e: HttpStatusException) {
+                    listener.onFailure(e)
+                }
+            }
+        }
+
+        /**
          * 获取探索发现数据
          * */
         fun getDiscoverData(pageNumber: Int, listener: HttpListener) {
