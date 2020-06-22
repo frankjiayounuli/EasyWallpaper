@@ -1,5 +1,7 @@
 package com.pengxh.easywallpaper.ui.fragment
 
+import android.app.WallpaperManager
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.util.Log
@@ -9,6 +11,9 @@ import com.aihook.alertview.library.OnItemClickListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.pengxh.app.multilib.utils.BitmapCallBackListener
+import com.pengxh.app.multilib.utils.DensityUtil
+import com.pengxh.app.multilib.utils.ImageUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
@@ -21,6 +26,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.nodes.Document
+import java.io.IOException
 
 
 /**
@@ -97,7 +103,29 @@ class BigPictureFragment(link: String) : BaseFragment() {
                             }
                         }
                         1 -> {
-                            EasyToast.showToast("设置壁纸暂未开发", EasyToast.DEFAULT)
+                            ImageUtil.obtainBitmap(bigImageUrl, object : BitmapCallBackListener {
+                                override fun onSuccess(bitmap: Bitmap?) {
+                                    val wallpaperManager = WallpaperManager.getInstance(context)
+                                    try {
+                                        val desiredMinimumWidth =
+                                            DensityUtil.getScreenHeight(context)
+                                        val desiredMinimumHeight =
+                                            DensityUtil.getScreenHeight(context)
+                                        wallpaperManager.suggestDesiredDimensions(
+                                            desiredMinimumWidth,
+                                            desiredMinimumHeight
+                                        )
+                                        wallpaperManager.setBitmap(bitmap)
+                                        EasyToast.showToast("壁纸设置成功", EasyToast.SUCCESS)
+                                    } catch (e: IOException) {
+                                        e.printStackTrace()
+                                    }
+                                }
+
+                                override fun onFailure(t: Throwable?) {
+                                    t!!.printStackTrace()
+                                }
+                            })
                         }
                     }
                 }).setCancelable(false).show()

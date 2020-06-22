@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <com.pengxh.app.multilib.widget.EditTextWithDelete
+        <EditText
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
