@@ -39,7 +39,9 @@
         <activity android:name=".ui.StarActivity" />
         <activity android:name=".ui.SearchActivity" />
         <activity android:name=".ui.StarPersonalActivity" />
-        <activity android:name=".ui.BigPictureActivity" />
         <activity android:name=".ui.AboutActivity" />
+        <activity android:name=".ui.ExonerationActivity" />
+        <activity android:name=".ui.PrivacyActivity" />
+        <activity android:name=".ui.BigPictureActivity" />
     </application>
 </manifest>

@@ -10,6 +10,8 @@ import android.provider.MediaStore
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 /**
  * @author: Pengxh
@@ -65,6 +67,61 @@ class FileUtil {
                 e.printStackTrace()
             }
             return false
+        }
+
+        //获取文件路径下文件大小
+        fun getFileSize(file: File?): Long {
+            var size = 0L
+            if (file == null) {
+                return size
+            }
+            val files = file.listFiles()
+            for (i in files.indices) {
+                size += if (files[i].isDirectory) {
+                    getFileSize(files[i])
+                } else {
+                    files[i].length()
+                }
+            }
+            return size
+        }
+
+        fun formatFileSize(size: Long?): String {
+            val fileSizeString: String
+            val decimalFormat = DecimalFormat("0.00")
+            decimalFormat.roundingMode = RoundingMode.HALF_UP;
+            fileSizeString = when {
+                size == null -> {
+                    decimalFormat.format(0) + "B"
+                }
+                size < 1024 -> {
+                    decimalFormat.format(size) + "B"
+                }
+                size < 1048576 -> {
+                    decimalFormat.format((size.toDouble() / 1024)) + "K"
+                }
+                size < 1073741824 -> {
+                    decimalFormat.format((size.toDouble() / 1048576)) + "M"
+                }
+                else -> {
+                    decimalFormat.format((size.toDouble() / 1073741824)) + "G"
+                }
+            }
+            return fileSizeString
+        }
+
+        //file：要删除的文件夹的所在位置
+        fun deleteFile(file: File) {
+            if (file.isDirectory) {
+                val files = file.listFiles()
+                for (i in files.indices) {
+                    val f = files[i]
+                    deleteFile(f)
+                }
+//                file.delete() //如要保留文件夹，只删除文件，请注释这行
+            } else if (file.exists()) {
+                file.delete()
+            }
         }
     }
 }

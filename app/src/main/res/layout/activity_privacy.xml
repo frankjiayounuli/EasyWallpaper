@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_title" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="隐私政策"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineSpacingMultiplier="1.3"
+                android:text="\t\t\t\尊重用户个人隐私是本应用的一项基本政策。您在使用本应用前仔细阅读并确认您已经充分理解本隐私政策所写明的内容，并接受所有的服务条款。我们十分注重保护用户的个人信息及隐私安全，我们理解您通过网络向我们提供信息是建立在对我们信任的基础上，我们重视这种信任，也深知隐私对您的重要性，并尽最大努力全力保护您的隐私。"
+                android:textColor="@color/colorText"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingMultiplier="1.3"
+                android:text="1、本应用会获取使用者设备的存储权限，仅当做图片资源的存储使用，不会用作其他任何用途。"
+                android:textColor="@color/colorText"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingMultiplier="1.3"
+                android:text="2、本应用在使用过程中会收集本应用自身日志信息，包括：设备属性信息（硬件型号、操作系统版本、设备配置、唯一设备标识符等），日志信息（如故障信息、操作日志等信息）。这些是本应用为了提供更好地使用体验必须收集的基础信息。这些用户信息不会上传到任何网站以及用作其他用途。网络传输采用非对称加密方式，不会出现用户信息泄露问题。"
+                android:textColor="@color/colorText"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
