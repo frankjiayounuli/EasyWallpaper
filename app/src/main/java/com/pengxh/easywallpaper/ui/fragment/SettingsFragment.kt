@@ -4,10 +4,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
-import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.ui.AboutActivity
+import com.pengxh.easywallpaper.ui.IssueActivity
 import com.pengxh.easywallpaper.utils.FileUtil
 import com.pengxh.easywallpaper.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -54,7 +54,7 @@ class SettingsFragment : BaseFragment() {
         }
 
         issueLayout.setOnClickListener {
-            EasyToast.showToast("暂未开发", EasyToast.WARING)
+            startActivity(Intent(activity, IssueActivity::class.java))
         }
     }
 }

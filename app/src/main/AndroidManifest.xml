@@ -42,6 +42,7 @@
         <activity android:name=".ui.AboutActivity" />
         <activity android:name=".ui.ExonerationActivity" />
         <activity android:name=".ui.PrivacyActivity" />
+        <activity android:name=".ui.IssueActivity" />
         <activity android:name=".ui.BigPictureActivity" />
     </application>
 </manifest>
