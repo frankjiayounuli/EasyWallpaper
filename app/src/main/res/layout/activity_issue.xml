@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include layout="@layout/include_title" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="20dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_weight="1"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -22,27 +21,62 @@
             android:textColor="@color/colorText"
             android:textSize="18sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/issueRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:scrollbars="none" />
-
         <EditText
             android:id="@+id/inputIssueView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_input_1"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="请提出您宝贵的体验建议，我们将不断优化您的体验"
+            android:maxLength="200"
             android:paddingVertical="5dp" />
+
+        <TextView
+            android:id="@+id/inputStringLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="0/200"
+            android:textColor="@color/colorText" />
+
+        <LinearLayout
+            android:id="@+id/selectPicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_layout"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:src="@mipmap/camera" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="上传图片"
+                android:textColor="#9E9E9E" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/uploadImage"
+            android:layout_width="300px"
+            android:layout_height="300px"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
     </LinearLayout>
 
     <Button
         android:id="@+id/submitIssue"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="40dp"
         android:layout_margin="20dp"
+        android:background="@drawable/button_selector"
         android:text="提交问题"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 </LinearLayout>
