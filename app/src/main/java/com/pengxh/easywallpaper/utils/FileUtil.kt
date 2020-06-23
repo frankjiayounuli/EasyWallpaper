@@ -1,17 +1,21 @@
 package com.pengxh.easywallpaper.utils
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.MediaStore.Images.ImageColumns
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.math.RoundingMode
 import java.text.DecimalFormat
+
 
 /**
  * @author: Pengxh
@@ -122,6 +126,32 @@ class FileUtil {
             } else if (file.exists()) {
                 file.delete()
             }
+        }
+
+        fun getRealFilePath(
+            context: Context,
+            uri: Uri?
+        ): String? {
+            if (null == uri) return null
+            val scheme = uri.scheme
+            var data: String? = null
+            if (scheme == null) data =
+                uri.path else if (ContentResolver.SCHEME_FILE == scheme) {
+                data = uri.path
+            } else if (ContentResolver.SCHEME_CONTENT == scheme) {
+                val cursor: Cursor? = context.contentResolver
+                    .query(uri, arrayOf(ImageColumns.DATA), null, null, null)
+                if (null != cursor) {
+                    if (cursor.moveToFirst()) {
+                        val index: Int = cursor.getColumnIndex(ImageColumns.DATA)
+                        if (index > -1) {
+                            data = cursor.getString(index)
+                        }
+                    }
+                    cursor.close()
+                }
+            }
+            return data
         }
     }
 }

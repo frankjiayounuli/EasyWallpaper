@@ -62,4 +62,9 @@ dependencies {
     implementation 'com.youth.banner:banner:2.0.11'
     //悬浮菜单+按钮
     implementation 'com.github.clans:fab:1.6.4'
+    //九宫格图片选择器
+    implementation 'com.zhihu.android:matisse:0.5.2-beta5'
+    //邮件
+    implementation 'com.sun.mail:android-mail:1.5.5'
+    implementation 'com.sun.mail:android-activation:1.5.5'
 }

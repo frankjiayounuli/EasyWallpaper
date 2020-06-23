@@ -44,5 +44,15 @@
         <activity android:name=".ui.PrivacyActivity" />
         <activity android:name=".ui.IssueActivity" />
         <activity android:name=".ui.BigPictureActivity" />
+
+        <provider
+            android:name=".utils.ImageProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths_public" />
+        </provider>
     </application>
 </manifest>

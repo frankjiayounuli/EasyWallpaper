@@ -24,11 +24,11 @@
         <EditText
             android:id="@+id/inputIssueView"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="220dp"
             android:background="@null"
             android:gravity="top"
             android:hint="请提出您宝贵的体验建议，我们将不断优化您的体验"
-            android:maxLength="200"
+            android:maxLength="150"
             android:paddingVertical="5dp" />
 
         <TextView
@@ -36,10 +36,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text="0/200"
+            android:text="0/150"
             android:textColor="@color/colorText" />
 
         <LinearLayout
+            android:visibility="visible"
             android:id="@+id/selectPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,12 +63,25 @@
                 android:textColor="#9E9E9E" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/uploadImage"
+        <FrameLayout
+            android:id="@+id/imageLayout"
             android:layout_width="300px"
             android:layout_height="300px"
-            android:scaleType="centerCrop"
-            android:visibility="gone" />
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/uploadImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/deleteImage"
+                android:layout_width="60px"
+                android:layout_height="60px"
+                android:layout_gravity="end"
+                android:src="@mipmap/error" />
+        </FrameLayout>
     </LinearLayout>
 
     <Button

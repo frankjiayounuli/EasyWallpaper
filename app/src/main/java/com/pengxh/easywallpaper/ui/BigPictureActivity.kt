@@ -2,9 +2,8 @@ package com.pengxh.easywallpaper.ui
 
 import android.content.Context
 import android.content.pm.ActivityInfo
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.easywallpaper.R
@@ -20,7 +19,6 @@ import kotlinx.coroutines.withContext
  * @description: TODO 查看大图
  * @date: 2020/3/6 13:46
  */
-@Deprecated("暂时不用")
 class BigPictureActivity : BaseNormalActivity() {
 
     companion object {
@@ -33,15 +31,14 @@ class BigPictureActivity : BaseNormalActivity() {
 
     override fun initData() {
         ImmersionBar.with(this).init()
-        val imageURL = intent.getStringExtra("imageURL")
-        if (imageURL != null || imageURL != "") {
+        val imageURI = intent.getStringExtra("imageURI")
+        if (imageURI != null || imageURI != "") {
             GlobalScope.launch(Dispatchers.Main) {
                 val drawable = withContext(Dispatchers.IO) {
-                    Glide.with(context).load(imageURL)
-                        .apply(RequestOptions().centerCrop()).into(
-                            Target.SIZE_ORIGINAL,
-                            Target.SIZE_ORIGINAL
-                        ).get()
+                    Drawable.createFromStream(
+                        contentResolver.openInputStream(Uri.parse(imageURI)),
+                        null
+                    )
                 }
                 val width = drawable.intrinsicWidth
                 val height = drawable.intrinsicHeight
