@@ -1,5 +1,8 @@
 package com.pengxh.easywallpaper.utils
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -7,6 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
+
 
 /**
  * @description: TODO 多协程
@@ -22,6 +26,17 @@ class HttpHelper {
             .timeout(10 * 1000)
             .ignoreHttpErrors(true)
 
+        fun isNetworkAvailable(context: Context): Boolean {
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            // 获取所有NetworkInfo对象
+            val networkInfo = connectivityManager.allNetworkInfo
+            if (networkInfo.isNotEmpty()) {
+                for (i in networkInfo.indices) if (networkInfo[i].state == NetworkInfo.State.CONNECTED) return true // 存在可用的网络连接
+            }
+            return false
+        }
+
         /**
          * 获取最新壁纸
          * */
@@ -31,6 +46,7 @@ class HttpHelper {
                 val status = withContext(Dispatchers.IO) {
                     createConnection(url).execute().statusCode()
                 }
+                Log.d(Tag, ": $status")
                 if (status == 200) {
                     listener.onSuccess(withContext(Dispatchers.IO) {
                         createConnection(url).get()
@@ -92,12 +108,12 @@ class HttpHelper {
             GlobalScope.launch(Dispatchers.Main) {
                 val status = withContext(Dispatchers.IO) {
                     createConnection(url).execute().statusCode()
-                    }
+                }
                 if (status == 200) {
                     listener.onSuccess(withContext(Dispatchers.IO) {
                         createConnection(url).get()
                     })
-                    } else {
+                } else {
                     listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
                 }
             }
