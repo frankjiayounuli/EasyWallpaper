@@ -1,6 +1,5 @@
 package com.pengxh.easywallpaper.ui
 
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -24,8 +23,6 @@ class BigPictureActivity : BaseNormalActivity() {
     companion object {
         private const val Tag = "BigPictureActivity"
     }
-
-    private val context: Context = this@BigPictureActivity
 
     override fun initLayoutView(): Int = R.layout.activity_big_picture
 

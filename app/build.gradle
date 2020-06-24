@@ -67,4 +67,6 @@ dependencies {
     //邮件
     implementation 'com.sun.mail:android-mail:1.5.5'
     implementation 'com.sun.mail:android-activation:1.5.5'
+    //图片压缩框架
+    implementation 'top.zibin:Luban:1.1.8'
 }

@@ -5,7 +5,9 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.net.Uri
+import android.os.Environment
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +20,10 @@ import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import kotlinx.android.synthetic.main.activity_issue.*
 import kotlinx.android.synthetic.main.include_title.*
+import top.zibin.luban.Luban
+import top.zibin.luban.OnCompressListener
+import java.io.File
+import java.util.*
 
 /**
  * @author: Pengxh
@@ -33,6 +39,7 @@ class IssueActivity : BaseNormalActivity() {
     }
 
     private var imageURI: Uri? = null
+    private var compressDirPath: String? = null
 
     override fun initLayoutView(): Int = R.layout.activity_issue
 
@@ -42,6 +49,13 @@ class IssueActivity : BaseNormalActivity() {
 
         mTitleView.text = "问题反馈"
         mTitleRightView.visibility = View.GONE
+
+        val compressDir =
+            File(Environment.getExternalStorageDirectory(), "ImageCompressDir")
+        if (!compressDir.exists()) {
+            compressDir.mkdir()
+        }
+        compressDirPath = compressDir.toString()
     }
 
     @SuppressLint("SetTextI18n")
@@ -97,16 +111,25 @@ class IssueActivity : BaseNormalActivity() {
                     }
                 })
             } else {
-                //TODO 图片需要压缩才能上传，不然很费流量
-                MailSendUtil.sendAttachFileEmail(emailText,
-                    FileUtil.getRealFilePath(this, imageURI)!!, object : EmailStatusListener {
-                        override fun onEmailSend(result: Boolean) {
-                            if (result) {
-                                EasyToast.showToast("提交成功，非常感谢！", EasyToast.SUCCESS)
-                                finish()
-                            } else {
-                                EasyToast.showToast("问题反馈失败，请稍后重试", EasyToast.ERROR)
-                            }
+                //图片需要压缩才能上传，不然很费流量
+                compressImage(FileUtil.getRealFilePath(this, imageURI)!!,
+                    object : ImageCompressListener {
+                        override fun onSuccess(filePath: String) {
+                            MailSendUtil.sendAttachFileEmail(emailText, filePath,
+                                object : EmailStatusListener {
+                                    override fun onEmailSend(result: Boolean) {
+                                        if (result) {
+                                            EasyToast.showToast("提交成功，非常感谢！", EasyToast.SUCCESS)
+                                            finish()
+                                        } else {
+                                            EasyToast.showToast("问题反馈失败，请稍后重试", EasyToast.ERROR)
+                                        }
+                                    }
+                                })
+                        }
+
+                        override fun onFailure(throwable: Throwable) {
+
                         }
                     })
             }
@@ -135,5 +158,28 @@ class IssueActivity : BaseNormalActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    //图片压缩
+    private fun compressImage(imagePath: String, listener: ImageCompressListener) {
+        Luban.with(this).load(imagePath).ignoreBy(100)
+            .setTargetDir(compressDirPath).filter { path ->
+                !(TextUtils.isEmpty(path) || path!!.toLowerCase(Locale.ROOT).endsWith(".gif"))
+            }.setCompressListener(object : OnCompressListener {
+                override fun onSuccess(file: File?) {
+                    if (file == null) {
+                        return
+                    }
+                    listener.onSuccess(file.absolutePath)
+                }
+
+                override fun onError(e: Throwable?) {
+                    listener.onFailure(e!!)
+                }
+
+                override fun onStart() {
+
+                }
+            }).launch()
     }
 }
