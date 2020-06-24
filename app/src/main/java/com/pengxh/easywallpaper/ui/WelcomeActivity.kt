@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.pengxh.app.multilib.widget.dialog.PermissionDialog
 import com.pengxh.easywallpaper.R
+import com.pengxh.easywallpaper.widgets.AgreementDialog
 import pub.devrel.easypermissions.EasyPermissions
 
 /**
@@ -31,9 +31,12 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
             if (EasyPermissions.hasPermissions(this, *USER_PERMISSIONS)) {
                 startSplashActivity()
             } else {
-                PermissionDialog.Builder().setContext(this).setPermission(USER_PERMISSIONS)
-                    .setOnDialogClickListener(object : PermissionDialog.onDialogClickListener {
-                        override fun onButtonClick() {
+                AgreementDialog.Builder()
+                    .setContext(this)
+                    .setDialogTitle("免责声明和隐私政策")
+                    .setDialogMessage("我们将严格按照上述协议为您提供服务，保护您的信息安全，点击“同意”即表示您已阅读并同意全部条款，可以继续使用本应用。")
+                    .setOnDialogClickListener(object : AgreementDialog.OnDialogClickListener {
+                        override fun onConfirmClick() {
                             EasyPermissions.requestPermissions(
                                 this@WelcomeActivity,
                                 resources.getString(R.string.app_name) + "需要获取存储相关权限",
