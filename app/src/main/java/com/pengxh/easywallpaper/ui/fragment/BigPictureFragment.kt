@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
@@ -48,8 +49,13 @@ class BigPictureFragment(link: String) : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_big_picture
 
     override fun initData() {
+        loadingView.visibility = View.VISIBLE
+        photoView.visibility = View.GONE
         HttpHelper.getDocumentData(bigImageLink, object : HttpListener {
             override fun onSuccess(result: Document) {
+                loadingView.visibility = View.GONE
+                photoView.visibility = View.VISIBLE
+
                 val e = result.getElementsByClass("pic-large").first()
                 bigImageUrl = e.attr("url")
                 //备用地址
@@ -72,14 +78,8 @@ class BigPictureFragment(link: String) : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun initEvent() {
         photoView.setOnLongClickListener {
-            AlertView(
-                "请选择",
-                null,
-                "取消",
-                null,
-                actionArray,
-                context,
-                AlertView.Style.ActionSheet,
+            AlertView("请选择", null, "取消",
+                null, actionArray, context, AlertView.Style.ActionSheet,
                 OnItemClickListener { o, position ->
                     when (position) {
                         -1 -> {
