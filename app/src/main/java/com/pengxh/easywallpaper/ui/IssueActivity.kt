@@ -13,13 +13,9 @@ import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.R
-import com.pengxh.easywallpaper.utils.FileUtil
-import com.pengxh.easywallpaper.utils.NewGlideEngine
-import com.pengxh.easywallpaper.utils.SendMailUtil
-import com.pengxh.easywallpaper.utils.StatusBarColorUtil
+import com.pengxh.easywallpaper.utils.*
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
-import com.zhihu.matisse.internal.entity.CaptureStrategy
 import kotlinx.android.synthetic.main.activity_issue.*
 import kotlinx.android.synthetic.main.include_title.*
 
@@ -71,12 +67,7 @@ class IssueActivity : BaseNormalActivity() {
                 .choose(MimeType.ofImage())
                 .countable(true) //是否显示数字
                 .showSingleMediaType(true)
-                //这两行要连用 是否在选择图片中展示照相 和适配安卓7.0 FileProvider
-                .capture(true)
-                //参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
-                .captureStrategy(CaptureStrategy(true, "com.pengxh.easywallpaper.fileprovider"))
                 .countable(true)
-                //最大选择数量为9
                 .maxSelectable(1)
                 //选择方向
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -95,12 +86,29 @@ class IssueActivity : BaseNormalActivity() {
                 return@setOnClickListener
             }
             if (imageURI == null) {
-                SendMailUtil.sendTextEmail(emailText)
+                MailSendUtil.sendTextEmail(emailText, object : EmailStatusListener {
+                    override fun onEmailSend(result: Boolean) {
+                        if (result) {
+                            EasyToast.showToast("提交成功，非常感谢！", EasyToast.SUCCESS)
+                            finish()
+                        } else {
+                            EasyToast.showToast("问题反馈失败，请稍后重试", EasyToast.ERROR)
+                        }
+                    }
+                })
             } else {
-                SendMailUtil.sendAttachFileEmail(
-                    emailText,
-                    FileUtil.getRealFilePath(this, imageURI)!!
-                )
+                //TODO 图片需要压缩才能上传，不然很费流量
+                MailSendUtil.sendAttachFileEmail(emailText,
+                    FileUtil.getRealFilePath(this, imageURI)!!, object : EmailStatusListener {
+                        override fun onEmailSend(result: Boolean) {
+                            if (result) {
+                                EasyToast.showToast("提交成功，非常感谢！", EasyToast.SUCCESS)
+                                finish()
+                            } else {
+                                EasyToast.showToast("问题反馈失败，请稍后重试", EasyToast.ERROR)
+                            }
+                        }
+                    })
             }
         }
         mTitleLeftView.setOnClickListener {

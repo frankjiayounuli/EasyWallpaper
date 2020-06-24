@@ -3,6 +3,8 @@ package com.pengxh.easywallpaper.ui.fragment
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
+import com.aihook.alertview.library.AlertView
+import com.aihook.alertview.library.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
@@ -45,8 +47,16 @@ class SettingsFragment : BaseFragment() {
         val fileSize = FileUtil.getFileSize(file)
         cacheSize.text = FileUtil.formatFileSize(fileSize)
         settingLayout.setOnClickListener {
-            FileUtil.deleteFile(file)
-            cacheSize.text = FileUtil.formatFileSize(0)
+            AlertView("建议保留", "图片缓存可以有效节省网络流量",
+                "取消", arrayOf("确定"), null, context, AlertView.Style.Alert,
+                OnItemClickListener { o, position ->
+                    when (position) {
+                        0 -> {
+                            FileUtil.deleteFile(file)
+                            cacheSize.text = FileUtil.formatFileSize(0)
+                        }
+                    }
+                }).setCancelable(false).show()
         }
 
         aboutLayout.setOnClickListener {
