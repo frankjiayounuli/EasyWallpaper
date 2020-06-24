@@ -1,5 +1,6 @@
 package com.pengxh.easywallpaper.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -11,7 +12,9 @@ import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 import com.pengxh.app.multilib.utils.BitmapCallBackListener
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.utils.ImageUtil
@@ -52,6 +55,7 @@ class BigPictureFragment(link: String) : BaseFragment() {
         loadingView.visibility = View.VISIBLE
         photoView.visibility = View.GONE
         HttpHelper.getDocumentData(bigImageLink, object : HttpListener {
+            @SuppressLint("CheckResult")
             override fun onSuccess(result: Document) {
                 loadingView.visibility = View.GONE
                 photoView.visibility = View.VISIBLE
@@ -63,14 +67,23 @@ class BigPictureFragment(link: String) : BaseFragment() {
                     bigImageUrl = e.attr("src")
                 }
                 try {
-                    Glide.with(context!!).load(bigImageUrl).into(photoView)
+                    //此举适合加载大图和高清图
+                    Glide.with(context!!).asBitmap().load(bigImageUrl)
+                        .into(object : BitmapImageViewTarget(photoView) {
+                            override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: Transition<in Bitmap>?
+                            ) {
+                                photoView.setImageBitmap(resource)
+                            }
+                        })
                 } catch (e: NullPointerException) {
-                    Log.e(Tag, ": $e")
+                    e.printStackTrace()
                 }
             }
 
             override fun onFailure(e: Exception) {
-
+                e.printStackTrace()
             }
         })
     }
