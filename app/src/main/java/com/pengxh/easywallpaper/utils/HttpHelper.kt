@@ -23,7 +23,7 @@ class HttpHelper {
         private const val Tag: String = "HttpHelper"
 
         private fun createConnection(url: String): Connection = Jsoup.connect(url)
-            .timeout(10 * 1000)
+            .timeout(30 * 1000)
             .ignoreHttpErrors(true)
 
         fun isNetworkAvailable(context: Context): Boolean {

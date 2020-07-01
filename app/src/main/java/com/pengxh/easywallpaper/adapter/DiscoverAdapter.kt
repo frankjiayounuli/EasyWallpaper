@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -40,10 +41,7 @@ class DiscoverAdapter(ctx: Context, list: ArrayList<DiscoverBean>) :
         Glide.with(context).load(discoverBean.bigImage).into(holder.bigImageView)
 
         //小图绑定
-        Glide.with(context).load(discoverBean.smallImages[0].smallImage).into(holder.smallView1)
-        Glide.with(context).load(discoverBean.smallImages[1].smallImage).into(holder.smallView2)
-        Glide.with(context).load(discoverBean.smallImages[2].smallImage).into(holder.smallView3)
-        Glide.with(context).load(discoverBean.smallImages[3].smallImage).into(holder.smallView4)
+        holder.smallGridView.adapter = SmallImageAdapter(context, discoverBean.smallImages)
 
         //点击事件
         holder.itemLayout.setOnClickListener {
@@ -58,11 +56,7 @@ class DiscoverAdapter(ctx: Context, list: ArrayList<DiscoverBean>) :
         var discoverTitle: TextView = itemView!!.findViewById(R.id.discoverTitle)
         var discoverSynopsis: TextView = itemView!!.findViewById(R.id.discoverSynopsis)
         var bigImageView: ImageView = itemView!!.findViewById(R.id.bigImageView)
-
-        var smallView1: ImageView = itemView!!.findViewById(R.id.smallView1)
-        var smallView2: ImageView = itemView!!.findViewById(R.id.smallView2)
-        var smallView3: ImageView = itemView!!.findViewById(R.id.smallView3)
-        var smallView4: ImageView = itemView!!.findViewById(R.id.smallView4)
+        var smallGridView: GridView = itemView!!.findViewById(R.id.smallGridView)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
