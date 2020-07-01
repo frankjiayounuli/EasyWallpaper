@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.widgets.AgreementDialog
@@ -19,9 +20,11 @@ import pub.devrel.easypermissions.EasyPermissions
 class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     companion object {
+        private const val Tag = "WelcomeActivity"
         private const val PERMISSIONS_CODE = 999
         private val USER_PERMISSIONS = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE
         )
     }
 
@@ -67,6 +70,9 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        perms.forEach {
+            Log.d(Tag, it)
+        }
         startSplashActivity()
     }
 

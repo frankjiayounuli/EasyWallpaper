@@ -3,7 +3,9 @@ package com.pengxh.easywallpaper
 import android.app.Application
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
+import com.pengxh.easywallpaper.utils.Constant
 import com.pengxh.easywallpaper.utils.SQLiteUtil
+import com.tencent.bugly.crashreport.CrashReport
 
 /**
  * @author: Pengxh
@@ -18,5 +20,6 @@ class BaseApplication : Application() {
         SaveKeyValues.initSharedPreferences(this)
         EasyToast.init(this)
         SQLiteUtil.initDataBase(this)
+        CrashReport.initCrashReport(this, Constant.APP_ID, false)
     }
 }

@@ -24,4 +24,7 @@ object Constant {
 
     //搜索API
     var SearchAction = "http://www.win4000.com/mt/star_0_0_1.html?name=keyword"
+
+    //Bugly
+    const val APP_ID = "4e88728fb0"
 }

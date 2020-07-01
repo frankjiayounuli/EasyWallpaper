@@ -52,13 +52,21 @@ class BigPictureFragment(link: String) : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_big_picture
 
     override fun initData() {
-        loadingView.visibility = View.VISIBLE
-        photoView.visibility = View.GONE
+        try {
+            loadingView.visibility = View.VISIBLE
+            photoView.visibility = View.GONE
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
         HttpHelper.getDocumentData(bigImageLink, object : HttpListener {
             @SuppressLint("CheckResult")
             override fun onSuccess(result: Document) {
-                loadingView.visibility = View.GONE
-                photoView.visibility = View.VISIBLE
+                try {
+                    loadingView.visibility = View.GONE
+                    photoView.visibility = View.VISIBLE
+                } catch (e: IllegalStateException) {
+                    e.printStackTrace()
+                }
 
                 val e = result.getElementsByClass("pic-large").first()
                 bigImageUrl = e.attr("url")
@@ -66,20 +74,20 @@ class BigPictureFragment(link: String) : BaseFragment() {
                 if (bigImageUrl == "") {
                     bigImageUrl = e.attr("src")
                 }
-                try {
-                    //此举适合加载大图和高清图
-                    Glide.with(context!!).asBitmap().load(bigImageUrl)
-                        .into(object : BitmapImageViewTarget(photoView) {
-                            override fun onResourceReady(
-                                resource: Bitmap,
-                                transition: Transition<in Bitmap>?
-                            ) {
+                //此举适合加载大图和高清图
+                Glide.with(context!!).asBitmap().load(bigImageUrl)
+                    .into(object : BitmapImageViewTarget(photoView) {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?
+                        ) {
+                            try {
                                 photoView.setImageBitmap(resource)
+                            } catch (e: NullPointerException) {
+                                e.printStackTrace()
                             }
-                        })
-                } catch (e: NullPointerException) {
-                    e.printStackTrace()
-                }
+                        }
+                    })
             }
 
             override fun onFailure(e: Exception) {
