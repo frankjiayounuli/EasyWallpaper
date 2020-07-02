@@ -32,10 +32,7 @@ class BigPictureActivity : BaseNormalActivity() {
         if (imageURI != null || imageURI != "") {
             GlobalScope.launch(Dispatchers.Main) {
                 val drawable = withContext(Dispatchers.IO) {
-                    Drawable.createFromStream(
-                        contentResolver.openInputStream(Uri.parse(imageURI)),
-                        null
-                    )
+                    Drawable.createFromStream(contentResolver.openInputStream(Uri.parse(imageURI)), null)
                 }
                 val width = drawable.intrinsicWidth
                 val height = drawable.intrinsicHeight

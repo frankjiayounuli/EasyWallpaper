@@ -47,8 +47,7 @@ class SettingsFragment : BaseFragment() {
         val fileSize = FileUtil.getFileSize(file)
         cacheSize.text = FileUtil.formatFileSize(fileSize)
         settingLayout.setOnClickListener {
-            AlertView("建议保留", "图片缓存可以有效节省网络流量",
-                "取消", arrayOf("确定"), null, context, AlertView.Style.Alert,
+            AlertView("建议保留", "图片缓存可以有效节省网络流量", "取消", arrayOf("确定"), null, context, AlertView.Style.Alert,
                 OnItemClickListener { o, position ->
                     when (position) {
                         0 -> {

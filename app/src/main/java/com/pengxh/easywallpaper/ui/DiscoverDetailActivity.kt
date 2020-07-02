@@ -70,10 +70,7 @@ class DiscoverDetailActivity : BaseNormalActivity() {
             emptyLayout.visibility = View.GONE
             dataLayout.visibility = View.VISIBLE
             val wallpaperAdapter = WallpaperAdapter(context, discoverDetailList)
-            val staggeredGridLayoutManager = StaggeredGridLayoutManager(
-                2,
-                StaggeredGridLayoutManager.VERTICAL
-            )
+            val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             detailRecyclerView.layoutManager = staggeredGridLayoutManager
             detailRecyclerView.adapter = wallpaperAdapter
             wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {

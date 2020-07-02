@@ -29,9 +29,7 @@ class DiscoverAdapter(ctx: Context, list: ArrayList<DiscoverBean>) :
     private var itemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val itemView =
-            LayoutInflater.from(context).inflate(R.layout.item_discover, parent, false)
-        return ItemViewHolder(itemView)
+        return ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.item_discover, parent, false))
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {

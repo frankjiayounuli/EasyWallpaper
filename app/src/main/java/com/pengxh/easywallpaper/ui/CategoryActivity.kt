@@ -126,9 +126,7 @@ class CategoryActivity : BaseNormalActivity() {
                         val document = msg.obj as Document
                         wallpaperData = HTMLParseUtil.parseWallpaperUpdateData(document)
                         wallpaperAdapter = WallpaperAdapter(context, wallpaperData)
-                        val staggeredGridLayoutManager = StaggeredGridLayoutManager(
-                            2, StaggeredGridLayoutManager.VERTICAL
-                        )
+                        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                         childRecyclerView.layoutManager = staggeredGridLayoutManager
                         childRecyclerView.adapter = wallpaperAdapter
                     }
@@ -161,9 +159,7 @@ class CategoryActivity : BaseNormalActivity() {
     private fun bindChildData(document: Document) {
         wallpaperData = HTMLParseUtil.parseWallpaperUpdateData(document)
         val adapter = WallpaperAdapter(context, wallpaperData)
-        val staggeredGridLayoutManager = StaggeredGridLayoutManager(
-            2, StaggeredGridLayoutManager.VERTICAL
-        )
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         childRecyclerView.layoutManager = staggeredGridLayoutManager
         childRecyclerView.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {

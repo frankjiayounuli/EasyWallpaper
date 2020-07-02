@@ -50,8 +50,7 @@ class IssueActivity : BaseNormalActivity() {
         mTitleView.text = "问题反馈"
         mTitleRightView.visibility = View.GONE
 
-        val compressDir =
-            File(Environment.getExternalStorageDirectory(), "ImageCompressDir")
+        val compressDir = File(Environment.getExternalStorageDirectory(), "ImageCompressDir")
         if (!compressDir.exists()) {
             compressDir.mkdir()
         }
@@ -112,26 +111,24 @@ class IssueActivity : BaseNormalActivity() {
                 })
             } else {
                 //图片需要压缩才能上传，不然很费流量
-                compressImage(FileUtil.getRealFilePath(this, imageURI)!!,
-                    object : ImageCompressListener {
-                        override fun onSuccess(filePath: String) {
-                            MailSendUtil.sendAttachFileEmail(emailText, filePath,
-                                object : EmailStatusListener {
-                                    override fun onEmailSend(result: Boolean) {
-                                        if (result) {
-                                            EasyToast.showToast("提交成功，非常感谢！", EasyToast.SUCCESS)
-                                            finish()
-                                        } else {
-                                            EasyToast.showToast("问题反馈失败，请稍后重试", EasyToast.ERROR)
-                                        }
-                                    }
-                                })
-                        }
+                compressImage(FileUtil.getRealFilePath(this, imageURI)!!, object : ImageCompressListener {
+                    override fun onSuccess(filePath: String) {
+                        MailSendUtil.sendAttachFileEmail(emailText, filePath, object : EmailStatusListener {
+                            override fun onEmailSend(result: Boolean) {
+                                if (result) {
+                                    EasyToast.showToast("提交成功，非常感谢！", EasyToast.SUCCESS)
+                                    finish()
+                                } else {
+                                    EasyToast.showToast("问题反馈失败，请稍后重试", EasyToast.ERROR)
+                                }
+                            }
+                        })
+                    }
 
-                        override fun onFailure(throwable: Throwable) {
+                    override fun onFailure(throwable: Throwable) {
 
-                        }
-                    })
+                    }
+                })
             }
         }
         mTitleLeftView.setOnClickListener {

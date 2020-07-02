@@ -1,6 +1,7 @@
 package com.pengxh.easywallpaper.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.CountDownTimer
@@ -31,6 +32,7 @@ class SplashActivity : BaseNormalActivity() {
         private const val Tag: String = "SplashActivity"
     }
 
+    private val activity: Activity = this
     private lateinit var countDownTimer: CountDownTimer
 
     override fun initLayoutView(): Int = R.layout.activity_splash
@@ -54,15 +56,11 @@ class SplashActivity : BaseNormalActivity() {
                             bigImageUrl = e.attr("src")
                         }
                         //此举适合加载大图和高清图
-                        Glide.with(this@SplashActivity).asBitmap().load(bigImageUrl)
-                            .into(object : BitmapImageViewTarget(splashImageView) {
-                                override fun onResourceReady(
-                                    resource: Bitmap,
-                                    transition: Transition<in Bitmap>?
-                                ) {
-                                    splashImageView.setImageBitmap(resource)
-                                }
-                            })
+                        Glide.with(activity).asBitmap().load(bigImageUrl).into(object : BitmapImageViewTarget(splashImageView) {
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                splashImageView.setImageBitmap(resource)
+                            }
+                        })
                     }
 
                     override fun onFailure(e: Exception) {

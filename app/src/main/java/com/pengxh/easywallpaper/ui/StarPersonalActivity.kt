@@ -96,10 +96,7 @@ class StarPersonalActivity : BaseNormalActivity() {
                     } else {
                         //首次加载数据
                         wallpaperAdapter = WallpaperAdapter(context, listBeans)
-                        val staggeredGridLayoutManager = StaggeredGridLayoutManager(
-                            2,
-                            StaggeredGridLayoutManager.VERTICAL
-                        )
+                        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                         starRecyclerView.layoutManager = staggeredGridLayoutManager
                         starRecyclerView.adapter = wallpaperAdapter
                     }

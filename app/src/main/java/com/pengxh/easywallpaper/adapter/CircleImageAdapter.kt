@@ -27,9 +27,7 @@ class CircleImageAdapter(mContext: Context, list: ArrayList<WallpaperBean>) :
     private var itemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view =
-            LayoutInflater.from(context).inflate(R.layout.item_circle_image, parent, false)
-        return ItemViewHolder(view)
+        return ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.item_circle_image, parent, false))
     }
 
     override fun getItemCount(): Int = dataBeans.size

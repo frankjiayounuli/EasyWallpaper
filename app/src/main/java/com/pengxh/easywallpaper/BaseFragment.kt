@@ -15,11 +15,7 @@ import androidx.fragment.app.Fragment
  */
 abstract class BaseFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        @Nullable container: ViewGroup?,
-        @Nullable savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflater.inflate(initLayoutView(), container, false)
     }
 

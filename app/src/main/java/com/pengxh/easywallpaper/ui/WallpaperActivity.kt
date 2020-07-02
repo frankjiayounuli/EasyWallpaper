@@ -59,11 +59,7 @@ class WallpaperActivity : BaseNormalActivity() {
         snackbar.show()
     }
 
-    private class PicturePagerAdapter internal constructor(
-        fm: FragmentManager?,
-        private val pageList: List<Fragment>
-    ) :
-        FragmentPagerAdapter(fm!!) {
+    private class PicturePagerAdapter internal constructor(fm: FragmentManager?, private val pageList: List<Fragment>) : FragmentPagerAdapter(fm!!) {
         override fun getItem(position: Int): Fragment {
             return pageList[position]
         }

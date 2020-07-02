@@ -24,10 +24,7 @@ class BannerImageAdapter(ctx: Context, data: List<BannerBean>?) :
     private var context = ctx
     private var itemClickListener: OnItemClickListener? = null
 
-    override fun onCreateHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): BannerViewHolder {
+    override fun onCreateHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
         val imageView = ImageView(context)
         //注意，必须设置为match_parent，这个是viewpager2强制要求的
         imageView.layoutParams = ViewGroup.LayoutParams(
@@ -38,12 +35,7 @@ class BannerImageAdapter(ctx: Context, data: List<BannerBean>?) :
         return BannerViewHolder(imageView)
     }
 
-    override fun onBindView(
-        holder: BannerViewHolder,
-        data: BannerBean,
-        position: Int,
-        size: Int
-    ) {
+    override fun onBindView(holder: BannerViewHolder, data: BannerBean, position: Int, size: Int) {
         //图片是http的，9.0以上需要android:usesCleartextTraffic="true"
         Glide.with(context).load(data.bannerImage)
             .apply(RequestOptions().placeholder(R.drawable.ic_empty))

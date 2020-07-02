@@ -74,8 +74,7 @@ class SearchActivity : BaseNormalActivity() {
 
             //删除搜索记录
             deleteHistory.setOnClickListener {
-                AlertView("提示", "是否清空搜索记录", "取消", arrayOf("确定"),
-                    null, context, AlertView.Style.Alert,
+                AlertView("提示", "是否清空搜索记录", "取消", arrayOf("确定"), null, context, AlertView.Style.Alert,
                     OnItemClickListener { o, position ->
                         if (position == 0) {
                             sqLiteUtil.deleteAll()
@@ -103,8 +102,7 @@ class SearchActivity : BaseNormalActivity() {
                 searchResult.layoutManager = staggeredGridLayoutManager
                 searchResult.adapter = wallpaperAdapter
 
-                wallpaperAdapter.setOnItemClickListener(object :
-                    com.pengxh.easywallpaper.utils.OnItemClickListener {
+                wallpaperAdapter.setOnItemClickListener(object : com.pengxh.easywallpaper.utils.OnItemClickListener {
                     override fun onItemClickListener(position: Int) {
                         //跳转相应的壁纸分类
                         val wallpaperBean = searchData[position]

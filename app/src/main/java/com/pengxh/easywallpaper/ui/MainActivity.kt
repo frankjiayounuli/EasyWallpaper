@@ -38,20 +38,14 @@ class MainActivity : DoubleClickExitActivity() {
             }
             false
         }
-        val pagerAdapter: ViewPagerAdapter =
-            ViewPagerAdapter(fragmentList, supportFragmentManager)
-        mainViewPager.adapter = pagerAdapter
+        mainViewPager.adapter = ViewPagerAdapter(fragmentList, supportFragmentManager)
         mainViewPager.offscreenPageLimit = fragmentList.size//缓存页数
         mainViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
 
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
 

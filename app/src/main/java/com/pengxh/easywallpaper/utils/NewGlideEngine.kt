@@ -17,29 +17,15 @@ import com.zhihu.matisse.engine.ImageEngine
  * @date: 2020/4/21 14:55
  */
 class NewGlideEngine : ImageEngine {
-    override fun loadImage(
-        context: Context?,
-        resizeX: Int,
-        resizeY: Int,
-        imageView: ImageView?,
-        uri: Uri?
-    ) {
-        val options = RequestOptions()
-            .centerCrop()
+    override fun loadImage(context: Context?, resizeX: Int, resizeY: Int, imageView: ImageView?, uri: Uri?) {
+        val options = RequestOptions().centerCrop()
             .override(resizeX, resizeY)
             .priority(Priority.HIGH)
         Glide.with(context!!).load(uri).apply(options).into(imageView!!)
     }
 
-    override fun loadGifImage(
-        context: Context?,
-        resizeX: Int,
-        resizeY: Int,
-        imageView: ImageView?,
-        uri: Uri?
-    ) {
-        val options = RequestOptions()
-            .centerCrop()
+    override fun loadGifImage(context: Context?, resizeX: Int, resizeY: Int, imageView: ImageView?, uri: Uri?) {
+        val options = RequestOptions().centerCrop()
             .override(resizeX, resizeY)
             .priority(Priority.HIGH)
         Glide.with(context!!).asGif().load(uri).apply(options).into(imageView!!)
@@ -49,30 +35,16 @@ class NewGlideEngine : ImageEngine {
         return true
     }
 
-    override fun loadGifThumbnail(
-        context: Context?,
-        resize: Int,
-        placeholder: Drawable?,
-        imageView: ImageView?,
-        uri: Uri?
-    ) {
-        val options = RequestOptions()
-            .centerCrop()
+    override fun loadGifThumbnail(context: Context?, resize: Int, placeholder: Drawable?, imageView: ImageView?, uri: Uri?) {
+        val options = RequestOptions().centerCrop()
             .placeholder(placeholder)//这里可自己添加占位图
             .error(R.drawable.ic_empty)//这里可自己添加出错图
             .override(resize, resize)
         Glide.with(context!!).asBitmap().load(uri).apply(options).into(imageView!!)
     }
 
-    override fun loadThumbnail(
-        context: Context?,
-        resize: Int,
-        placeholder: Drawable?,
-        imageView: ImageView?,
-        uri: Uri?
-    ) {
-        val options = RequestOptions()
-            .centerCrop()
+    override fun loadThumbnail(context: Context?, resize: Int, placeholder: Drawable?, imageView: ImageView?, uri: Uri?) {
+        val options = RequestOptions().centerCrop()
             .placeholder(placeholder)//这里可自己添加占位图
             .error(R.drawable.ic_empty)//这里可自己添加出错图
             .override(resize, resize)

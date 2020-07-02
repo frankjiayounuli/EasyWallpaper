@@ -73,11 +73,7 @@ class MailSendUtil {
             return false
         }
 
-        fun sendAttachFileEmail(
-            emailMessage: String,
-            filePath: String,
-            listener: EmailStatusListener
-        ) {
+        fun sendAttachFileEmail(emailMessage: String, filePath: String, listener: EmailStatusListener) {
             Log.d(Tag, "sendAttachFileEmail: ")
             val file = File(filePath)
             GlobalScope.launch(Dispatchers.Main) {

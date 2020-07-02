@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.widgets.AgreementDialog
@@ -22,10 +21,8 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
     companion object {
         private const val Tag = "WelcomeActivity"
         private const val PERMISSIONS_CODE = 999
-        private val USER_PERMISSIONS = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE
-        )
+        private val USER_PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,11 +36,9 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
                     .setContext(this)
                     .setDialogTitle("免责声明和隐私政策")
                     .setDialogMessage("我们将严格按照上述协议为您提供服务，保护您的信息安全，点击“同意”即表示您已阅读并同意全部条款，可以继续使用本应用。")
-                    .setOnDialogClickListener(object :
-                        AgreementDialog.OnDialogClickListener {
+                    .setOnDialogClickListener(object : AgreementDialog.OnDialogClickListener {
                         override fun onConfirmClick() {
-                            EasyPermissions.requestPermissions(
-                                this@WelcomeActivity,
+                            EasyPermissions.requestPermissions(this@WelcomeActivity,
                                 resources.getString(R.string.app_name) + "需要获取存储相关权限",
                                 PERMISSIONS_CODE,
                                 *USER_PERMISSIONS
@@ -70,17 +65,10 @@ class WelcomeActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        perms.forEach {
-            Log.d(Tag, it)
-        }
         startSplashActivity()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         //将请求结果传递EasyPermission库处理
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)

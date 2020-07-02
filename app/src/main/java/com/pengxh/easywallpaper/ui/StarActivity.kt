@@ -88,8 +88,8 @@ class StarActivity : BaseNormalActivity() {
         childRecyclerView.adapter = circleImageAdapter
         circleImageAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClickListener(position: Int) {
-                val wallpaperBean = circleImageData[position]
-                startStarPersonalActivity(wallpaperBean.wallpaperURL, wallpaperBean.wallpaperTitle)
+                val bean = circleImageData[position]
+                startStarPersonalActivity(bean.wallpaperURL, bean.wallpaperTitle)
             }
         })
     }
@@ -99,19 +99,14 @@ class StarActivity : BaseNormalActivity() {
             override fun onSuccess(result: Document) {
                 val wallpaperData = HTMLParseUtil.parseWallpaperUpdateData(result)
                 val wallpaperAdapter = WallpaperAdapter(context, wallpaperData)
-                val staggeredGridLayoutManager = StaggeredGridLayoutManager(
-                    2, StaggeredGridLayoutManager.VERTICAL
-                )
+                val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 childRecyclerView.layoutManager = staggeredGridLayoutManager
                 childRecyclerView.adapter = wallpaperAdapter
 
                 wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {
                     override fun onItemClickListener(position: Int) {
-                        val wallpaperBean = wallpaperData[position]
-                        startStarPersonalActivity(
-                            wallpaperBean.wallpaperURL,
-                            wallpaperBean.wallpaperTitle
-                        )
+                        val bean = wallpaperData[position]
+                        startStarPersonalActivity(bean.wallpaperURL, bean.wallpaperTitle)
                     }
                 })
             }

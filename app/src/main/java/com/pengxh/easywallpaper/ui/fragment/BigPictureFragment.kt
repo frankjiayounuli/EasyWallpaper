@@ -74,10 +74,7 @@ class BigPictureFragment(link: String) : BaseFragment() {
                     //此举适合加载大图和高清图
                     Glide.with(context!!).asBitmap().load(bigImageUrl)
                         .into(object : BitmapImageViewTarget(photoView) {
-                            override fun onResourceReady(
-                                resource: Bitmap,
-                                transition: Transition<in Bitmap>?
-                            ) {
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                                 try {
                                     photoView.setImageBitmap(resource)
                                 } catch (e: NullPointerException) {
@@ -99,8 +96,7 @@ class BigPictureFragment(link: String) : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun initEvent() {
         photoView.setOnLongClickListener {
-            AlertView("请选择", null, "取消",
-                null, actionArray, context, AlertView.Style.ActionSheet,
+            AlertView("请选择", null, "取消", null, actionArray, context, AlertView.Style.ActionSheet,
                 OnItemClickListener { o, position ->
                     when (position) {
                         -1 -> {
@@ -111,10 +107,8 @@ class BigPictureFragment(link: String) : BaseFragment() {
                                 val drawable = withContext(Dispatchers.IO) {
                                     Glide.with(context!!).load(bigImageUrl)
                                         .apply(RequestOptions().centerCrop())
-                                        .into(
-                                            Target.SIZE_ORIGINAL,
-                                            Target.SIZE_ORIGINAL
-                                        ).get() as BitmapDrawable
+                                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                        .get() as BitmapDrawable
                                 }
                                 if (FileUtil.saveWallpaper(context!!, drawable)) {
                                     EasyToast.showToast("保存成功", EasyToast.SUCCESS)
@@ -128,14 +122,9 @@ class BigPictureFragment(link: String) : BaseFragment() {
                                 override fun onSuccess(bitmap: Bitmap?) {
                                     val wallpaperManager = WallpaperManager.getInstance(context)
                                     try {
-                                        val desiredMinimumWidth =
-                                            DensityUtil.getScreenHeight(context)
-                                        val desiredMinimumHeight =
-                                            DensityUtil.getScreenHeight(context)
-                                        wallpaperManager.suggestDesiredDimensions(
-                                            desiredMinimumWidth,
-                                            desiredMinimumHeight
-                                        )
+                                        val width = DensityUtil.getScreenHeight(context)
+                                        val height = DensityUtil.getScreenHeight(context)
+                                        wallpaperManager.suggestDesiredDimensions(width, height)
                                         wallpaperManager.setBitmap(bitmap)
                                         EasyToast.showToast("壁纸设置成功", EasyToast.SUCCESS)
                                     } catch (e: IOException) {

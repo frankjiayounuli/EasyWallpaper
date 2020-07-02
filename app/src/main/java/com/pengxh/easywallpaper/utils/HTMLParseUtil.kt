@@ -70,8 +70,7 @@ class HTMLParseUtil {
          * */
         fun parseWallpaperData(document: Document): ArrayList<String> {
             val list = ArrayList<String>()
-            val elements = document.select("ul[class]")[2]
-                .select("li")
+            val elements = document.select("ul[class]")[2].select("li")
             elements.forEach {
                 list.add(it.select("a[href]").first().attr("href"))
             }
@@ -111,8 +110,7 @@ class HTMLParseUtil {
                 val smallImageList: ArrayList<DiscoverBean.SmallImageBean> = ArrayList()
                 imageElements.forEach { img ->
                     val smallImageBean = DiscoverBean.SmallImageBean()
-                    smallImageBean.smallImage =
-                        img.select("img[data-original]").first().attr("data-original")
+                    smallImageBean.smallImage = img.select("img[data-original]").first().attr("data-original")
                     smallImageList.add(smallImageBean)
                 }
 
@@ -220,8 +218,7 @@ class HTMLParseUtil {
          * */
         fun parseCircleImageData(document: Document): ArrayList<WallpaperBean> {
             val circleImageList: ArrayList<WallpaperBean> = ArrayList()
-            val elements = document.getElementsByClass("nr_zt w1180").first()
-                .select("li")
+            val elements = document.getElementsByClass("nr_zt w1180").first().select("li")
             elements.forEach {
                 val title = it.text()
                 val image = it.select("img[src]").first().attr("src")
@@ -242,8 +239,7 @@ class HTMLParseUtil {
          * */
         fun parseSearchData(document: Document): ArrayList<WallpaperBean> {
             val searchList: ArrayList<WallpaperBean> = ArrayList()
-            val elements = document.getElementsByClass("tab_box").first()
-                .select("li")
+            val elements = document.getElementsByClass("tab_box").first().select("li")
             elements.forEach {
                 val title = it.text()
                 val image = it.select("img[data-original]").first().attr("data-original")
@@ -264,8 +260,7 @@ class HTMLParseUtil {
          * */
         fun parseStarPersonalData(document: Document): ArrayList<WallpaperBean> {
             val starList: ArrayList<WallpaperBean> = ArrayList()
-            val elements = document.select("ul[class]")[2]
-                .select("li")
+            val elements = document.select("ul[class]")[2].select("li")
             elements.forEach {
                 val title = it.text()
                 val image = it.select("img[src]").first().attr("src")

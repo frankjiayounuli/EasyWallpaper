@@ -61,10 +61,7 @@ class FileUtil {
                 }
                 // 通知图库更新
                 context.sendBroadcast(
-                    Intent(
-                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                        Uri.parse("file://" + "/sdcard/namecard/")
-                    )
+                    Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + "/sdcard/namecard/"))
                 )
                 return isSuccess
             } catch (e: Exception) {
@@ -128,10 +125,7 @@ class FileUtil {
             }
         }
 
-        fun getRealFilePath(
-            context: Context,
-            uri: Uri?
-        ): String? {
+        fun getRealFilePath(context: Context, uri: Uri?): String? {
             if (null == uri) return null
             val scheme = uri.scheme
             var data: String? = null

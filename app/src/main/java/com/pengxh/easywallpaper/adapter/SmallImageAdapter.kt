@@ -16,8 +16,7 @@ import com.pengxh.easywallpaper.bean.DiscoverBean
  * @description: TODO
  * @date: 2020/7/1 15:10
  */
-class SmallImageAdapter(ctx: Context, list: ArrayList<DiscoverBean.SmallImageBean>) :
-    BaseAdapter() {
+class SmallImageAdapter(ctx: Context, list: ArrayList<DiscoverBean.SmallImageBean>) : BaseAdapter() {
 
     private var context: Context = ctx
     private var beanList: ArrayList<DiscoverBean.SmallImageBean> = list

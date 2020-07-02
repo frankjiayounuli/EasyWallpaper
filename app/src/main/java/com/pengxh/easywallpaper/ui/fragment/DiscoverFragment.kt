@@ -99,12 +99,7 @@ class DiscoverFragment : BaseFragment() {
                         Log.d(Tag, "首次加载数据")
                         discoverAdapter = DiscoverAdapter(context!!, discoverList)
                         discoverRecyclerView.layoutManager = LinearLayoutManager(context)
-                        discoverRecyclerView.addItemDecoration(
-                            DividerItemDecoration(
-                                context,
-                                DividerItemDecoration.VERTICAL
-                            )
-                        )
+                        discoverRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
                         discoverRecyclerView.adapter = discoverAdapter
                     }
                     discoverAdapter.setOnItemClickListener(object : OnItemClickListener {
