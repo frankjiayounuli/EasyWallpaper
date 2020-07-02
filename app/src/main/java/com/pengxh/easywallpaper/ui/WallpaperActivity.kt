@@ -1,9 +1,11 @@
 package com.pengxh.easywallpaper.ui
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.easywallpaper.R
@@ -23,6 +25,10 @@ import org.jsoup.nodes.Document
  */
 class WallpaperActivity : BaseNormalActivity() {
 
+    companion object {
+        private const val Tag: String = "WallpaperActivity"
+    }
+
     override fun initLayoutView(): Int = R.layout.activity_wallpaper
 
     override fun initData() {
@@ -34,10 +40,25 @@ class WallpaperActivity : BaseNormalActivity() {
                 val wallpaperData = HTMLParseUtil.parseWallpaperData(result)
 
                 /**
+                 * ["http://www.win4000.com/mobile_detail_170489.html",
+                 * "http://www.win4000.com/mobile_detail_170489_2.html",
+                 * "http://www.win4000.com/mobile_detail_170489_3.html",
+                 * "http://www.win4000.com/mobile_detail_170489_4.html",
+                 * "http://www.win4000.com/mobile_detail_170489_5.html",
+                 * "http://www.win4000.com/mobile_detail_170489_6.html",
+                 * "http://www.win4000.com/mobile_detail_170489_7.html",
+                 * "http://www.win4000.com/mobile_detail_170489_8.html",
+                 * "http://www.win4000.com/mobile_detail_170489_9.html"]
+                 *
+                 * TODO 是否可以考虑将这些链接里面的图片地址全部解析出来？
+                 * */
+                Log.d(Tag, "高清壁纸大图网址链接: " + Gson().toJson(wallpaperData))
+
+                /**
                  * 绑定大图画廊
                  * 1、RecycleView方式实现，滑动阻尼较大，不太合适
                  *
-                 * 2、ViewPage+Fragment实现
+                 * 2、ViewPage+Fragment实现，TODO 创建多个Fragment会导致各种空指针，先继续调试一段时间，如果无法解决，依旧采用1方法
                  * */
                 val fragmentList = ArrayList<Fragment>()
                 wallpaperData.forEach {
