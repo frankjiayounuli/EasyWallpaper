@@ -64,30 +64,30 @@ class BigPictureFragment(link: String) : BaseFragment() {
                 try {
                     loadingView.visibility = View.GONE
                     photoView.visibility = View.VISIBLE
+
+                    val e = result.getElementsByClass("pic-large").first()
+                    bigImageUrl = e.attr("url")
+                    //备用地址
+                    if (bigImageUrl == "") {
+                        bigImageUrl = e.attr("src")
+                    }
+                    //此举适合加载大图和高清图
+                    Glide.with(context!!).asBitmap().load(bigImageUrl)
+                        .into(object : BitmapImageViewTarget(photoView) {
+                            override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: Transition<in Bitmap>?
+                            ) {
+                                try {
+                                    photoView.setImageBitmap(resource)
+                                } catch (e: NullPointerException) {
+                                    e.printStackTrace()
+                                }
+                            }
+                        })
                 } catch (e: IllegalStateException) {
                     e.printStackTrace()
                 }
-
-                val e = result.getElementsByClass("pic-large").first()
-                bigImageUrl = e.attr("url")
-                //备用地址
-                if (bigImageUrl == "") {
-                    bigImageUrl = e.attr("src")
-                }
-                //此举适合加载大图和高清图
-                Glide.with(context!!).asBitmap().load(bigImageUrl)
-                    .into(object : BitmapImageViewTarget(photoView) {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap>?
-                        ) {
-                            try {
-                                photoView.setImageBitmap(resource)
-                            } catch (e: NullPointerException) {
-                                e.printStackTrace()
-                            }
-                        }
-                    })
             }
 
             override fun onFailure(e: Exception) {

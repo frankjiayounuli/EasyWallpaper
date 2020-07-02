@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
+import java.util.*
 
 
 /**
@@ -23,8 +24,11 @@ class HttpHelper {
         private const val Tag: String = "HttpHelper"
 
         private fun createConnection(url: String): Connection = Jsoup.connect(url)
+            .userAgent(obtainAgent())
             .timeout(30 * 1000)
             .ignoreHttpErrors(true)
+
+        private fun obtainAgent(): String = Constant.UA[Random().nextInt(15)]
 
         fun isNetworkAvailable(context: Context): Boolean {
             val connectivityManager =
