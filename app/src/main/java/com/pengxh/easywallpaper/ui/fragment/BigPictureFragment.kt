@@ -1,10 +1,10 @@
 package com.pengxh.easywallpaper.ui.fragment
 
-import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -39,14 +39,21 @@ import java.io.IOException
  * @description: TODO 画廊大图
  * @date: 2020/6/18 17:32
  */
-class BigPictureFragment(link: String) : BaseFragment() {
+class BigPictureFragment : BaseFragment() {
 
     companion object {
         private const val Tag: String = "BigPictureFragment"
         private val actionArray = arrayOf("保存到手机", "设置为壁纸")
+
+        fun newInstance(link: String): BigPictureFragment? {
+            val fragment = BigPictureFragment()
+            val bundle = Bundle()
+            bundle.putString("pageLink", link)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
-    private var bigImageLink = link
     private lateinit var bigImageUrl: String
 
     override fun initLayoutView(): Int = R.layout.fragment_big_picture
@@ -58,39 +65,40 @@ class BigPictureFragment(link: String) : BaseFragment() {
         } catch (e: IllegalStateException) {
             e.printStackTrace()
         }
-        HttpHelper.getDocumentData(bigImageLink, object : HttpListener {
-            @SuppressLint("CheckResult")
-            override fun onSuccess(result: Document) {
-                try {
-                    loadingView.visibility = View.GONE
-                    photoView.visibility = View.VISIBLE
+        arguments!!.getString("pageLink")?.let {
+            HttpHelper.getDocumentData(it, object : HttpListener {
+                override fun onSuccess(result: Document) {
+                    try {
+                        loadingView.visibility = View.GONE
+                        photoView.visibility = View.VISIBLE
 
-                    val e = result.getElementsByClass("pic-large").first()
-                    bigImageUrl = e.attr("url")
-                    //备用地址
-                    if (bigImageUrl == "") {
-                        bigImageUrl = e.attr("src")
-                    }
-                    //此举适合加载大图和高清图
-                    Glide.with(context!!).asBitmap().load(bigImageUrl)
-                        .into(object : BitmapImageViewTarget(photoView) {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                try {
-                                    photoView.setImageBitmap(resource)
-                                } catch (e: NullPointerException) {
-                                    e.printStackTrace()
+                        val e = result.getElementsByClass("pic-large").first()
+                        bigImageUrl = e.attr("url")
+                        //备用地址
+                        if (bigImageUrl == "") {
+                            bigImageUrl = e.attr("src")
+                        }
+                        //此举适合加载大图和高清图
+                        Glide.with(context!!).asBitmap().load(bigImageUrl)
+                            .into(object : BitmapImageViewTarget(photoView) {
+                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                    try {
+                                        photoView.setImageBitmap(resource)
+                                    } catch (e: NullPointerException) {
+                                        e.printStackTrace()
+                                    }
                                 }
-                            }
-                        })
-                } catch (e: IllegalStateException) {
+                            })
+                    } catch (e: IllegalStateException) {
+                        e.printStackTrace()
+                    }
+                }
+
+                override fun onFailure(e: Exception) {
                     e.printStackTrace()
                 }
-            }
-
-            override fun onFailure(e: Exception) {
-                e.printStackTrace()
-            }
-        })
+            })
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)

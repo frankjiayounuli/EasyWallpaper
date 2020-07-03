@@ -40,7 +40,6 @@ class DiscoverFragment : BaseFragment() {
 
     override fun initLayoutView(): Int = R.layout.fragment_discover
 
-
     override fun initData() {
         StatusBarColorUtil.setColor(activity, Color.WHITE)
         ImmersionBar.with(this).statusBarDarkFont(true, 0.2f).init()
