@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
 import com.pengxh.app.multilib.widget.EasyToast
@@ -19,6 +20,7 @@ import com.pengxh.easywallpaper.utils.HttpListener
 import com.pengxh.easywallpaper.utils.StatusBarColorUtil
 import kotlinx.android.synthetic.main.activity_head.*
 import kotlinx.android.synthetic.main.include_title.*
+import me.shaohui.bottomdialog.BottomDialog
 import org.jsoup.nodes.Document
 
 /**
@@ -102,8 +104,17 @@ class HeadImageActivity : BaseNormalActivity() {
                     }
                     headImageGridView.setOnItemClickListener { parent, view, position, id ->
                         val headImageLink = dataList[position].headImageLink
-                        //TODO 底部Sheet展示高清图像
-
+                        //TODO BottomSheet展示高清图像
+                        BottomDialog.create(supportFragmentManager)
+                            .setLayoutRes(R.layout.bottom_sheet)
+                            .setViewListener {
+                                //TODO 会空指针，待Fix
+                                val headImageView = it.findViewById<ImageView>(R.id.headImageView)
+                                headImageView.setBackgroundResource(R.drawable.test)
+                            }
+                            .setDimAmount(0.1f)
+                            .setCancelOutside(false)
+                            .show();
                     }
                 }
                 6001 -> {

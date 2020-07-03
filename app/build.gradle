@@ -64,4 +64,6 @@ dependencies {
     implementation 'top.zibin:Luban:1.1.8'
     // https://mvnrepository.com/artifact/com.tencent.bugly/crashreport
     implementation group: 'com.tencent.bugly', name: 'crashreport', version: '2.6.6.1'
+    //底部BottomSheet
+    implementation 'me.shaohui:bottomdialog:1.1.9'
 }
