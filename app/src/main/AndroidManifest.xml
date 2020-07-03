@@ -50,6 +50,7 @@
         <activity android:name=".ui.PrivacyActivity" />
         <activity android:name=".ui.IssueActivity" />
         <activity android:name=".ui.BigPictureActivity" />
+        <activity android:name=".ui.HeadImageActivity" />
 
         <provider
             android:name=".utils.ImageProvider"

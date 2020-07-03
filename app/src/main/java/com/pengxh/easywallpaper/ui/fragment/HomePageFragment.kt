@@ -18,6 +18,7 @@ import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.adapter.WallpaperAdapter
 import com.pengxh.easywallpaper.bean.WallpaperBean
 import com.pengxh.easywallpaper.ui.CategoryActivity
+import com.pengxh.easywallpaper.ui.HeadImageActivity
 import com.pengxh.easywallpaper.ui.StarActivity
 import com.pengxh.easywallpaper.ui.WallpaperActivity
 import com.pengxh.easywallpaper.utils.*
@@ -137,6 +138,9 @@ class HomePageFragment : BaseFragment() {
         }
         starButton.setOnClickListener {
             startActivity(Intent(context, StarActivity::class.java))
+        }
+        headButton.setOnClickListener {
+            startActivity(Intent(context, HeadImageActivity::class.java))
         }
     }
 }

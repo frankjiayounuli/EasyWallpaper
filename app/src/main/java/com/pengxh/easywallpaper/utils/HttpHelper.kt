@@ -50,7 +50,6 @@ class HttpHelper {
                 val status = withContext(Dispatchers.IO) {
                     createConnection(url).execute().statusCode()
                 }
-                Log.d(Tag, ": $status")
                 if (status == 200) {
                     listener.onSuccess(withContext(Dispatchers.IO) {
                         createConnection(url).get()
@@ -109,6 +108,30 @@ class HttpHelper {
             } else {
                 Constant.DiscoverURL.replace("index", "index$pageNumber", true)
             }
+            GlobalScope.launch(Dispatchers.Main) {
+                val status = withContext(Dispatchers.IO) {
+                    createConnection(url).execute().statusCode()
+                }
+                if (status == 200) {
+                    listener.onSuccess(withContext(Dispatchers.IO) {
+                        createConnection(url).get()
+                    })
+                } else {
+                    listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+                }
+            }
+        }
+
+        /**
+         * 抓取精选头像列表源数据
+         * */
+        fun getHeadImageData(pageNumber: Int, listener: HttpListener) {
+            val url: String = if (pageNumber == 1) {
+                Constant.HeadImageURL
+            } else {
+                Constant.HeadImageURL + "index_" + pageNumber + ".html"
+            }
+            Log.d(Tag, "头像列表链接地址: $url")
             GlobalScope.launch(Dispatchers.Main) {
                 val status = withContext(Dispatchers.IO) {
                     createConnection(url).execute().statusCode()

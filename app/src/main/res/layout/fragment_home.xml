@@ -54,6 +54,11 @@
                 android:src="@drawable/ic_star"
                 app:fab_label="明星写真" />
 
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/headButton"
+                style="@style/FloatingStyle"
+                android:src="@drawable/ic_head"
+                app:fab_label="精选头像" />
         </com.github.clans.fab.FloatingActionMenu>
     </FrameLayout>
 </LinearLayout>

@@ -1,9 +1,6 @@
 package com.pengxh.easywallpaper.utils
 
-import com.pengxh.easywallpaper.bean.BannerBean
-import com.pengxh.easywallpaper.bean.CategoryBean
-import com.pengxh.easywallpaper.bean.DiscoverBean
-import com.pengxh.easywallpaper.bean.WallpaperBean
+import com.pengxh.easywallpaper.bean.*
 import org.jsoup.nodes.Document
 
 /**
@@ -274,6 +271,26 @@ class HTMLParseUtil {
                 starList.add(wallpaperBean)
             }
             return starList
+        }
+
+        /**
+         * 解析精选头像数据
+         * */
+        fun parseHeadImageData(document: Document): ArrayList<HeadImageBean> {
+            val list = ArrayList<HeadImageBean>()
+            val elements = document.getElementsByClass("g-gxlist-imgbox").select("li")
+            elements.forEach {
+                val image = it.select("img[src]").first().attr("src")
+                //大图页面链接
+                val link = it.select("a[href]").first().attr("href")
+
+                val headImageBean = HeadImageBean()
+                headImageBean.headImage = image
+                headImageBean.headImageLink = link
+
+                list.add(headImageBean)
+            }
+            return list
         }
     }
 }
