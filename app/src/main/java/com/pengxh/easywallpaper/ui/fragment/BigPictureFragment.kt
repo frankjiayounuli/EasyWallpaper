@@ -22,6 +22,7 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
 import com.pengxh.easywallpaper.utils.FileUtil
+import com.pengxh.easywallpaper.utils.HTMLParseUtil
 import com.pengxh.easywallpaper.utils.HttpHelper
 import com.pengxh.easywallpaper.utils.HttpListener
 import kotlinx.android.synthetic.main.fragment_big_picture.*
@@ -72,12 +73,7 @@ class BigPictureFragment : BaseFragment() {
                         loadingView.visibility = View.GONE
                         photoView.visibility = View.VISIBLE
 
-                        val e = result.getElementsByClass("pic-large").first()
-                        bigImageUrl = e.attr("url")
-                        //备用地址
-                        if (bigImageUrl == "") {
-                            bigImageUrl = e.attr("src")
-                        }
+                        bigImageUrl = HTMLParseUtil.parseWallpaperURL(result)
                         //此举适合加载大图和高清图
                         Glide.with(context!!).asBitmap().load(bigImageUrl)
                             .into(object : BitmapImageViewTarget(photoView) {

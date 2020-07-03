@@ -75,6 +75,19 @@ class HTMLParseUtil {
         }
 
         /**
+         * 高清壁纸大图地址
+         * */
+        fun parseWallpaperURL(document: Document): String {
+            val e = document.getElementsByClass("pic-large").first()
+            var bigImageUrl = e.attr("url")
+            //备用地址
+            if (bigImageUrl == "") {
+                bigImageUrl = e.attr("src")
+            }
+            return bigImageUrl
+        }
+
+        /**
          * 解析【发现】数据
          */
         fun parseDiscoverData(document: Document): ArrayList<DiscoverBean> {
@@ -292,5 +305,12 @@ class HTMLParseUtil {
             }
             return list
         }
+
+        /**
+         * 获取头像大图地址
+         * */
+        fun parseHeadImageURL(document: Document): String = document
+            .getElementsByClass("img-list4").first()
+            .select("img").attr("src")
     }
 }

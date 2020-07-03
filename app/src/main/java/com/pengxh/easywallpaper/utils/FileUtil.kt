@@ -39,12 +39,12 @@ class FileUtil {
             if (!wallpaperDir.exists()) {
                 wallpaperDir.mkdir()
             }
-            val fileName = System.currentTimeMillis().toString() + ".jpg"
+            val fileName = System.currentTimeMillis().toString() + ".png"
             val file = File(wallpaperDir, fileName)
             try {
                 //保存图片
                 val fos = FileOutputStream(file)
-                val isSuccess = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                val isSuccess = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
                 fos.flush()
                 fos.close()
 

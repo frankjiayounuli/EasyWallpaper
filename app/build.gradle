@@ -66,4 +66,6 @@ dependencies {
     implementation group: 'com.tencent.bugly', name: 'crashreport', version: '2.6.6.1'
     //底部BottomSheet
     implementation 'me.shaohui:bottomdialog:1.1.9'
+    //任意形状的ImageView
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }
