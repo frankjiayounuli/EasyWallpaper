@@ -147,6 +147,7 @@ class HttpHelper {
         }
 
         fun getDocumentData(link: String, listener: HttpListener) {
+            Log.d(Tag, "抓取地址: $link")
             GlobalScope.launch(Dispatchers.Main) {
                 val status = withContext(Dispatchers.IO) {
                     createConnection(link).execute().statusCode()

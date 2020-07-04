@@ -60,34 +60,23 @@ class BigPictureFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_big_picture
 
     override fun initData() {
-        try {
-            loadingView.visibility = View.VISIBLE
-            photoView.visibility = View.GONE
-        } catch (e: IllegalStateException) {
-            e.printStackTrace()
-        }
+        loadingView.visibility = View.VISIBLE
         arguments!!.getString("pageLink")?.let {
             HttpHelper.getDocumentData(it, object : HttpListener {
                 override fun onSuccess(result: Document) {
-                    try {
-                        loadingView.visibility = View.GONE
-                        photoView.visibility = View.VISIBLE
+                    loadingView.visibility = View.GONE
 
-                        bigImageUrl = HTMLParseUtil.parseWallpaperURL(result)
-                        //此举适合加载大图和高清图
-                        Glide.with(context!!).asBitmap().load(bigImageUrl)
-                            .into(object : BitmapImageViewTarget(photoView) {
-                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                    try {
-                                        photoView.setImageBitmap(resource)
-                                    } catch (e: NullPointerException) {
-                                        e.printStackTrace()
-                                    }
-                                }
-                            })
-                    } catch (e: IllegalStateException) {
-                        e.printStackTrace()
-                    }
+                    bigImageUrl = HTMLParseUtil.parseWallpaperURL(result)
+                    //此举适合加载大图和高清图
+                    Glide.with(context!!).asBitmap().load(bigImageUrl).into(object : BitmapImageViewTarget(bigImageView) {
+                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                            try {
+                                bigImageView.setImageBitmap(resource)
+                            } catch (e: NullPointerException) {
+                                e.printStackTrace()
+                            }
+                        }
+                    })
                 }
 
                 override fun onFailure(e: Exception) {
@@ -99,7 +88,7 @@ class BigPictureFragment : BaseFragment() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun initEvent() {
-        photoView.setOnLongClickListener {
+        bigImageView.setOnLongClickListener {
             AlertView("请选择", null, "取消", null, actionArray, context, AlertView.Style.ActionSheet,
                 OnItemClickListener { o, position ->
                     when (position) {

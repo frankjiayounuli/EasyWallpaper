@@ -28,6 +28,6 @@
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:text="戚薇运动性感写真手机壁纸"
-            android:textColor="#88000000" />
+            android:textColor="@color/colorText" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
