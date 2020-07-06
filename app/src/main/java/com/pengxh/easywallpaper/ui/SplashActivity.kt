@@ -3,11 +3,8 @@ package com.pengxh.easywallpaper.ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.CountDownTimer
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.BitmapImageViewTarget
-import com.bumptech.glide.request.transition.Transition
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import com.pengxh.app.multilib.base.BaseNormalActivity
@@ -55,12 +52,14 @@ class SplashActivity : BaseNormalActivity() {
                         if (bigImageUrl == "") {
                             bigImageUrl = e.attr("src")
                         }
-                        //此举适合加载大图和高清图
-                        Glide.with(activity).asBitmap().load(bigImageUrl).into(object : BitmapImageViewTarget(splashImageView) {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                splashImageView.setImageBitmap(resource)
-                            }
-                        })
+
+                        val imageBuilder = Glide.with(activity).load(bigImageUrl)
+
+                        try {
+                            imageBuilder.into(splashImageView)
+                        } catch (e: NullPointerException) {
+                            e.printStackTrace()
+                        }
                     }
 
                     override fun onFailure(e: Exception) {

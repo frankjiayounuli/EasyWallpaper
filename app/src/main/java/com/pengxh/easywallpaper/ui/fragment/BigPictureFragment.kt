@@ -6,15 +6,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.annotation.RequiresApi
 import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
 import com.pengxh.app.multilib.utils.BitmapCallBackListener
 import com.pengxh.app.multilib.utils.DensityUtil
 import com.pengxh.app.multilib.utils.ImageUtil
@@ -60,23 +57,20 @@ class BigPictureFragment : BaseFragment() {
     override fun initLayoutView(): Int = R.layout.fragment_big_picture
 
     override fun initData() {
-        loadingView.visibility = View.VISIBLE
         arguments!!.getString("pageLink")?.let {
             HttpHelper.getDocumentData(it, object : HttpListener {
                 override fun onSuccess(result: Document) {
-                    loadingView.visibility = View.GONE
-
                     bigImageUrl = HTMLParseUtil.parseWallpaperURL(result)
-                    //此举适合加载大图和高清图
-                    Glide.with(context!!).asBitmap().load(bigImageUrl).into(object : BitmapImageViewTarget(bigImageView) {
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            try {
-                                bigImageView.setImageBitmap(resource)
-                            } catch (e: NullPointerException) {
-                                e.printStackTrace()
-                            }
-                        }
-                    })
+
+                    val imageBuilder = context?.let { ctx ->
+                        Glide.with(ctx).load(bigImageUrl)
+                    }
+
+                    try {
+                        imageBuilder?.into(bigImageView)
+                    } catch (e: NullPointerException) {
+                        e.printStackTrace()
+                    }
                 }
 
                 override fun onFailure(e: Exception) {
