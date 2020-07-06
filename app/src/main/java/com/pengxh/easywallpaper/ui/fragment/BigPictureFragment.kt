@@ -11,10 +11,10 @@ import com.aihook.alertview.library.AlertView
 import com.aihook.alertview.library.OnItemClickListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
-import com.pengxh.app.multilib.utils.BitmapCallBackListener
+import com.bumptech.glide.request.transition.Transition
 import com.pengxh.app.multilib.utils.DensityUtil
-import com.pengxh.app.multilib.utils.ImageUtil
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.BaseFragment
 import com.pengxh.easywallpaper.R
@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.nodes.Document
 import java.io.IOException
+import kotlin.properties.Delegates
 
 
 /**
@@ -53,6 +54,9 @@ class BigPictureFragment : BaseFragment() {
     }
 
     private lateinit var bigImageUrl: String
+    private lateinit var wallpaperManager: WallpaperManager
+    private var screenWidth by Delegates.notNull<Int>()
+    private var screenHeight by Delegates.notNull<Int>()
 
     override fun initLayoutView(): Int = R.layout.fragment_big_picture
 
@@ -78,6 +82,9 @@ class BigPictureFragment : BaseFragment() {
                 }
             })
         }
+        wallpaperManager = WallpaperManager.getInstance(context)
+        screenWidth = DensityUtil.getScreenWidth(context)
+        screenHeight = DensityUtil.getScreenHeight(context)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -105,22 +112,15 @@ class BigPictureFragment : BaseFragment() {
                             }
                         }
                         1 -> {
-                            ImageUtil.obtainBitmap(bigImageUrl, object : BitmapCallBackListener {
-                                override fun onSuccess(bitmap: Bitmap?) {
-                                    val wallpaperManager = WallpaperManager.getInstance(context)
+                            Glide.with(context!!).asBitmap().load(bigImageUrl).into(object : SimpleTarget<Bitmap?>() {
+                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap?>?) {
                                     try {
-                                        val width = DensityUtil.getScreenHeight(context)
-                                        val height = DensityUtil.getScreenHeight(context)
-                                        wallpaperManager.suggestDesiredDimensions(width, height)
-                                        wallpaperManager.setBitmap(bitmap)
+                                        wallpaperManager.suggestDesiredDimensions(screenWidth, screenHeight)
+                                        wallpaperManager.setBitmap(resource)
                                         EasyToast.showToast("壁纸设置成功", EasyToast.SUCCESS)
                                     } catch (e: IOException) {
                                         e.printStackTrace()
                                     }
-                                }
-
-                                override fun onFailure(t: Throwable?) {
-                                    t!!.printStackTrace()
                                 }
                             })
                         }
