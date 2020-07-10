@@ -62,7 +62,7 @@ class HttpHelper {
                     }
                 }
             } else {
-                EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
+                listener.onFailure(Exception("SocketTimeoutException"))
             }
         }
 
@@ -136,7 +136,7 @@ class HttpHelper {
                     }
                 }
             } else {
-                EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
+                listener.onFailure(Exception("SocketTimeoutException"))
             }
         }
 
@@ -164,7 +164,7 @@ class HttpHelper {
                     }
                 }
             } else {
-                EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
+                listener.onFailure(Exception("SocketTimeoutException"))
             }
         }
 

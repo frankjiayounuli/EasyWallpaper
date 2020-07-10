@@ -40,8 +40,9 @@ class HomePageFragment : BaseFragment() {
 
     private var defaultPage = 1
     private var listBeans: ArrayList<WallpaperBean> = ArrayList()
+    private var isRefresh = false
     private var isLoadMore = false
-    private lateinit var wallpaperAdapter: WallpaperAdapter
+    private var wallpaperAdapter: WallpaperAdapter? = null
 
     override fun initLayoutView(): Int = R.layout.fragment_home
 
@@ -64,28 +65,68 @@ class HomePageFragment : BaseFragment() {
             val type = object : TypeToken<ArrayList<WallpaperBean>>() {}.type
             listBeans = Gson().fromJson(wallpaperData, type)
             handler.sendEmptyMessage(1000)
-        } else {
-            handler.sendEmptyMessage(1001)
         }
 
-        wallpaperLayout.setEnableRefresh(false)
-        //上拉加载
-        wallpaperLayout.setOnLoadMoreListener {
-            Log.d(Tag, "onLoadMore: 上拉加载")
-            isLoadMore = true
-            defaultPage++
+        wallpaperLayout.setOnRefreshListener {
+            defaultPage = 1
             HttpHelper.getWallpaperUpdate(defaultPage, object : HttpListener {
                 override fun onSuccess(result: Document) {
-                    //加载更多
-                    listBeans.addAll(HTMLParseUtil.parseWallpaperUpdateData(result))
-                    handler.sendEmptyMessage(1000)
+                    isRefresh = if (listBeans.size == 0) {
+                        //如果size == 0，那么应该是用户在没有网络的情况下点开了应用，此时需要请求默认数据
+                        startHttpRequest(defaultPage)
+                        false
+                    } else {
+                        listBeans.clear()
+                        //下拉刷新
+                        val refreshData = HTMLParseUtil.parseWallpaperUpdateData(result)
+                        for (i in refreshData.indices) {
+                            listBeans.add(0, refreshData[i])
+                        }
+                        handler.sendEmptyMessage(1000)
+                        true
+                    }
                 }
 
                 override fun onFailure(e: Exception) {
-                    handler.sendEmptyMessage(1001)
+                    when (e.message) {
+                        "IndexOutOfBoundsException" -> {
+                            handler.sendEmptyMessage(1001)
+                        }
+                        "SocketTimeoutException" -> {
+                            handler.sendEmptyMessage(1002)
+                        }
+                    }
                 }
             })
         }
+        //上拉加载
+        wallpaperLayout.setOnLoadMoreListener {
+            Log.d(Tag, "onLoadMore: 上拉加载")
+            defaultPage++
+            startHttpRequest(defaultPage)
+            isLoadMore = true
+        }
+    }
+
+    private fun startHttpRequest(page: Int) {
+        HttpHelper.getWallpaperUpdate(page, object : HttpListener {
+            override fun onSuccess(result: Document) {
+                //加载更多
+                listBeans.addAll(HTMLParseUtil.parseWallpaperUpdateData(result))
+                handler.sendEmptyMessage(1000)
+            }
+
+            override fun onFailure(e: Exception) {
+                when (e.message) {
+                    "IndexOutOfBoundsException" -> {
+                        handler.sendEmptyMessage(1001)
+                    }
+                    "SocketTimeoutException" -> {
+                        handler.sendEmptyMessage(1002)
+                    }
+                }
+            }
+        })
     }
 
     @SuppressLint("HandlerLeak")
@@ -93,8 +134,8 @@ class HomePageFragment : BaseFragment() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 1000 -> {
-                    if (isLoadMore) {
-                        wallpaperAdapter.notifyDataSetChanged()
+                    if (isLoadMore || isRefresh) {
+                        wallpaperAdapter?.notifyDataSetChanged()
                     } else {
                         //首次加载数据
                         wallpaperAdapter = WallpaperAdapter(context!!, listBeans)
@@ -102,7 +143,7 @@ class HomePageFragment : BaseFragment() {
                         wallpaperRecyclerView.layoutManager = staggeredGridLayoutManager
                         wallpaperRecyclerView.adapter = wallpaperAdapter
                     }
-                    wallpaperAdapter.setOnItemClickListener(object : OnItemClickListener {
+                    wallpaperAdapter?.setOnItemClickListener(object : OnItemClickListener {
                         override fun onItemClickListener(position: Int) {
                             //跳转相应的壁纸分类
                             val wallpaperURL = listBeans[position].wallpaperURL
@@ -119,8 +160,12 @@ class HomePageFragment : BaseFragment() {
                 1001 -> {
                     EasyToast.showToast("已经到底了，别拉了~", EasyToast.DEFAULT)
                 }
+                1002 -> {
+                    EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
+                }
             }
             //不管成功与否，都结束加载
+            wallpaperLayout.finishRefresh()
             wallpaperLayout.finishLoadMore()
         }
     }

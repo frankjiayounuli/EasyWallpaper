@@ -21,8 +21,7 @@ import java.util.*
  * @description: TODO
  * @date: 2020/6/16 10:11
  */
-class DiscoverAdapter(ctx: Context, list: ArrayList<DiscoverBean>) :
-    RecyclerView.Adapter<DiscoverAdapter.ItemViewHolder>() {
+class DiscoverAdapter(ctx: Context, list: ArrayList<DiscoverBean>) : RecyclerView.Adapter<DiscoverAdapter.ItemViewHolder>() {
 
     private var context: Context = ctx
     private var beanList: ArrayList<DiscoverBean> = list

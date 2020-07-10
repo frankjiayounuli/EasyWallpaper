@@ -34,9 +34,10 @@ class DiscoverFragment : BaseFragment() {
     }
 
     private var defaultPage = 1
+    private var isRefresh = false
     private var isLoadMore = false
     private var discoverList = ArrayList<DiscoverBean>()
-    private lateinit var discoverAdapter: DiscoverAdapter
+    private var discoverAdapter: DiscoverAdapter? = null
 
     override fun initLayoutView(): Int = R.layout.fragment_discover
 
@@ -53,13 +54,44 @@ class DiscoverFragment : BaseFragment() {
 
     override fun initEvent() {
         //下拉刷新
-        discoverLayout.setEnableRefresh(false)
+        discoverLayout.setOnRefreshListener {
+            defaultPage = 1
+            HttpHelper.getDiscoverData(defaultPage, object : HttpListener {
+                override fun onSuccess(result: Document) {
+                    isRefresh = if (discoverList.size == 0) {
+                        //如果size == 0，那么应该是用户在没有网络的情况下点开了应用，此时需要请求默认数据
+                        startHttpRequest(defaultPage)
+                        false
+                    } else {
+                        discoverList.clear()
+                        //下拉刷新
+                        val refreshData = HTMLParseUtil.parseDiscoverData(result)
+                        for (i in refreshData.indices) {
+                            discoverList.add(0, refreshData[i])
+                        }
+                        handler.sendEmptyMessage(2000)
+                        true
+                    }
+                }
+
+                override fun onFailure(e: Exception) {
+                    when (e.message) {
+                        "IndexOutOfBoundsException" -> {
+                            handler.sendEmptyMessage(2001)
+                        }
+                        "SocketTimeoutException" -> {
+                            handler.sendEmptyMessage(2002)
+                        }
+                    }
+                }
+            })
+        }
         //上拉加载
         discoverLayout.setOnLoadMoreListener {
             Log.d(Tag, "onLoadMore: 上拉加载")
-            isLoadMore = true
             defaultPage++
             startHttpRequest(defaultPage)
+            isLoadMore = true
         }
     }
 
@@ -72,7 +104,14 @@ class DiscoverFragment : BaseFragment() {
             }
 
             override fun onFailure(e: Exception) {
-                handler.sendEmptyMessage(2001)
+                when (e.message) {
+                    "IndexOutOfBoundsException" -> {
+                        handler.sendEmptyMessage(2001)
+                    }
+                    "SocketTimeoutException" -> {
+                        handler.sendEmptyMessage(2002)
+                    }
+                }
             }
         })
     }
@@ -82,8 +121,8 @@ class DiscoverFragment : BaseFragment() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 2000 -> {
-                    if (isLoadMore) {
-                        discoverAdapter.notifyDataSetChanged()
+                    if (isLoadMore || isRefresh) {
+                        discoverAdapter?.notifyDataSetChanged()
                     } else {
                         Log.d(Tag, "首次加载数据")
                         discoverAdapter = DiscoverAdapter(context!!, discoverList)
@@ -91,7 +130,7 @@ class DiscoverFragment : BaseFragment() {
                         discoverRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
                         discoverRecyclerView.adapter = discoverAdapter
                     }
-                    discoverAdapter.setOnItemClickListener(object : OnItemClickListener {
+                    discoverAdapter?.setOnItemClickListener(object : OnItemClickListener {
                         override fun onItemClickListener(position: Int) {
                             val intent = Intent(context, DiscoverDetailActivity::class.java)
                             intent.putExtra("discoverTitle", discoverList[position].discoverTitle)
@@ -103,7 +142,11 @@ class DiscoverFragment : BaseFragment() {
                 2001 -> {
                     EasyToast.showToast("已经到底了，别拉了~", EasyToast.DEFAULT)
                 }
+                2002 -> {
+                    EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
+                }
             }
+            discoverLayout.finishRefresh()
             discoverLayout.finishLoadMore()
         }
     }

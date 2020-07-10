@@ -46,9 +46,10 @@ class HeadImageActivity : BaseNormalActivity() {
 
     private val context: Context = this@HeadImageActivity
     private var defaultPage = 1
+    private var isRefresh = false
     private var isLoadMore = false
     private var dataList = ArrayList<HeadImageBean>()
-    private lateinit var headImageAdapter: HeadImageAdapter
+    private var headImageAdapter: HeadImageAdapter? = null
 
     override fun initLayoutView(): Int = R.layout.activity_head
 
@@ -66,13 +67,43 @@ class HeadImageActivity : BaseNormalActivity() {
 
     override fun initEvent() {
         //下拉刷新
-        headImageLayout.setEnableRefresh(false)
+        headImageLayout.setOnRefreshListener {
+            defaultPage = 1
+            HttpHelper.getHeadImageData(defaultPage, object : HttpListener {
+                override fun onSuccess(result: Document) {
+                    isRefresh = if (dataList.size == 0) {
+                        //如果size == 0，那么应该是用户在没有网络的情况下点开了应用，此时需要请求默认数据
+                        startHttpRequest(defaultPage)
+                        false
+                    } else {
+                        dataList.clear()
+                        val refreshData = HTMLParseUtil.parseHeadImageData(result)
+                        for (i in refreshData.indices) {
+                            dataList.add(0, refreshData[i])
+                        }
+                        handler.sendEmptyMessage(6000)
+                        true
+                    }
+                }
+
+                override fun onFailure(e: Exception) {
+                    when (e.message) {
+                        "IndexOutOfBoundsException" -> {
+                            handler.sendEmptyMessage(6001)
+                        }
+                        "SocketTimeoutException" -> {
+                            handler.sendEmptyMessage(6002)
+                        }
+                    }
+                }
+            })
+        }
         //上拉加载
         headImageLayout.setOnLoadMoreListener {
             Log.d(Tag, "onLoadMore: 上拉加载")
-            isLoadMore = true
             defaultPage++
             startHttpRequest(defaultPage)
+            isLoadMore = true
         }
     }
 
@@ -85,7 +116,14 @@ class HeadImageActivity : BaseNormalActivity() {
             }
 
             override fun onFailure(e: Exception) {
-                handler.sendEmptyMessage(6001)
+                when (e.message) {
+                    "IndexOutOfBoundsException" -> {
+                        handler.sendEmptyMessage(6001)
+                    }
+                    "SocketTimeoutException" -> {
+                        handler.sendEmptyMessage(6002)
+                    }
+                }
             }
         })
     }
@@ -95,8 +133,8 @@ class HeadImageActivity : BaseNormalActivity() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 6000 -> {
-                    if (isLoadMore) {
-                        headImageAdapter.notifyDataSetChanged()
+                    if (isLoadMore || isRefresh) {
+                        headImageAdapter?.notifyDataSetChanged()
                     } else {
                         Log.d(Tag, "首次加载数据")
                         headImageAdapter = HeadImageAdapter(context, dataList)
@@ -180,7 +218,11 @@ class HeadImageActivity : BaseNormalActivity() {
                 6001 -> {
                     EasyToast.showToast("已经到底了，别拉了~", EasyToast.DEFAULT)
                 }
+                6002 -> {
+                    EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
+                }
             }
+            headImageLayout.finishRefresh()
             headImageLayout.finishLoadMore()
         }
     }
