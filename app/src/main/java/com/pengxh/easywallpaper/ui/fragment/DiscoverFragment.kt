@@ -48,17 +48,7 @@ class DiscoverFragment : BaseFragment() {
         mTitleView.text = "探索发现"
         mTitleRightView.visibility = View.GONE
 
-        HttpHelper.getDiscoverData(defaultPage, object : HttpListener {
-            override fun onSuccess(result: Document) {
-                //默认加载第一页数据
-                discoverList = HTMLParseUtil.parseDiscoverData(result)
-                handler.sendEmptyMessage(2000)
-            }
-
-            override fun onFailure(e: Exception) {
-                handler.sendEmptyMessage(2001)
-            }
-        })
+        startHttpRequest(defaultPage)
     }
 
     override fun initEvent() {
@@ -69,22 +59,22 @@ class DiscoverFragment : BaseFragment() {
             Log.d(Tag, "onLoadMore: 上拉加载")
             isLoadMore = true
             defaultPage++
-            HttpHelper.getDiscoverData(defaultPage, object : HttpListener {
-                override fun onSuccess(result: Document) {
-                    //加载更多
-                    discoverList.addAll(HTMLParseUtil.parseDiscoverData(result))
-                    handler.sendEmptyMessage(2000)
-                }
-
-                override fun onFailure(e: Exception) {
-                    if (e.message == "IndexOutOfBoundsException") {
-                        handler.sendEmptyMessage(2002)
-                    } else {
-                        handler.sendEmptyMessage(2001)
-                    }
-                }
-            })
+            startHttpRequest(defaultPage)
         }
+    }
+
+    private fun startHttpRequest(page: Int) {
+        HttpHelper.getDiscoverData(page, object : HttpListener {
+            override fun onSuccess(result: Document) {
+                //加载更多
+                discoverList.addAll(HTMLParseUtil.parseDiscoverData(result))
+                handler.sendEmptyMessage(2000)
+            }
+
+            override fun onFailure(e: Exception) {
+                handler.sendEmptyMessage(2001)
+            }
+        })
     }
 
     @SuppressLint("HandlerLeak")
@@ -111,9 +101,6 @@ class DiscoverFragment : BaseFragment() {
                     })
                 }
                 2001 -> {
-                    EasyToast.showToast("加载失败，请稍后重试", EasyToast.ERROR)
-                }
-                2002 -> {
                     EasyToast.showToast("已经到底了，别拉了~", EasyToast.DEFAULT)
                 }
             }

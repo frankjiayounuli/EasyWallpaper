@@ -76,11 +76,7 @@ class StarPersonalActivity : BaseNormalActivity() {
                 }
 
                 override fun onFailure(e: Exception) {
-                    if (e.message == "IndexOutOfBoundsException") {
-                        handler.sendEmptyMessage(5002)
-                    } else {
-                        handler.sendEmptyMessage(5001)
-                    }
+                    handler.sendEmptyMessage(5001)
                 }
             })
         }
@@ -115,9 +111,6 @@ class StarPersonalActivity : BaseNormalActivity() {
                     })
                 }
                 5001 -> {
-                    EasyToast.showToast("加载失败，请稍后重试", EasyToast.ERROR)
-                }
-                5002 -> {
                     EasyToast.showToast("已经到底了，别拉了~", EasyToast.DEFAULT)
                 }
             }

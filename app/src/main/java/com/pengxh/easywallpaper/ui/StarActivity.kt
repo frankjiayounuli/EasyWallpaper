@@ -57,7 +57,7 @@ class StarActivity : BaseNormalActivity() {
                     }
 
                     override fun onFailure(e: Exception) {
-
+                        e.printStackTrace()
                     }
                 })
 
@@ -71,7 +71,7 @@ class StarActivity : BaseNormalActivity() {
             }
 
             override fun onFailure(e: Exception) {
-
+                e.printStackTrace()
             }
         })
 

@@ -65,7 +65,7 @@ class CategoryActivity : BaseNormalActivity() {
                     }
 
                     override fun onFailure(e: Exception) {
-
+                        e.printStackTrace()
                     }
                 })
 
@@ -80,14 +80,14 @@ class CategoryActivity : BaseNormalActivity() {
                         }
 
                         override fun onFailure(e: Exception) {
-
+                            e.printStackTrace()
                         }
                     })
                 }
             }
 
             override fun onFailure(e: Exception) {
-
+                e.printStackTrace()
             }
         })
 
@@ -104,11 +104,7 @@ class CategoryActivity : BaseNormalActivity() {
                 }
 
                 override fun onFailure(e: Exception) {
-                    if (e.message == "IndexOutOfBoundsException") {
-                        handler.sendEmptyMessage(3002)
-                    } else {
-                        handler.sendEmptyMessage(3001)
-                    }
+                    handler.sendEmptyMessage(3001)
                 }
             })
         }
@@ -145,9 +141,6 @@ class CategoryActivity : BaseNormalActivity() {
                     })
                 }
                 3001 -> {
-                    EasyToast.showToast("加载失败，请稍后重试", EasyToast.ERROR)
-                }
-                3002 -> {
                     EasyToast.showToast("已经到底了，别拉了~", EasyToast.DEFAULT)
                 }
             }

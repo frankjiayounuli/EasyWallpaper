@@ -82,11 +82,7 @@ class HomePageFragment : BaseFragment() {
                 }
 
                 override fun onFailure(e: Exception) {
-                    if (e.message == "IndexOutOfBoundsException") {
-                        handler.sendEmptyMessage(1002)
-                    } else {
-                        handler.sendEmptyMessage(1001)
-                    }
+                    handler.sendEmptyMessage(1001)
                 }
             })
         }
@@ -121,9 +117,6 @@ class HomePageFragment : BaseFragment() {
                     })
                 }
                 1001 -> {
-                    EasyToast.showToast("加载失败，请稍后重试", EasyToast.ERROR)
-                }
-                1002 -> {
                     EasyToast.showToast("已经到底了，别拉了~", EasyToast.DEFAULT)
                 }
             }

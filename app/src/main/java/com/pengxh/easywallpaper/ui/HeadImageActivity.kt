@@ -61,16 +61,7 @@ class HeadImageActivity : BaseNormalActivity() {
         mTitleRightView.visibility = View.GONE
 
         //加载默认数据页
-        HttpHelper.getHeadImageData(defaultPage, object : HttpListener {
-            override fun onSuccess(result: Document) {
-                dataList = HTMLParseUtil.parseHeadImageData(result)
-                handler.sendEmptyMessage(6000)
-            }
-
-            override fun onFailure(e: Exception) {
-                handler.sendEmptyMessage(6001)
-            }
-        })
+        startHttpRequest(defaultPage)
     }
 
     override fun initEvent() {
@@ -81,22 +72,22 @@ class HeadImageActivity : BaseNormalActivity() {
             Log.d(Tag, "onLoadMore: 上拉加载")
             isLoadMore = true
             defaultPage++
-            HttpHelper.getHeadImageData(defaultPage, object : HttpListener {
-                override fun onSuccess(result: Document) {
-                    //加载更多
-                    dataList.addAll(HTMLParseUtil.parseHeadImageData(result))
-                    handler.sendEmptyMessage(6000)
-                }
-
-                override fun onFailure(e: Exception) {
-                    if (e.message == "IndexOutOfBoundsException") {
-                        handler.sendEmptyMessage(6002)
-                    } else {
-                        handler.sendEmptyMessage(6001)
-                    }
-                }
-            })
+            startHttpRequest(defaultPage)
         }
+    }
+
+    private fun startHttpRequest(page: Int) {
+        HttpHelper.getHeadImageData(page, object : HttpListener {
+            override fun onSuccess(result: Document) {
+                //加载更多
+                dataList.addAll(HTMLParseUtil.parseHeadImageData(result))
+                handler.sendEmptyMessage(6000)
+            }
+
+            override fun onFailure(e: Exception) {
+                handler.sendEmptyMessage(6001)
+            }
+        })
     }
 
     @SuppressLint("HandlerLeak")
@@ -187,9 +178,6 @@ class HeadImageActivity : BaseNormalActivity() {
                     }
                 }
                 6001 -> {
-                    EasyToast.showToast("加载失败，请稍后重试", EasyToast.ERROR)
-                }
-                6002 -> {
                     EasyToast.showToast("已经到底了，别拉了~", EasyToast.DEFAULT)
                 }
             }

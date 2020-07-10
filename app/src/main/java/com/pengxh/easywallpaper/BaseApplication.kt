@@ -6,6 +6,7 @@ import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.utils.Constant
 import com.pengxh.easywallpaper.utils.SQLiteUtil
 import com.tencent.bugly.crashreport.CrashReport
+import kotlin.properties.Delegates
 
 /**
  * @author: Pengxh
@@ -17,9 +18,18 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        application = this
         SaveKeyValues.initSharedPreferences(this)
         EasyToast.init(this)
         SQLiteUtil.initDataBase(this)
         CrashReport.initCrashReport(this, Constant.APP_ID, false)
+    }
+
+    /**
+     * 委托模式单例化
+     * */
+    companion object {
+        private var application: BaseApplication by Delegates.notNull()
+        fun instance() = application
     }
 }

@@ -49,7 +49,7 @@ class WallpaperActivity : BaseNormalActivity() {
             }
 
             override fun onFailure(e: Exception) {
-
+                e.printStackTrace()
             }
         })
     }

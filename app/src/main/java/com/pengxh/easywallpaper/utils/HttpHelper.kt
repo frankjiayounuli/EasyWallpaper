@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Log
+import com.pengxh.app.multilib.widget.EasyToast
+import com.pengxh.easywallpaper.BaseApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -30,9 +32,9 @@ class HttpHelper {
 
         private fun obtainAgent(): String = Constant.UA[Random().nextInt(15)]
 
-        fun isNetworkAvailable(context: Context): Boolean {
-            val connectivityManager =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        private fun isNetworkAvailable(): Boolean {
+            val connectivityManager = BaseApplication.instance()
+                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             // 获取所有NetworkInfo对象
             val networkInfo = connectivityManager.allNetworkInfo
             if (networkInfo.isNotEmpty()) {
@@ -46,17 +48,21 @@ class HttpHelper {
          * */
         fun getWallpaperUpdate(pageNumber: Int, listener: HttpListener) {
             val url = Constant.WallpaperUpdateURL.replace("index", pageNumber.toString(), true)
-            GlobalScope.launch(Dispatchers.Main) {
-                val status = withContext(Dispatchers.IO) {
-                    createConnection(url).execute().statusCode()
+            if (isNetworkAvailable()) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    val status = withContext(Dispatchers.IO) {
+                        createConnection(url).execute().statusCode()
+                    }
+                    if (status == 200) {
+                        listener.onSuccess(withContext(Dispatchers.IO) {
+                            createConnection(url).get()
+                        })
+                    } else {
+                        listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+                    }
                 }
-                if (status == 200) {
-                    listener.onSuccess(withContext(Dispatchers.IO) {
-                        createConnection(url).get()
-                    })
-                } else {
-                    listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
-                }
+            } else {
+                EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
             }
         }
 
@@ -64,19 +70,23 @@ class HttpHelper {
          * 加载更多壁纸数据
          * */
         fun loadMoreWallpaper(pageNumber: Int, firstLink: String, listener: HttpListener) {
-            Log.d(Tag, "loadMoreWallpaper: $firstLink")
-            val newLink = firstLink.replace("1.html", "$pageNumber.html", true)
-            GlobalScope.launch(Dispatchers.Main) {
-                val status = withContext(Dispatchers.IO) {
-                    createConnection(newLink).execute().statusCode()
+            if (isNetworkAvailable()) {
+                Log.d(Tag, "loadMoreWallpaper: $firstLink")
+                val newLink = firstLink.replace("1.html", "$pageNumber.html", true)
+                GlobalScope.launch(Dispatchers.Main) {
+                    val status = withContext(Dispatchers.IO) {
+                        createConnection(newLink).execute().statusCode()
+                    }
+                    if (status == 200) {
+                        listener.onSuccess(withContext(Dispatchers.IO) {
+                            createConnection(newLink).get()
+                        })
+                    } else {
+                        listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+                    }
                 }
-                if (status == 200) {
-                    listener.onSuccess(withContext(Dispatchers.IO) {
-                        createConnection(newLink).get()
-                    })
-                } else {
-                    listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
-                }
+            } else {
+                EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
             }
         }
 
@@ -84,18 +94,22 @@ class HttpHelper {
          * 加载更多写真数据
          * */
         fun loadMoreStarWallpaper(pageNumber: Int, firstLink: String, listener: HttpListener) {
-            val newLink = firstLink.replace(".html", "_$pageNumber.html", true)
-            GlobalScope.launch(Dispatchers.Main) {
-                val status = withContext(Dispatchers.IO) {
-                    createConnection(newLink).execute().statusCode()
+            if (isNetworkAvailable()) {
+                val newLink = firstLink.replace(".html", "_$pageNumber.html", true)
+                GlobalScope.launch(Dispatchers.Main) {
+                    val status = withContext(Dispatchers.IO) {
+                        createConnection(newLink).execute().statusCode()
+                    }
+                    if (status == 200) {
+                        listener.onSuccess(withContext(Dispatchers.IO) {
+                            createConnection(newLink).get()
+                        })
+                    } else {
+                        listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+                    }
                 }
-                if (status == 200) {
-                    listener.onSuccess(withContext(Dispatchers.IO) {
-                        createConnection(newLink).get()
-                    })
-                } else {
-                    listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
-                }
+            } else {
+                EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
             }
         }
 
@@ -103,22 +117,26 @@ class HttpHelper {
          * 获取探索发现数据
          * */
         fun getDiscoverData(pageNumber: Int, listener: HttpListener) {
-            val url: String = if (pageNumber == 1) {
-                Constant.DiscoverURL
-            } else {
-                Constant.DiscoverURL.replace("index", "index$pageNumber", true)
-            }
-            GlobalScope.launch(Dispatchers.Main) {
-                val status = withContext(Dispatchers.IO) {
-                    createConnection(url).execute().statusCode()
-                }
-                if (status == 200) {
-                    listener.onSuccess(withContext(Dispatchers.IO) {
-                        createConnection(url).get()
-                    })
+            if (isNetworkAvailable()) {
+                val url: String = if (pageNumber == 1) {
+                    Constant.DiscoverURL
                 } else {
-                    listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+                    Constant.DiscoverURL.replace("index", "index$pageNumber", true)
                 }
+                GlobalScope.launch(Dispatchers.Main) {
+                    val status = withContext(Dispatchers.IO) {
+                        createConnection(url).execute().statusCode()
+                    }
+                    if (status == 200) {
+                        listener.onSuccess(withContext(Dispatchers.IO) {
+                            createConnection(url).get()
+                        })
+                    } else {
+                        listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+                    }
+                }
+            } else {
+                EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
             }
         }
 
@@ -126,39 +144,47 @@ class HttpHelper {
          * 抓取精选头像列表源数据
          * */
         fun getHeadImageData(pageNumber: Int, listener: HttpListener) {
-            val url: String = if (pageNumber == 1) {
-                Constant.HeadImageURL
-            } else {
-                Constant.HeadImageURL + "index_" + pageNumber + ".html"
-            }
-            Log.d(Tag, "头像列表链接地址: $url")
-            GlobalScope.launch(Dispatchers.Main) {
-                val status = withContext(Dispatchers.IO) {
-                    createConnection(url).execute().statusCode()
-                }
-                if (status == 200) {
-                    listener.onSuccess(withContext(Dispatchers.IO) {
-                        createConnection(url).get()
-                    })
+            if (isNetworkAvailable()) {
+                val url: String = if (pageNumber == 1) {
+                    Constant.HeadImageURL
                 } else {
-                    listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+                    Constant.HeadImageURL + "index_" + pageNumber + ".html"
                 }
+                Log.d(Tag, "头像列表链接地址: $url")
+                GlobalScope.launch(Dispatchers.Main) {
+                    val status = withContext(Dispatchers.IO) {
+                        createConnection(url).execute().statusCode()
+                    }
+                    if (status == 200) {
+                        listener.onSuccess(withContext(Dispatchers.IO) {
+                            createConnection(url).get()
+                        })
+                    } else {
+                        listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+                    }
+                }
+            } else {
+                EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
             }
         }
 
         fun getDocumentData(link: String, listener: HttpListener) {
-            Log.d(Tag, "抓取地址: $link")
-            GlobalScope.launch(Dispatchers.Main) {
-                val status = withContext(Dispatchers.IO) {
-                    createConnection(link).execute().statusCode()
+            if (isNetworkAvailable()) {
+                Log.d(Tag, "抓取地址: $link")
+                GlobalScope.launch(Dispatchers.Main) {
+                    val status = withContext(Dispatchers.IO) {
+                        createConnection(link).execute().statusCode()
+                    }
+                    if (status == 200) {
+                        listener.onSuccess(withContext(Dispatchers.IO) {
+                            createConnection(link).get()
+                        })
+                    } else {
+                        listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
+                    }
                 }
-                if (status == 200) {
-                    listener.onSuccess(withContext(Dispatchers.IO) {
-                        createConnection(link).get()
-                    })
-                } else {
-                    listener.onFailure(IndexOutOfBoundsException("IndexOutOfBoundsException"))
-                }
+            } else {
+                EasyToast.showToast("哎呀，网络似乎断开了~", EasyToast.ERROR)
             }
         }
     }
