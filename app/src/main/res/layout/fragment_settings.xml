@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F1F1F1"
     android:orientation="vertical">
 
     <include layout="@layout/include_title" />
@@ -39,31 +40,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/aboutLayout"
-        style="@style/itemLayoutStyle"
-        android:layout_marginTop="1dp">
-
-        <ImageView
-            android:id="@+id/vv"
-            style="@style/leftImageStyle"
-            android:src="@mipmap/about" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/vv"
-            android:text="关于我们"
-            android:textColor="@color/colorText"
-            android:textSize="18sp" />
-
-        <ImageView
-            style="@style/rightImageStyle"
-            android:src="@mipmap/right" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/issueLayout"
         style="@style/itemLayoutStyle"
         android:layout_marginTop="1dp">
@@ -87,5 +63,39 @@
             style="@style/rightImageStyle"
             android:src="@mipmap/right" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/aboutLayout"
+        style="@style/itemLayoutStyle"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/vv"
+            style="@style/leftImageStyle"
+            android:src="@mipmap/about" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/vv"
+            android:text="关于我们"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+        <ImageView
+            style="@style/rightImageStyle"
+            android:src="@mipmap/right" />
+    </RelativeLayout>
+
     <!--下面可以加广告-->
+    <LinearLayout
+        android:id="@+id/advertisementLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+    </LinearLayout>
 </LinearLayout>

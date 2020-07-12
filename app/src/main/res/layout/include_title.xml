@@ -5,8 +5,11 @@
     android:background="@color/white">
 
     <ImageView
+        android:layout_width="55px"
+        android:layout_height="55px"
         android:id="@+id/mTitleLeftView"
-        style="@style/leftImageStyle"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
         android:background="@mipmap/back" />
 
     <TextView
