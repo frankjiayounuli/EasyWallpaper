@@ -1,8 +1,6 @@
 package com.pengxh.easywallpaper
 
 import android.app.Application
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.Logger
 import com.pengxh.app.multilib.utils.SaveKeyValues
 import com.pengxh.app.multilib.widget.EasyToast
 import com.pengxh.easywallpaper.utils.Constant
@@ -25,7 +23,6 @@ class BaseApplication : Application() {
         EasyToast.init(this)
         SQLiteUtil.initDataBase(this)
         CrashReport.initCrashReport(this, Constant.APP_ID, false)
-        Logger.addLogAdapter(AndroidLogAdapter())
     }
 
     /**

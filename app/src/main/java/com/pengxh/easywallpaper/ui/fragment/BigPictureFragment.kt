@@ -83,8 +83,8 @@ class BigPictureFragment : BaseFragment() {
             })
         }
         wallpaperManager = WallpaperManager.getInstance(context)
-        screenWidth = DensityUtil.getScreenWidth(context)
-        screenHeight = DensityUtil.getScreenHeight(context)
+        screenWidth = DensityUtil.getDisplaySize(context)["HorizontalPixels"]!!
+        screenHeight = DensityUtil.getDisplaySize(context)["VerticalPixels"]!!
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
