@@ -12,7 +12,7 @@
         android:layout_height="320px"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@mipmap/app_icon" />
+        android:background="@mipmap/app_logo" />
 
     <TextView
         android:id="@+id/appVersion"
