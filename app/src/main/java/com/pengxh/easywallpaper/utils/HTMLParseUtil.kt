@@ -45,10 +45,10 @@ class HTMLParseUtil {
             //取第三个ul内容
             val ulElement = document.select("ul[class]")[2]
             //筛选ul
-            val targetElements = ulElement.select("a[href]")
+            val targetElements = ulElement.select("div[class]")
             targetElements.forEach {
-                val title = it.text()
-                val image = it.select("img[data-original]").first().attr("data-original")
+                val title = it.select("a[class]").first().text()
+                val image = it.getElementsByClass("img").select("img[data-src]").attr("data-src")
                 //最新壁纸分类地址
                 val url = it.select("a[href]").first().attr("href")
 
@@ -93,34 +93,34 @@ class HTMLParseUtil {
         fun parseDiscoverData(document: Document): ArrayList<DiscoverBean> {
             val discoverList: ArrayList<DiscoverBean> = ArrayList()
             //取第四个ul内容
-            val ulElement = document.select("ul[class]")[3]
+            val ulElement = document.select("ul[class]")[2]
             //筛选ul
             val liElements = ulElement.select("li")
             liElements.forEach { li ->
                 val discoverBean = DiscoverBean()
 
                 /**
-                 * 解析第一个div
+                 * 解析左边的div
                  * */
-                val titleDiv = li.select("div[class]")[0]
+                val leftDiv = li.getElementsByClass("cll_l")[0]
                 //标题
-                val title = titleDiv.select("img[src]").first().attr("title")
+                val title = leftDiv.select("h6").first().text()
                 //简介
-                val synopsis = titleDiv.select("p").text()
+                val synopsis = leftDiv.select("p").text()
                 //大图
-                val bitImg = titleDiv.select("img[data-original]").first().attr("data-original")
+                val bitImg = leftDiv.getElementsByClass("cll_img").select("img[src]").first().attr("data-src")
                 //链接
-                val link = titleDiv.select("a[class]").first().attr("href")
+                val link = leftDiv.select("a[href]").first().attr("href")
 
                 /**
                  * 解析第二个div
                  * */
-                val imageDiv = li.select("div[class]")[1]
+                val imageDiv = li.getElementsByClass("cll_r")[0]
                 val imageElements = imageDiv.select("a[href]")
                 val smallImageList: ArrayList<DiscoverBean.SmallImageBean> = ArrayList()
                 imageElements.forEach { img ->
                     val smallImageBean = DiscoverBean.SmallImageBean()
-                    smallImageBean.smallImage = img.select("img[data-original]").first().attr("data-original")
+                    smallImageBean.smallImage = img.select("img[data-src]").first().attr("data-src")
                     smallImageList.add(smallImageBean)
                 }
 

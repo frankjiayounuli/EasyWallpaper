@@ -5,13 +5,13 @@ apply plugin: 'kotlin-android-extensions'
 android {
     signingConfigs {
         debug {
-            storeFile file('D:\\Code\\Pengxh\\EasyWallpaper\\app\\easywallpaper.jks')
+            storeFile file('D:\\Code\\EasyWallpaper\\app\\easywallpaper.jks')
             storePassword '123456'
             keyAlias 'key0'
             keyPassword '123456'
         }
         release {
-            storeFile file('D:\\Code\\Pengxh\\EasyWallpaper\\app\\easywallpaper.jks')
+            storeFile file('D:\\Code\\EasyWallpaper\\app\\easywallpaper.jks')
             storePassword '123456'
             keyAlias 'key0'
             keyPassword '123456'

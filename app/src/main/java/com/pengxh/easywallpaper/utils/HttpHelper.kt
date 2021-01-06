@@ -48,6 +48,7 @@ class HttpHelper {
          * */
         fun getWallpaperUpdate(pageNumber: Int, listener: HttpListener) {
             val url = Constant.WallpaperUpdateURL.replace("index", pageNumber.toString(), true)
+            Log.d(Tag, "抓取地址: $url")
             if (isNetworkAvailable()) {
                 GlobalScope.launch(Dispatchers.Main) {
                     val status = withContext(Dispatchers.IO) {
@@ -123,6 +124,7 @@ class HttpHelper {
                 } else {
                     Constant.DiscoverURL.replace("index", "index$pageNumber", true)
                 }
+                Log.d(Tag, "探索发现: $url")
                 GlobalScope.launch(Dispatchers.Main) {
                     val status = withContext(Dispatchers.IO) {
                         createConnection(url).execute().statusCode()
